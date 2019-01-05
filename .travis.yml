@@ -1,0 +1,5 @@
+sudo: required
+services:
+-   docker
+script:
+-   docker run -v $(pwd):/code:rw team5499/frc-testing-image /code/gradlew -p /code test

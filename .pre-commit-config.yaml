@@ -1,0 +1,27 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v1.4.0
+    hooks:
+    -   id: check-json
+        exclude: .vscode/launch.json
+    -   id: check-merge-conflict
+    -   id: check-symlinks
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: mixed-line-ending
+    -   id: pretty-format-json
+        args: [--autofix]
+        exclude: >
+            (?x)^(
+                .vscode/launch.json|
+                .vscode/settings.json|
+                .wpilib/wpilib_preferences.json
+            )$
+    - id: trailing-whitespace
+-   repo: https://github.com/team5499/pre-commit-hooks
+    rev: v0.3.2
+    hooks:
+    -   id: ktlint-wrapper
+        args: [--color, --format, --relative, --verbose]
+    -   id: detekt-wrapper
+        args: [--config .detekt-config.yml]

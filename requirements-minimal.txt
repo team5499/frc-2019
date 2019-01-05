@@ -1,0 +1,2 @@
+# Please do not edit me.
+# We don't have any non-dev Python requirements, and this file only exists to appease requirements-tools.
