@@ -1,0 +1,87 @@
+{
+  "cppDependencies": [
+    {
+      "artifactId": "wpiapi-cpp",
+      "binaryPlatforms": [
+        "linuxathena",
+        "windowsx86-64",
+        "linuxx86-64"
+      ],
+      "groupId": "com.ctre.phoenix",
+      "headerClassifier": "headers",
+      "libName": "CTRE_Phoenix_WPI",
+      "sharedLibrary": false,
+      "skipInvalidPlatforms": true,
+      "version": "5.12.0"
+    },
+    {
+      "artifactId": "api-cpp",
+      "binaryPlatforms": [
+        "linuxathena",
+        "windowsx86-64",
+        "linuxx86-64"
+      ],
+      "groupId": "com.ctre.phoenix",
+      "headerClassifier": "headers",
+      "libName": "CTRE_Phoenix",
+      "sharedLibrary": false,
+      "skipInvalidPlatforms": true,
+      "version": "5.12.0"
+    },
+    {
+      "artifactId": "cci",
+      "binaryPlatforms": [
+        "linuxathena",
+        "windowsx86-64",
+        "linuxx86-64"
+      ],
+      "groupId": "com.ctre.phoenix",
+      "headerClassifier": "headers",
+      "libName": "CTRE_PhoenixCCI",
+      "sharedLibrary": false,
+      "skipInvalidPlatforms": true,
+      "version": "5.12.0"
+    },
+    {
+      "artifactId": "core",
+      "groupId": "com.ctre.phoenix",
+      "headerClassifier": "headers",
+      "libName": "CTRE_PhoenixCore",
+      "version": "5.12.0"
+    }
+  ],
+  "fileName": "Phoenix.json",
+  "javaDependencies": [
+    {
+      "artifactId": "api-java",
+      "groupId": "com.ctre.phoenix",
+      "version": "5.12.0"
+    },
+    {
+      "artifactId": "wpiapi-java",
+      "groupId": "com.ctre.phoenix",
+      "version": "5.12.0"
+    }
+  ],
+  "jniDependencies": [
+    {
+      "artifactId": "cci",
+      "groupId": "com.ctre.phoenix",
+      "isJar": false,
+      "skipInvalidPlatforms": true,
+      "validPlatforms": [
+        "linuxathena",
+        "windowsx86-64",
+        "linuxx86-64"
+      ],
+      "version": "5.12.0"
+    }
+  ],
+  "jsonUrl": "http://devsite.ctr-electronics.com/maven/release/com/ctre/phoenix/Phoenix-latest.json",
+  "mavenUrls": [
+    "http://devsite.ctr-electronics.com/maven/release/"
+  ],
+  "name": "CTRE-Phoenix",
+  "uuid": "ab676553-b602-441f-a38d-f1296eff6537",
+  "version": "5.12.0"
+}
