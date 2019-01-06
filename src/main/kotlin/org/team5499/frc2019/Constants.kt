@@ -22,6 +22,8 @@ public object Constants {
         public const val LIFT_MASTER = 7
         public const val LIFT_SLAVE = 8
 
+        public const val INTAKE_MASTER = 10
+
         public const val GYRO_PORT = 9
     }
 }
