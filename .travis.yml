@@ -2,4 +2,4 @@ sudo: required
 services:
 -   docker
 script:
--   docker run -v $(pwd):/code:rw team5499/frc-testing-image /code/gradlew -p /code test
+-   docker run -v $(pwd):/code:rw team5499/frc-testing-image:frc2019 /code/gradlew -p /code test
