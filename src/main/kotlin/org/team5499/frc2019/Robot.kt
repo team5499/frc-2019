@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.XboxController
 import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.frc2019.subsystems.Lift
+import org.team5499.frc2019.subsystems.Intake
+import org.team5499.frc2019.subsystems.Vision
 import org.team5499.frc2019.controllers.SandstormController
 import org.team5499.frc2019.controllers.TeleopController
 
@@ -18,6 +20,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     // subsystems
     private val mDrivetrain: Drivetrain
     private val mLift: Lift
+    private val mIntake: Intake
+    private val mVision: Vision
     private val mSubsystemsManager: SubsystemsManager
 
     // controllers
@@ -30,15 +34,15 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
         mDrivetrain = Drivetrain()
         mLift = Lift()
-        mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift)
+        mIntake = Intake()
+        mVision = Vision()
+        mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision)
 
         mSandstormController = SandstormController(mSubsystemsManager, mDriver, mCodriver)
         mTeleopController = TeleopController(mSubsystemsManager, mDriver, mCodriver)
     }
 
     override fun robotInit() {
-        // super.setPeriod(0.002)
-        // super.period = 0.002
     }
 
     override fun robotPeriodic() {
