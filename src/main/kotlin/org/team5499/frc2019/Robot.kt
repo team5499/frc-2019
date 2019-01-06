@@ -12,20 +12,20 @@ import org.team5499.frc2019.controllers.TeleopController
 class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     // inputs
-    private val mDriver:              XboxController
-    private val mCodriver:            XboxController
+    private val mDriver: XboxController
+    private val mCodriver: XboxController
 
     // subsystems
-    private val mDrivetrain:          Drivetrain
-    private val mLift:                Lift
-    private val mSubsystemsManager:   SubsystemsManager
+    private val mDrivetrain: Drivetrain
+    private val mLift: Lift
+    private val mSubsystemsManager: SubsystemsManager
 
     // controllers
     private val mSandstormController: SandstormController
-    private val mTeleopController:    TeleopController
+    private val mTeleopController: TeleopController
 
     init {
-        mDriver   = XboxController(Constants.Input.DRIVER_PORT)
+        mDriver = XboxController(Constants.Input.DRIVER_PORT)
         mCodriver = XboxController(Constants.Input.CODRIVER_PORT)
 
         mDrivetrain = Drivetrain()
@@ -63,10 +63,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun testInit() {
-
     }
 
     override fun testPeriodic() {
-
     }
 }

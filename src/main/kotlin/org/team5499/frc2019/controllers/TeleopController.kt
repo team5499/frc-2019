@@ -4,8 +4,20 @@ import edu.wpi.first.wpilibj.XboxController
 
 import org.team5499.frc2019.subsystems.SubsystemsManager
 
-public class TeleopController(subsystems: SubsystemsManager, driver: XboxController, codriver: XboxController): Controller() {
+import org.team5499.monkeyLib.Controller
 
+public class TeleopController(
+    subsystems: SubsystemsManager,
+    driver: XboxController,
+    codriver: XboxController
+) : Controller() {
 
+    public override fun start() {
+    }
 
+    public override fun update() {
+    }
+
+    public override fun reset() {
+    }
 }
