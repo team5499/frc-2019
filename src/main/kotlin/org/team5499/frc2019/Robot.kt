@@ -65,10 +65,4 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     override fun teleopPeriodic() {
     }
-
-    override fun testInit() {
-    }
-
-    override fun testPeriodic() {
-    }
 }
