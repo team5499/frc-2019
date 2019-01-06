@@ -26,4 +26,16 @@ public object Constants {
 
         public const val GYRO_PORT = 9
     }
+
+    object Units {
+        public const val ENCODER_TICKS_PER_ROTATION = 1280
+        public const val TURN_UNITS_PER_ROTATION = 3600 // for gyro
+    }
+
+    object Dimensions {
+        public const val WHEEL_BASE = 20.0 // inches
+        public const val WHEEL_DIAMETER = 6.0 // inches
+        public const val WHEEL_RADIUS = WHEEL_DIAMETER / 2.0
+        public const val WHEEL_CIR = WHEEL_DIAMETER * Math.PI
+    }
 }
