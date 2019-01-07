@@ -45,6 +45,12 @@ repositories {
     maven {
         url 'https://maven.team5499.org'
     }
+    maven {
+        url "http://devsite.ctr-electronics.com/maven/release/"
+    }
+    maven {
+        url "https://repo1.maven.org/maven2/"
+    }
 }
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
