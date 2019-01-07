@@ -1,6 +1,5 @@
 package org.team5499.frc2019.subsystems
 
-import com.ctre.phoenix.motorcontrol.can.VictorSPX
 import com.ctre.phoenix.sensors.PigeonIMU
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
@@ -16,6 +15,7 @@ import org.team5499.frc2019.Constants
 
 import org.team5499.monkeyLib.Subsystem
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
+import org.team5499.monkeyLib.hardware.LazyVictorSPX
 import org.team5499.monkeyLib.math.Position
 import org.team5499.monkeyLib.math.geometry.Vector2
 import org.team5499.monkeyLib.math.geometry.Rotation2d
@@ -35,12 +35,12 @@ public class Drivetrain : Subsystem() {
 
     // hardware
     private val mLeftMaster: LazyTalonSRX
-    private val mLeftSlave1: VictorSPX
-    private val mLeftSlave2: VictorSPX
+    private val mLeftSlave1: LazyVictorSPX
+    private val mLeftSlave2: LazyVictorSPX
 
     private val mRightMaster: LazyTalonSRX
-    private val mRightSlave1: VictorSPX
-    private val mRightSlave2: VictorSPX
+    private val mRightSlave1: LazyVictorSPX
+    private val mRightSlave2: LazyVictorSPX
 
     private val mGyro: PigeonIMU
 
@@ -217,11 +217,11 @@ public class Drivetrain : Subsystem() {
                 0
             )
         }
-        mLeftSlave1 = VictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE1).apply {
+        mLeftSlave1 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE1).apply {
             setInverted(false)
             follow(mLeftMaster)
         }
-        mLeftSlave2 = VictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE2).apply {
+        mLeftSlave2 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE2).apply {
             setInverted(false)
             follow(mLeftMaster)
         }
@@ -235,11 +235,11 @@ public class Drivetrain : Subsystem() {
                 0
             )
         }
-        mRightSlave1 = VictorSPX(Constants.HardwarePorts.RIGHT_DRIVE_SLAVE1).apply {
+        mRightSlave1 = LazyVictorSPX(Constants.HardwarePorts.RIGHT_DRIVE_SLAVE1).apply {
             setInverted(true)
             follow(mRightMaster)
         }
-        mRightSlave2 = VictorSPX(Constants.HardwarePorts.RIGHT_DRIVE_SLAVE2).apply {
+        mRightSlave2 = LazyVictorSPX(Constants.HardwarePorts.RIGHT_DRIVE_SLAVE2).apply {
             setInverted(true)
             follow(mRightMaster)
         }
