@@ -9,6 +9,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.SensorTerm
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource
 import com.ctre.phoenix.motorcontrol.FollowerType
+import com.ctre.phoenix.motorcontrol.can.SlotConfiguration
+import com.ctre.phoenix.motorcontrol.InvertType
 import com.ctre.phoenix.ParamEnum
 
 import org.team5499.frc2019.Constants
@@ -44,8 +46,13 @@ public class Drivetrain : Subsystem() {
 
     private val mGyro: PigeonIMU
 
-    // pid slots
-    // private val mPositionPIDConfig: SlotConfiguration
+    private val mPositionPIDConfig: SlotConfiguration
+    private val mAnglePIDConfig: SlotConfiguration
+
+    private val mVelocityPIDConfig: SlotConfiguration
+
+    private val mTurnPIDConfig: SlotConfiguration
+    private val mFixedPIDConfig: SlotConfiguration
     // maybe use these at some point
 
     // drive variables
@@ -203,11 +210,7 @@ public class Drivetrain : Subsystem() {
         )
 
     init {
-        mInstanceCounter++
-        if (mInstanceCounter > 1) {
-            print("ERROR: Multiple drivetrain instances initialized")
-        }
-
+        // initialze hardware
         mLeftMaster = LazyTalonSRX(Constants.HardwarePorts.LEFT_DRIVE_MASTER).apply {
             setInverted(false)
             setSensorPhase(false)
@@ -218,12 +221,12 @@ public class Drivetrain : Subsystem() {
             )
         }
         mLeftSlave1 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE1).apply {
-            setInverted(false)
             follow(mLeftMaster)
+            setInverted(InvertType.FollowMaster)
         }
         mLeftSlave2 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE2).apply {
-            setInverted(false)
             follow(mLeftMaster)
+            setInverted(InvertType.FollowMaster)
         }
 
         mRightMaster = LazyTalonSRX(Constants.HardwarePorts.RIGHT_DRIVE_MASTER).apply {
@@ -236,15 +239,23 @@ public class Drivetrain : Subsystem() {
             )
         }
         mRightSlave1 = LazyVictorSPX(Constants.HardwarePorts.RIGHT_DRIVE_SLAVE1).apply {
-            setInverted(true)
             follow(mRightMaster)
+            setInverted(InvertType.FollowMaster)
         }
         mRightSlave2 = LazyVictorSPX(Constants.HardwarePorts.RIGHT_DRIVE_SLAVE2).apply {
-            setInverted(true)
             follow(mRightMaster)
+            setInverted(InvertType.FollowMaster)
         }
 
         mGyro = PigeonIMU(Constants.HardwarePorts.GYRO_PORT)
+
+        // initialize PID
+        mPositionPIDConfig = SlotConfiguration()
+        mAnglePIDConfig = SlotConfiguration()
+        mVelocityPIDConfig = SlotConfiguration()
+        mTurnPIDConfig = SlotConfiguration()
+        mFixedPIDConfig = SlotConfiguration()
+        loadGains()
     }
 
     public fun setPercent(signal: DriveSignal) {
@@ -311,14 +322,6 @@ public class Drivetrain : Subsystem() {
             setSensorPhase(false)
         }
 
-        mLeftSlave1.apply {
-            setInverted(false)
-        }
-
-        mLeftSlave2.apply {
-            setInverted(false)
-        }
-
         mRightMaster.apply {
             configNominalOutputForward(0.0, 0)
             configNominalOutputReverse(0.0, 0)
@@ -326,14 +329,6 @@ public class Drivetrain : Subsystem() {
             configPeakOutputReverse(-1.0, 0)
             setInverted(true)
             setSensorPhase(false)
-        }
-
-        mRightSlave1.apply {
-            setInverted(true)
-        }
-
-        mRightSlave2.apply {
-            setInverted(true)
         }
     }
 
@@ -364,14 +359,6 @@ public class Drivetrain : Subsystem() {
                 Constants.TALON_PIDF_UPDATE_PERIOD_MS.toDouble(), 0x00, 0, 0)
             configSetParameter(ParamEnum.ePIDLoopPeriod,
                 Constants.TALON_PIDF_UPDATE_PERIOD_MS.toDouble(), 0x00, 1, 0)
-        }
-
-        mLeftSlave1.apply {
-            setInverted(false)
-        }
-
-        mLeftSlave2.apply {
-            setInverted(false)
         }
 
         mRightMaster.apply {
@@ -419,14 +406,6 @@ public class Drivetrain : Subsystem() {
             setInverted(true)
         }
 
-        mLeftSlave1.apply {
-            setInverted(true)
-        }
-
-        mLeftSlave2.apply {
-            setInverted(true)
-        }
-
         mRightMaster.apply {
             configRemoteFeedbackFilter(mLeftMaster.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor, 0, 0)
             configRemoteFeedbackFilter(mGyro.getDeviceID(), RemoteSensorSource.Pigeon_Yaw, 1, 0)
@@ -443,14 +422,17 @@ public class Drivetrain : Subsystem() {
             setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, Constants.TALON_UPDATE_PERIOD_MS, 0)
             configPeakOutputForward(+1.0, 0)
             configPeakOutputReverse(-1.0, 0)
+
             config_kP(0, Constants.PID.TURN_KP, 0)
             config_kI(0, Constants.PID.TURN_KI, 0)
             config_kD(0, Constants.PID.TURN_KD, 0)
             config_kF(0, Constants.PID.TURN_KF, 0)
+
             config_kP(1, Constants.PID.FIXED_KP, 0)
             config_kI(1, Constants.PID.FIXED_KI, 0)
             config_kD(1, Constants.PID.FIXED_KD, 0)
             config_kF(1, Constants.PID.FIXED_KF, 0)
+
             config_IntegralZone(0, Constants.PID.TURN_IZONE, 0)
             configClosedLoopPeakOutput(0, Constants.PID.TURN_MAX_OUTPUT, 0)
             config_IntegralZone(1, Constants.PID.FIXED_IZONE, 0)
@@ -475,14 +457,6 @@ public class Drivetrain : Subsystem() {
             setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, Constants.TALON_UPDATE_PERIOD_MS, 0)
             follow(mRightMaster, FollowerType.AuxOutput1)
             setSensorPhase(false)
-            setInverted(false)
-        }
-
-        mLeftSlave1.apply {
-            setInverted(false)
-        }
-
-        mLeftSlave2.apply {
             setInverted(false)
         }
 
@@ -526,6 +500,46 @@ public class Drivetrain : Subsystem() {
         }
     }
 
+    /**
+    * laods the pid gains from the constants file and eventually the dashboard
+    */
+    public fun loadGains() {
+        mPositionPIDConfig.kP = Constants.PID.POS_KP
+        mPositionPIDConfig.kI = Constants.PID.POS_KI
+        mPositionPIDConfig.kD = Constants.PID.POS_KD
+        mPositionPIDConfig.kF = Constants.PID.POS_KF
+        mPositionPIDConfig.integralZone = Constants.PID.POS_IZONE
+        mPositionPIDConfig.closedLoopPeakOutput = Constants.PID.POS_MAX_OUTPUT
+
+        mAnglePIDConfig.kP = Constants.PID.ANGLE_KP
+        mAnglePIDConfig.kI = Constants.PID.ANGLE_KI
+        mAnglePIDConfig.kD = Constants.PID.ANGLE_KD
+        mAnglePIDConfig.kF = Constants.PID.ANGLE_KF
+        mAnglePIDConfig.integralZone = Constants.PID.ANGLE_IZONE
+        mAnglePIDConfig.closedLoopPeakOutput = Constants.PID.ANGLE_MAX_OUTPUT
+
+        mVelocityPIDConfig.kP = Constants.PID.VEL_KP
+        mVelocityPIDConfig.kI = Constants.PID.VEL_KI
+        mVelocityPIDConfig.kD = Constants.PID.VEL_KD
+        mVelocityPIDConfig.kF = Constants.PID.VEL_KF
+        mVelocityPIDConfig.integralZone = Constants.PID.VEL_IZONE
+        mVelocityPIDConfig.closedLoopPeakOutput = Constants.PID.VEL_MAX_OUTPUT
+
+        mTurnPIDConfig.kP = Constants.PID.TURN_KP
+        mTurnPIDConfig.kI = Constants.PID.TURN_KI
+        mTurnPIDConfig.kD = Constants.PID.TURN_KD
+        mTurnPIDConfig.kF = Constants.PID.TURN_KF
+        mTurnPIDConfig.integralZone = Constants.PID.TURN_IZONE
+        mTurnPIDConfig.closedLoopPeakOutput = Constants.PID.TURN_MAX_OUTPUT
+
+        mFixedPIDConfig.kP = Constants.PID.FIXED_KP
+        mFixedPIDConfig.kI = Constants.PID.FIXED_KI
+        mFixedPIDConfig.kD = Constants.PID.FIXED_KD
+        mFixedPIDConfig.kF = Constants.PID.FIXED_KF
+        mFixedPIDConfig.integralZone = Constants.PID.FIXED_IZONE
+        mFixedPIDConfig.closedLoopPeakOutput = Constants.PID.FIXED_MAX_OUTPUT
+    }
+
     public override fun update() {
         mPosition.update(leftDistance, rightDistance, heading.degrees)
     }
@@ -542,9 +556,11 @@ public class Drivetrain : Subsystem() {
         mLeftMaster.neutralOutput()
         mRightMaster.neutralOutput()
         brakeMode = false
+        loadGains()
     }
 
     companion object {
-        private var mInstanceCounter = 0
+        private const val kPrimaryPIDSlot = 0
+        private const val kSecondaryPIDSlot = 1
     }
 }
