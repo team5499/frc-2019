@@ -60,20 +60,20 @@ public object Constants {
     }
 
     object HardwarePorts {
-        public const val LEFT_DRIVE_MASTER = 1
-        public const val LEFT_DRIVE_SLAVE1 = 2
-        public const val LEFT_DRIVE_SLAVE2 = 3
+        public const val LEFT_DRIVE_MASTER = 6
+        public const val LEFT_DRIVE_SLAVE1 = 1
+        public const val LEFT_DRIVE_SLAVE2 = 22 // check this later
 
-        public const val RIGHT_DRIVE_MASTER = 4
-        public const val RIGHT_DRIVE_SLAVE1 = 5
-        public const val RIGHT_DRIVE_SLAVE2 = 6
+        public const val RIGHT_DRIVE_MASTER = 8
+        public const val RIGHT_DRIVE_SLAVE1 = 2
+        public const val RIGHT_DRIVE_SLAVE2 = 23
 
-        public const val LIFT_MASTER = 7
-        public const val LIFT_SLAVE = 8
+        public const val LIFT_MASTER = 24
+        public const val LIFT_SLAVE = 23
 
-        public const val INTAKE_MASTER = 10
+        public const val INTAKE_MASTER = 27
 
-        public const val GYRO_PORT = 9
+        public const val GYRO_PORT = 10
     }
 
     object Units {
