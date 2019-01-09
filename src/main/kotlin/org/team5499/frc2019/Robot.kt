@@ -49,6 +49,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun disabledInit() {
+        mVision.changePipeline(Vision.Pipeline.NONE)
     }
 
     override fun disabledPeriodic() {
@@ -57,6 +58,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     override fun autonomousInit() {
         mSandstormController.reset()
         mSandstormController.start()
+
+        mVision.changePipeline(Vision.Pipeline.ROCKET)
     }
 
     override fun autonomousPeriodic() {
@@ -66,9 +69,17 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     override fun teleopInit() {
         mTeleopController.reset()
         mTeleopController.start()
+        mVision.changePipeline(Vision.Pipeline.DRIVER)
     }
 
     override fun teleopPeriodic() {
         mTeleopController.update()
+    }
+
+    override fun testInit() {
+        mVision.changePipeline(Vision.Pipeline.TEST)
+    }
+
+    override fun testPeriodic() {
     }
 }
