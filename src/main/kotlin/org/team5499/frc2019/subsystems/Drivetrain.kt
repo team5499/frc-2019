@@ -503,6 +503,7 @@ public class Drivetrain : Subsystem() {
     /**
     * laods the pid gains from the constants file and eventually the dashboard
     */
+    @Suppress("LongMethod")
     public fun loadGains() {
         mPositionPIDConfig.kP = Constants.PID.POS_KP
         mPositionPIDConfig.kI = Constants.PID.POS_KI

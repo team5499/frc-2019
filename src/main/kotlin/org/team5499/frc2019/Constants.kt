@@ -6,6 +6,7 @@ public object Constants {
     public const val ROBOT_UPDATE_PERIOD = 0.005
     public const val TALON_UPDATE_PERIOD_MS = 1
     public const val TALON_PIDF_UPDATE_PERIOD_MS = 1
+    public const val LOOKAHEAD_DISTANCE: Double = 12.0
 
     object Input {
         public const val DRIVER_PORT = 0
