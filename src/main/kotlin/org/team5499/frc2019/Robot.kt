@@ -8,6 +8,7 @@ import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.frc2019.subsystems.Lift
 import org.team5499.frc2019.subsystems.Intake
 import org.team5499.frc2019.subsystems.Vision
+import org.team5499.frc2019.subsystems.Wrist
 import org.team5499.frc2019.controllers.SandstormController
 import org.team5499.frc2019.controllers.TeleopController
 
@@ -22,6 +23,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mLift: Lift
     private val mIntake: Intake
     private val mVision: Vision
+    private val mWrist: Wrist
     private val mSubsystemsManager: SubsystemsManager
 
     // controllers
@@ -36,7 +38,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mLift = Lift()
         mIntake = Intake()
         mVision = Vision()
-        mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision)
+        mWrist = Wrist()
+        mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision, mWrist)
 
         mSandstormController = SandstormController(mSubsystemsManager, mDriver, mCodriver)
         mTeleopController = TeleopController(mSubsystemsManager, mDriver, mCodriver)

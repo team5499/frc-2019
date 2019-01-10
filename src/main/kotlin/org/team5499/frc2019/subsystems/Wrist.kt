@@ -18,9 +18,9 @@ public class Wrist : Subsystem() {
 
     companion object {
         private const val kWristSlot = 0
-        private const val kMaxWristTicks = 1024
+        private const val kMaxWristTicks = Constants.Units.ENCODER_TICKS_PER_ROTATION / 4
         private const val kMinWristTicks = 0
-        private const val kTicksPerDegree = 4096 / 360
+        private const val kTicksPerDegree = Constants.Units.ENCODER_TICKS_PER_ROTATION / 360
     }
 
     init {
@@ -58,8 +58,9 @@ public class Wrist : Subsystem() {
             setAngle(90.0)
         } else if (currentDegrees < 0.0) {
             setAngle(0.0)
+        } else {
+            mMaster.set(ControlMode.PercentOutput, limitedPower)
         }
-        mMaster.set(ControlMode.PercentOutput, limitedPower)
     }
 
     fun setAngle(angleDegrees: Double) {
