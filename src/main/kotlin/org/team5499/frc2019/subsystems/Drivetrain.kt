@@ -28,6 +28,11 @@ import org.team5499.monkeyLib.input.DriveSignal
 @Suppress("LargeClass", "TooManyFunctions")
 public class Drivetrain : Subsystem() {
 
+    companion object {
+        private const val kPrimaryPIDSlot = 0
+        private const val kSecondaryPIDSlot = 1
+    }
+
     private enum class DriveMode {
         OPEN_LOOP,
         POSITION,
@@ -558,10 +563,5 @@ public class Drivetrain : Subsystem() {
         mRightMaster.neutralOutput()
         brakeMode = false
         loadGains()
-    }
-
-    companion object {
-        private const val kPrimaryPIDSlot = 0
-        private const val kSecondaryPIDSlot = 1
     }
 }
