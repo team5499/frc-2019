@@ -49,6 +49,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun disabledInit() {
+        // mDriver.setRumble(RumbleType.kLeftRumble, 0.0)
     }
 
     override fun disabledPeriodic() {
@@ -57,8 +58,6 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     override fun autonomousInit() {
         mSandstormController.reset()
         mSandstormController.start()
-        @Suppress("MagicNumber")
-        mDriver.rumbleForSeconds(5.0, 1.0, XboxControllerPlus.RumbleSide.BOTH)
     }
 
     override fun autonomousPeriodic() {
@@ -66,6 +65,10 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun teleopInit() {
+        // @Suppress("MagicNumber")
+        // mDriver.setRumble(RumbleType.kLeftRumble, 1.0)
+        // mDriver.rumbleForSeconds(5.0, 1.0, XboxControllerPlus.RumbleSide.BOTH)
+        // mDriver.rumbleForSeconds(5.0, 1.0, XboxControllerPlus.RumbleSide.BOTH)
         mTeleopController.reset()
         mTeleopController.start()
     }
