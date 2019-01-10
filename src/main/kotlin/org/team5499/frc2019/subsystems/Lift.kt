@@ -37,6 +37,7 @@ public class Lift : Subsystem() {
 
     private var mEncoderPresent: Boolean
     public var zeroed: Boolean
+        private set
 
     public val positionTicks: Int
         get() = mMaster.getSelectedSensorPosition(0)
@@ -100,6 +101,7 @@ public class Lift : Subsystem() {
     }
 
     public fun setPositionRaw(ticks: Int) {
+        if (!zeroed) return
         if (!mEncoderPresent) {
             DriverStation.reportWarning("Elevator encoder is not present! Please use manual power", false)
             setPower(0.0)
