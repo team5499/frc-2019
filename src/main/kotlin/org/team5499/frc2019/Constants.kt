@@ -71,6 +71,8 @@ public object Constants {
         public const val LIFT_MASTER = 24
         public const val LIFT_SLAVE = 23
 
+        public const val WRIST_MASTER = 4 // check this later
+
         public const val INTAKE_MASTER = 27
 
         public const val GYRO_PORT = 10
