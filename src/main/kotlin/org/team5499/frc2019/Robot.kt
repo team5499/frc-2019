@@ -1,7 +1,6 @@
 package org.team5499.frc2019
 
 import edu.wpi.first.wpilibj.TimedRobot
-import edu.wpi.first.wpilibj.XboxController
 
 import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.subsystems.Drivetrain
@@ -11,12 +10,13 @@ import org.team5499.frc2019.subsystems.Vision
 import org.team5499.frc2019.controllers.SandstormController
 import org.team5499.frc2019.controllers.TeleopController
 
+import org.team5499.monkeyLib.hardware.XboxControllerPlus
+
 class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     // inputs
-    private val mDriver: XboxController
-    private val mCodriver: XboxController
-
+    private val mDriver: XboxControllerPlus
+    private val mCodriver: XboxControllerPlus
     // subsystems
     private val mDrivetrain: Drivetrain
     private val mLift: Lift
@@ -29,8 +29,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mTeleopController: TeleopController
 
     init {
-        mDriver = XboxController(Constants.Input.DRIVER_PORT)
-        mCodriver = XboxController(Constants.Input.CODRIVER_PORT)
+        mDriver = XboxControllerPlus(Constants.Input.DRIVER_PORT)
+        mCodriver = XboxControllerPlus(Constants.Input.CODRIVER_PORT)
 
         mDrivetrain = Drivetrain()
         mLift = Lift()
@@ -57,6 +57,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     override fun autonomousInit() {
         mSandstormController.reset()
         mSandstormController.start()
+        @Suppress("MagicNumber")
+        mDriver.rumbleForSeconds(5.0, 1.0, XboxControllerPlus.RumbleSide.BOTH)
     }
 
     override fun autonomousPeriodic() {
