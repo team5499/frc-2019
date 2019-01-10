@@ -8,6 +8,13 @@ import org.team5499.monkeyLib.auto.Action
 import org.team5499.monkeyLib.path.Path
 import org.team5499.monkeyLib.path.PathFollower
 
+/**
+ * An action that will follow the given path.
+ *
+ * @param timeoutseconds The number of seconds to wait before canceling the command
+ * @param path The path to follow
+ * @param subsystemsManager The subsystems manager to get the drivetrain from
+ */
 public class PathAction(
     timeoutseconds: Double,
     path: Path,
