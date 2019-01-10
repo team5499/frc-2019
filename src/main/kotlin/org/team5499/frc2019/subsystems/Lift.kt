@@ -9,6 +9,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 
+import edu.wpi.first.wpilibj.DriverStation
+
 import org.team5499.frc2019.Constants
 
 @SuppressWarnings("MagicNumber")
@@ -19,6 +21,7 @@ public class Lift : Subsystem() {
         private const val kMaxElevatorTicks = 1000 // check this
         private const val kMinElevatorTicks = 0 // check this
         private const val kTicksPerInch = 1024 // check this
+        private const val kPowerSafetyRange = 100 // ticks
     }
 
     public enum class ElevatorMode {
@@ -32,10 +35,14 @@ public class Lift : Subsystem() {
 
     private var mElevatorMode: ElevatorMode
 
+    private var mEncoderPresent: Boolean
     public var zeroed: Boolean
 
+    public val positionTicks: Int
+        get() = mMaster.getSelectedSensorPosition(0)
+
     public val positionInches: Double // inches
-        get() = (mMaster.getSelectedSensorPosition(0) / kTicksPerInch.toDouble()).toDouble()
+        get() = (positionTicks / kTicksPerInch.toDouble()).toDouble()
 
     init {
         mMaster = LazyTalonSRX(Constants.HardwarePorts.LIFT_MASTER).apply {
@@ -70,6 +77,7 @@ public class Lift : Subsystem() {
 
         mElevatorMode = ElevatorMode.ZERO
         zeroed = false
+        mEncoderPresent = false
 
         mMaster.set(ControlMode.PercentOutput, 0.0)
     }
@@ -77,17 +85,39 @@ public class Lift : Subsystem() {
     public fun setPower(power: Double) {
         mElevatorMode = ElevatorMode.OPEN_LOOP
         val limitedPower = Utils.limit(power, -0.6, 1.0)
-        mMaster.set(ControlMode.PercentOutput, power)
+
+        if (!mEncoderPresent) mMaster.set(ControlMode.PercentOutput, limitedPower)
+
+        if (positionTicks < (kMinElevatorTicks + kPowerSafetyRange) && limitedPower < 0.0) {
+            // check if close to bottom stop and negative power
+            setPositionRaw(kMinElevatorTicks)
+        } else if (positionTicks > (kMaxElevatorTicks - kPowerSafetyRange) && limitedPower > 0.0) {
+            // check if close to top stop and positive power
+            setPositionRaw(kMaxElevatorTicks)
+        } else {
+            mMaster.set(ControlMode.PercentOutput, limitedPower)
+        }
     }
 
-    public fun setPosition(positionInches: Double) {
+    public fun setPositionRaw(ticks: Int) {
+        if (!mEncoderPresent) {
+            DriverStation.reportWarning("Elevator encoder is not present! Please use manual power", false)
+            setPower(0.0)
+            return
+        }
         mElevatorMode = ElevatorMode.MOTION_MAGIC
-        var positionTicks = positionInches * kTicksPerInch
-        positionTicks = Utils.limit(positionTicks, kMinElevatorTicks.toDouble(), kMaxElevatorTicks.toDouble())
+        val positionTicks = Utils.limit(ticks.toDouble(), kMinElevatorTicks.toDouble(), kMaxElevatorTicks.toDouble())
         mMaster.set(ControlMode.MotionMagic, positionTicks)
     }
 
+    public fun setPosition(positionInches: Double) {
+        val positionTicks = positionInches * kTicksPerInch
+        setPositionRaw(positionTicks.toInt())
+    }
+
     public override fun update() {
+        mEncoderPresent = mMaster.getSensorCollection().getPulseWidthRiseToRiseUs() != 0
+        // check if this works ^^ found it on the chief
     }
 
     public override fun stop() {
