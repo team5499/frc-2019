@@ -6,7 +6,6 @@ public object Constants {
     public const val ROBOT_UPDATE_PERIOD = 0.005
     public const val TALON_UPDATE_PERIOD_MS = 1
     public const val TALON_PIDF_UPDATE_PERIOD_MS = 1
-    public const val LOOKAHEAD_DISTANCE: Double = 12.0
 
     object Input {
         public const val DRIVER_PORT = 0
@@ -88,5 +87,9 @@ public object Constants {
         public const val WHEEL_DIAMETER = 6.0 // inches
         public const val WHEEL_RADIUS = WHEEL_DIAMETER / 2.0
         public const val WHEEL_CIR = WHEEL_DIAMETER * Math.PI
+    }
+
+    object Auto {
+        public const val LOOKAHEAD_DISTANCE: Double = 12.0
     }
 }

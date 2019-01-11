@@ -26,7 +26,7 @@ public class PathAction(
 
     // The actuall class from MonkeyLib that does all the math for path following
     private val mPathfollower: PathFollower = PathFollower(path,
-                            Constants.Dimensions.WHEEL_BASE, Constants.LOOKAHEAD_DISTANCE)
+                            Constants.Dimensions.WHEEL_BASE, Constants.Auto.LOOKAHEAD_DISTANCE)
 
     // Called every tick
     public override fun update() {
