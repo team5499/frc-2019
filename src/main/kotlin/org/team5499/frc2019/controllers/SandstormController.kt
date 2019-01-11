@@ -1,40 +1,60 @@
 package org.team5499.frc2019.controllers
+
 import org.team5499.frc2019.subsystems.SubsystemsManager
-import org.team5499.frc2019.subsystems.driveTrain
-
+import org.team5499.frc2019.subsystems.Drivetrain
 import edu.wpi.first.wpilibj.GenericHID.Hand
-
 import org.team5499.monkeyLib.Controller
-import org.team5499.monkeyLib.Input.XboxControllerPlus
-import org.team5499.monkeyLib.Input.TankDriverHelper
-import org.team5499.monkeyLib.Input.DriveSignal
+import edu.wpi.first.wpilibj.XboxController
+import org.team5499.monkeyLib.input.TankDriveHelper
+import org.team5499.monkeyLib.input.DriveSignal
 
-public class Sandstorm(
+fun XboxController.anyButtonPressed(): Boolean {
+    return (
+        this.getAButtonPressed() ||
+        this.getBButtonPressed() ||
+        this.getYButtonPressed() ||
+        this.getXButtonPressed() ||
+        this.getBumperPressed(Hand.kLeft) ||
+        this.getBumperPressed(Hand.kRight)
+    )
+}
+
+public class SandstormController(
     subsystems: SubsystemsManager,
-    driver: XboxControllerPlus,
-    codriver: XboxControllerPlus
+    driver: XboxController,
+    codriver: XboxController
 ) : Controller() {
+
     var manuallOverride: Boolean = false
     var driveSignal: DriveSignal
+    val mDriver: XboxController
+    val mCodriver: XboxController
+    val mSubsystems: SubsystemsManager
+
+    val driveHelper: TankDriveHelper = TankDriveHelper(0.06, 0.2)
+
+    init{
+        mDriver = driver
+        mCodriver = codriver
+        driveSignal = driveHelper.calculateOutput(mDriver.getY(Hand.kLeft), mDriver.getY(Hand.kRight), false)
+        mSubsystems = subsystems
+    }
 
     public override fun start() {
-        driveHelper: TankDriverHelper = TankDriverHelper(0.06, 0.2)
     }
 
     public override fun update() {
-        if(driver.anyButtonPressed()){
+        if(mDriver.anyButtonPressed()){
             manuallOverride = true
         }
         if(!manuallOverride){
             //Auto
-            //TODO
-
+            mSubsystems.drivetrain.setPercent(0.2, 0.2)
         }
         else{
             //teleop
-            //TOTEST
-            driveSignal = driveHelper.calculateOutput(driver.getX(kLeft), driver.getX(kRight))
-            driveTrain.setPercent(driveSignal.left, driveSignal.right)
+            driveSignal = driveHelper.calculateOutput(mDriver.getY(Hand.kLeft), mDriver.getY(Hand.kRight), false)
+            mSubsystems.drivetrain.setPercent(driveSignal.left, driveSignal.right)
         }
     }
 

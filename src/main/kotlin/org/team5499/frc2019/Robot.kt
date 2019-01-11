@@ -12,10 +12,9 @@ import org.team5499.frc2019.controllers.SandstormController
 import org.team5499.frc2019.controllers.TeleopController
 
 class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
-
     // inputs
-    private val mDriver: XboxControllerPlus
-    private val mCodriver: XboxControllerPlus
+    private val mDriver: XboxController
+    private val mCodriver: XboxController
 
     // subsystems
     private val mDrivetrain: Drivetrain
@@ -25,12 +24,12 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mSubsystemsManager: SubsystemsManager
 
     // controllers
-    private val mAutoController: AutoController
+    private val mSandstromController: SandstormController
     private val mTeleopController: TeleopController
 
     init {
-        mDriver = XboxControllerPlus(Constants.Input.DRIVER_PORT)
-        mCodriver = XboxControllerPlus(Constants.Input.CODRIVER_PORT)
+        mDriver = XboxController(Constants.Input.DRIVER_PORT)
+        mCodriver = XboxController(Constants.Input.CODRIVER_PORT)
 
         mDrivetrain = Drivetrain()
         mLift = Lift()
@@ -38,7 +37,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mVision = Vision()
         mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision)
 
-        mAutoController = AutoController(mSubsystemsManager, mDriver, mCodriver)
+        mSandstromController = SandstormController(mSubsystemsManager, mDriver, mCodriver)
         mTeleopController = TeleopController(mSubsystemsManager, mDriver, mCodriver)
     }
 
@@ -58,17 +57,6 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         println("Starting anutonomous")
     }
     override fun autonomousPeriodic(){
-        if(controller1.anyButtonDown){
-            manuallOverride = true
-        }
-        if(!manuallOverride){
-            //mAutoController.handle()
-            println("run autonomous")
-        }
-        else{
-            //mTeleopController.handle()
-            println("run teleop")
-        }
     }
 
     override fun teleopInit() {
