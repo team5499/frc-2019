@@ -53,15 +53,21 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     override fun disabledPeriodic() {
     }
 
-   override fun autonomousInit(){
-        println("Starting anutonomous")
+    override fun autonomousInit() {
+        mSandstormController.reset()
+        mSandstormController.start()
     }
-    override fun autonomousPeriodic(){
+
+    override fun autonomousPeriodic() {
+        mSandstormController.update()
     }
 
     override fun teleopInit() {
+        mTeleopController.reset()
+        mTeleopController.start()
     }
 
     override fun teleopPeriodic() {
+        mTeleopController.update()
     }
 }
