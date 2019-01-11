@@ -9,6 +9,13 @@ import org.team5499.monkeyLib.math.geometry.Pose2d
 
 import kotlin.math.abs
 
+/**
+ * An action that will turn the robot a certian amount of degrees
+ *
+ * @param timeoutseconds The number of seconds to wait before canceling the command
+ * @param degrees The amount of degrees to turn
+ * @param subsystemsManager The subsystems manager to get the drivetrain from
+ */
 public class TurnAction(
     timeoutseconds: Double,
     degrees: Double,
