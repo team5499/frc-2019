@@ -1,7 +1,7 @@
 package org.team5499.frc2019.actions
 
 import org.team5499.frc2019.subsystems.SubsystemsManager
-import org.team5499.frc2019.subsystems.Lift
+import org.team5499.frc2019.subsystems.Wrist
 
 import org.team5499.monkeyLib.auto.Action
 
@@ -12,19 +12,19 @@ import org.team5499.monkeyLib.auto.Action
  * @param liftHeight The height to go to
  * @param subsystemsManager The subsystems manager to get the drivetrain from
  */
-public class LiftAction(
+public class WristAction(
     timeoutseconds: Double,
-    height: Double,
+    angle: Double,
     subsystemsManager: SubsystemsManager
 ) : Action(timeoutseconds) {
 
     // Keep a reference to the drivetrain locally for simplicity's sake
-    private val mLift: Lift = subsystemsManager.lift
+    private val mWrist: Wrist = subsystemsManager.wrist
 
-    private val liftHeight = height
+    private val wristAngle = angle
 
     public override fun start() {
-        mLift.setPosition(liftHeight)
+        mWrist.setAngle(wristAngle)
     }
 
     // Called every tick
@@ -32,6 +32,6 @@ public class LiftAction(
 
     // Returns true if we are ready to move on to the next action
     public override fun next(): Boolean {
-        return (super.next() || mLift.positionInches == liftHeight)
+        return (super.next() || mWrist.wristAngle == wristAngle)
     }
 }
