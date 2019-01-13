@@ -11,10 +11,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice
 
 import edu.wpi.first.wpilibj.DriverStation
 
-import org.team5499.frc2019.Constants
-
 @SuppressWarnings("MagicNumber")
-public class Lift : Subsystem() {
+public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsystem() {
 
     companion object {
         private const val kElevatorSlot = 0
@@ -46,7 +44,7 @@ public class Lift : Subsystem() {
         get() = (positionTicks / kTicksPerInch.toDouble()).toDouble()
 
     init {
-        mMaster = LazyTalonSRX(Constants.HardwarePorts.LIFT_MASTER).apply {
+        this.mMaster = masterTalon.apply {
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10)
             setSensorPhase(false) // check
             setNeutralMode(NeutralMode.Coast)
@@ -71,7 +69,7 @@ public class Lift : Subsystem() {
             configReverseSoftLimitEnable(true, 10)
         }
 
-        mSlave = LazyTalonSRX(Constants.HardwarePorts.LIFT_SLAVE).apply {
+        this.mSlave = slaveTalon.apply {
             follow(mMaster)
             setInverted(InvertType.FollowMaster)
         }
