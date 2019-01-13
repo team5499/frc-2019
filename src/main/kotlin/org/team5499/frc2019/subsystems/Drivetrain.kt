@@ -25,7 +25,15 @@ import org.team5499.monkeyLib.util.Utils
 import org.team5499.monkeyLib.input.DriveSignal
 
 @Suppress("LargeClass", "TooManyFunctions")
-public class Drivetrain : Subsystem() {
+public class Drivetrain(
+    leftMaster: LazyTalonSRX,
+    leftSlave1: LazyVictorSPX,
+    leftSlave2: LazyVictorSPX,
+    rightMaster: LazyTalonSRX,
+    rightSlave1: LazyVictorSPX,
+    rightSlave2: LazyVictorSPX,
+    gyro: PigeonIMU
+) : Subsystem() {
 
     private enum class DriveMode {
         OPEN_LOOP,
@@ -201,7 +209,7 @@ public class Drivetrain : Subsystem() {
 
     init {
         // initialze hardware
-        mLeftMaster = LazyTalonSRX(Constants.HardwarePorts.LEFT_DRIVE_MASTER).apply {
+        mLeftMaster = leftMaster.apply {
             setInverted(false)
             setSensorPhase(false)
             setStatusFramePeriod(
@@ -210,16 +218,16 @@ public class Drivetrain : Subsystem() {
                 0
             )
         }
-        mLeftSlave1 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE1).apply {
+        mLeftSlave1 = leftSlave1.apply {
             follow(mLeftMaster)
             setInverted(InvertType.FollowMaster)
         }
-        mLeftSlave2 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE2).apply {
+        mLeftSlave2 = leftSlave2.apply {
             follow(mLeftMaster)
             setInverted(InvertType.FollowMaster)
         }
 
-        mRightMaster = LazyTalonSRX(Constants.HardwarePorts.RIGHT_DRIVE_MASTER).apply {
+        mRightMaster = rightMaster.apply {
             setInverted(true)
             setSensorPhase(false)
             setStatusFramePeriod(
@@ -228,11 +236,11 @@ public class Drivetrain : Subsystem() {
                 0
             )
         }
-        mRightSlave1 = LazyVictorSPX(Constants.HardwarePorts.RIGHT_DRIVE_SLAVE1).apply {
+        mRightSlave1 = rightSlave1.apply {
             follow(mRightMaster)
             setInverted(InvertType.FollowMaster)
         }
-        mRightSlave2 = LazyVictorSPX(Constants.HardwarePorts.RIGHT_DRIVE_SLAVE2).apply {
+        mRightSlave2 = rightSlave2.apply {
             follow(mRightMaster)
             setInverted(InvertType.FollowMaster)
         }
