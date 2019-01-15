@@ -6,10 +6,10 @@ import org.team5499.frc2019.subsystems.Wrist
 import org.team5499.monkeyLib.auto.Action
 
 /**
- * An action that sets the elevator to a certain height.
+ * An action that sets the angle of the wrist on the elevator.
  *
  * @param timeoutseconds The number of seconds to wait before canceling the command
- * @param liftHeight The height to go to
+ * @param wristAngle The angle the wrist will go to
  * @param subsystemsManager The subsystems manager to get the drivetrain from
  */
 public class WristAction(
