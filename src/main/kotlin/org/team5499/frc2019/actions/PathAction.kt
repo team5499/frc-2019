@@ -1,6 +1,5 @@
 package org.team5499.frc2019.actions
 
-import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.frc2019.Constants
 
@@ -13,16 +12,13 @@ import org.team5499.monkeyLib.path.PathFollower
  *
  * @param timeoutseconds The number of seconds to wait before canceling the command
  * @param path The path to follow
- * @param subsystemsManager The subsystems manager to get the drivetrain from
+ * @param drivetrain The drivetrain to act on
  */
 public class PathAction(
     timeoutseconds: Double,
     path: Path,
-    subsystemsManager: SubsystemsManager
+    var drivetrain: Drivetrain
 ) : Action(timeoutseconds) {
-
-    // Keep a reference to the drivetrain locally for simplicity's sake
-    private val mDrivetrain: Drivetrain = subsystemsManager.drivetrain
 
     // The actuall class from MonkeyLib that does all the math for path following
     private val mPathfollower: PathFollower = PathFollower(path,
@@ -32,14 +28,14 @@ public class PathAction(
     public override fun update() {
 
         // Get the required motor velocity for the current position on the path
-        val pathfolloweroutput: PathFollower.PathFollowerOutput = mPathfollower.update(mDrivetrain.pose)
+        val pathfolloweroutput: PathFollower.PathFollowerOutput = mPathfollower.update(drivetrain.pose)
 
         // Set the drivetrain to the right velocity
-        mDrivetrain.setVelocity(pathfolloweroutput.leftVelocity, pathfolloweroutput.rightVelocity)
+        drivetrain.setVelocity(pathfolloweroutput.leftVelocity, pathfolloweroutput.rightVelocity)
     }
 
     // Returns true if we are ready to move on to the next action
     public override fun next(): Boolean {
-        return (super.next() || mPathfollower.doneWithPath(mDrivetrain.pose))
+        return (super.next() || mPathfollower.doneWithPath(drivetrain.pose))
     }
 }
