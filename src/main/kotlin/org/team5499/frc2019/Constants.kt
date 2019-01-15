@@ -19,6 +19,9 @@ public object Constants {
         public const val ACCEPTABLE_TURN_ERROR = 3.0 // degrees (?)
         public const val ACCEPTABLE_DISTANCE_ERROR = 2.0 // inches
 
+        public const val ACCEPTABLE_VELOCITY_THRESHOLD_LIFT = 3.0 // inches / s
+        public const val ACCEPTABLE_DISTANCE_ERROR_LIFT = 1.0 // inches
+
         public const val VEL_KP = 2.5
         public const val VEL_KI = 0.0
         public const val VEL_KD = 0.0
@@ -71,6 +74,8 @@ public object Constants {
         public const val LIFT_MASTER = 24
         public const val LIFT_SLAVE = 23
 
+        public const val WRIST_MASTER = 4 // check this later
+
         public const val INTAKE_MASTER = 27
 
         public const val GYRO_PORT = 10
@@ -87,6 +92,10 @@ public object Constants {
         public const val WHEEL_DIAMETER = 6.0 // inches
         public const val WHEEL_RADIUS = WHEEL_DIAMETER / 2.0
         public const val WHEEL_CIR = WHEEL_DIAMETER * Math.PI
+        
+        public const val WHEEL_DIAMETER_LIFT = 6.0 // inches
+        public const val WHEEL_RADIUS_LIFT = WHEEL_DIAMETER_LIFT / 2.0
+        public const val WHEEL_CIR = WHEEL_DIAMETER_LIFT * Math.PI
     }
 
     object Auto {
