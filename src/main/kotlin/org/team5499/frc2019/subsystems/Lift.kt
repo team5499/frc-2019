@@ -38,20 +38,18 @@ public class Lift : Subsystem() {
         get() = (mMaster.getSelectedSensorPosition(0) / kTicksPerInch.toDouble()).toDouble()
 
     public val velocity: Double // inches / second
-         get() = Utils.encoderTicksPer100MsToInchesPerSecond(
+        get() = Utils.encoderTicksPer100MsToInchesPerSecond(
             Constants.Units.ENCODER_TICKS_PER_ROTATION,
-            Constants.Dimensions.WHEEL_CIR_ELEVATOR,
+            Constants.Dimensions.WHEEL_CIR_LIFT,
             mMaster.sensorCollection.quadratureVelocity
         )
 
-     public val positionError: Double
+    public val positionError: Double
         get() = Utils.encoderTicksToInches(
             Constants.Units.ENCODER_TICKS_PER_ROTATION,
-            Constants.Dimensions.WHEEL_CIR_ELEVATOR,
+            Constants.Dimensions.WHEEL_CIR_LIFT,
             mMaster.getClosedLoopError(0)
         )
-
-
 
     init {
         mMaster = LazyTalonSRX(Constants.HardwarePorts.LIFT_MASTER).apply {
@@ -104,7 +102,6 @@ public class Lift : Subsystem() {
     }
 
     public override fun update() {
-
     }
 
     public override fun stop() {

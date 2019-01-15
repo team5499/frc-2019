@@ -92,10 +92,10 @@ public object Constants {
         public const val WHEEL_DIAMETER = 6.0 // inches
         public const val WHEEL_RADIUS = WHEEL_DIAMETER / 2.0
         public const val WHEEL_CIR = WHEEL_DIAMETER * Math.PI
-        
+
         public const val WHEEL_DIAMETER_LIFT = 6.0 // inches
         public const val WHEEL_RADIUS_LIFT = WHEEL_DIAMETER_LIFT / 2.0
-        public const val WHEEL_CIR = WHEEL_DIAMETER_LIFT * Math.PI
+        public const val WHEEL_CIR_LIFT = WHEEL_DIAMETER_LIFT * Math.PI
     }
 
     object Auto {
