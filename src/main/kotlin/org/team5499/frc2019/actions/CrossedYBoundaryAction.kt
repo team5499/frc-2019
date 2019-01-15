@@ -1,6 +1,5 @@
 package org.team5499.frc2019.actions
 
-import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.subsystems.Drivetrain
 
 import org.team5499.monkeyLib.auto.Action
@@ -17,9 +16,8 @@ public class CrossedYBoundaryAction(
     timeoutseconds: Double,
     yLine: Double,
     lessThan: Boolean = false,
-    subsystemsManager: SubsystemsManager
+    val drivetrain: Drivetrain
 ) : Action(timeoutseconds) {
-    private val mDrivetrain: Drivetrain = subsystemsManager.drivetrain
 
     private val mLineCoord: Double
     private val mLessThan: Boolean
@@ -31,9 +29,9 @@ public class CrossedYBoundaryAction(
 
     public override fun next(): Boolean {
         if (mLessThan) {
-            return (mDrivetrain.pose.translation.y < mLineCoord)
+            return (drivetrain.pose.translation.y < mLineCoord)
         } else {
-            return (mDrivetrain.pose.translation.y > mLineCoord)
+            return (drivetrain.pose.translation.y > mLineCoord)
         }
     }
 }
