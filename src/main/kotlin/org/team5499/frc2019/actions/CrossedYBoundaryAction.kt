@@ -5,12 +5,12 @@ import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.monkeyLib.auto.Action
 
 /**
- * An action prevents the robot from driving past the y boundary
+ * An action that finishes when the robot crosses a y boundry line
  *
  * @param timeoutseconds The number of seconds to wait before canceling the command
  * @param yLine The y boundary line
  * @param lessThan Boolean to determine if the robot is behind the boundary line
- * @param subsystemsManager The subsystems manager to get the drivetrain from
+ * @param drivetrain The drivetrain to act on
  */
 public class CrossedYBoundaryAction(
     timeoutseconds: Double,

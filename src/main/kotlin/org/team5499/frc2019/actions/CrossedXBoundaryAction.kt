@@ -5,7 +5,7 @@ import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.monkeyLib.auto.Action
 
 /**
- * An action prevents the robot from driving past the x boundary
+ * An action that finishes when the robot crosses an x boundry line
  *
  * @param timeoutseconds The number of seconds to wait before canceling the command
  * @param xLine The x boundary line
