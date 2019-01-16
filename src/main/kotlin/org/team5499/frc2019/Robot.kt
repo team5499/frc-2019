@@ -2,6 +2,7 @@ package org.team5499.frc2019
 
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj.XboxController
+import edu.wpi.first.wpilibj.DigitalInput
 
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
 
@@ -23,6 +24,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mLiftMaster: LazyTalonSRX
     private val mLiftSlave: LazyTalonSRX
 
+    private val mLiftZeroSensor: DigitalInput
+
     // subsystems
     private val mDrivetrain: Drivetrain
     private val mLift: Lift
@@ -43,9 +46,11 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mLiftMaster = LazyTalonSRX(Constants.HardwarePorts.LIFT_MASTER)
         mLiftSlave = LazyTalonSRX(Constants.HardwarePorts.LIFT_SLAVE)
 
+        mLiftZeroSensor = DigitalInput(Constants.HardwarePorts.LIFT_ZERO_SENSOR)
+
         // init subsystems
         mDrivetrain = Drivetrain()
-        mLift = Lift(mLiftMaster)
+        mLift = Lift(mLiftMaster, mLiftZeroSensor)
         mIntake = Intake()
         mVision = Vision()
         mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision)
@@ -62,6 +67,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun disabledInit() {
+        mSubsystemsManager.resetAll()
     }
 
     override fun disabledPeriodic() {
@@ -80,7 +86,6 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     override fun teleopInit() {
         mTeleopController.reset()
         mTeleopController.start()
-        mSubsystemsManager.lift.zero()
     }
 
     override fun teleopPeriodic() {
