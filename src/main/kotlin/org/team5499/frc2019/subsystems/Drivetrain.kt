@@ -245,7 +245,7 @@ public class Drivetrain(
             setInverted(InvertType.FollowMaster)
         }
 
-        mGyro = PigeonIMU(Constants.HardwarePorts.GYRO_PORT)
+        mGyro = gyro
     }
 
     public fun setPercent(signal: DriveSignal) {
