@@ -13,7 +13,7 @@ public class Lift(masterTalon: LazyTalonSRX /*, slaveTalon: LazyTalonSRX*/) : Su
 
     companion object {
         private const val kElevatorSlot = 0
-        public const val kMaxElevatorTicks = 8200 // check this
+        public const val kMaxElevatorTicks = 8300 // check this
         public const val kMinElevatorTicks = 10 // check this
         private const val kTicksPerInch = 1024 // check this
         private const val kPowerSafetyRange = 100 // ticks
@@ -43,16 +43,18 @@ public class Lift(masterTalon: LazyTalonSRX /*, slaveTalon: LazyTalonSRX*/) : Su
     init {
         this.mMaster = masterTalon.apply {
             configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10)
-            setSensorPhase(false) // check
+            setSensorPhase(true) // check
             setNeutralMode(NeutralMode.Coast)
-            setInverted(false) // check this
+            setInverted(true) // check this
 
-            config_kP(kElevatorSlot, 0.1, 10)
+            configClosedLoopPeakOutput(kElevatorSlot, 1.0)
+
+            config_kP(kElevatorSlot, 2.5, 10)
             config_kI(kElevatorSlot, 0.0, 10)
-            config_kD(kElevatorSlot, 0.0, 10)
+            config_kD(kElevatorSlot, 0.2, 10)
             config_kF(kElevatorSlot, 0.0, 10)
-            configMotionCruiseVelocity(0, 200)
-            configMotionAcceleration(0, 100)
+            configMotionCruiseVelocity(1000, 10)
+            configMotionAcceleration(1000, 10)
             selectProfileSlot(kElevatorSlot, 0)
 
             enableCurrentLimit(true)
@@ -121,7 +123,9 @@ public class Lift(masterTalon: LazyTalonSRX /*, slaveTalon: LazyTalonSRX*/) : Su
 
     public override fun update() {
         mEncoderPresent = mMaster.getSensorCollection().getPulseWidthRiseToRiseUs() != 0
-        println("elevator position ticks: ${mMaster.getSensorCollection().getQuadraturePosition()}")
+        println("elevator position target: ${mMaster.getClosedLoopTarget(0)}")
+        println("elevator position error: ${mMaster.getClosedLoopError(0)}")
+        println("elevator position position: ${mMaster.getSensorCollection().getQuadraturePosition()}")
     }
 
     public override fun stop() {

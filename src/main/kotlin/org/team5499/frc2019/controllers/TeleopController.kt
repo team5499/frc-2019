@@ -25,10 +25,15 @@ public class TeleopController(
     public override fun start() {
     }
 
+    private var elevPos = 0
+
     public override fun update() {
-        mSubsystems.drivetrain.setPercent(-mDriver.getY(Hand.kLeft), -mDriver.getY(Hand.kRight))
-        if (mDriver.getAButton()) mSubsystems.lift.setPositionRaw(Lift.kMinElevatorTicks)
-        if (mDriver.getBButton()) mSubsystems.lift.setPositionRaw((Lift.kMaxElevatorTicks + Lift.kMinElevatorTicks) / 2)
+        mSubsystems.drivetrain.setPercent(mDriver.getY(Hand.kRight), mDriver.getY(Hand.kLeft))
+        if (mDriver.getAButton()) elevPos = 200
+        if (mDriver.getBButton()) elevPos = 8000
+        if (mDriver.getXButton()) elevPos -= 200
+        if (mDriver.getYButton()) elevPos += 200
+        mSubsystems.lift.setPositionRaw(elevPos)
     }
 
     public override fun reset() {
