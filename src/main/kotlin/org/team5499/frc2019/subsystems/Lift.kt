@@ -4,20 +4,17 @@ import org.team5499.monkeyLib.Subsystem
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
 import org.team5499.monkeyLib.util.Utils
 
-import com.ctre.phoenix.motorcontrol.InvertType
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 
-import edu.wpi.first.wpilibj.DriverStation
-
 @SuppressWarnings("MagicNumber")
-public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsystem() {
+public class Lift(masterTalon: LazyTalonSRX /*, slaveTalon: LazyTalonSRX*/) : Subsystem() {
 
     companion object {
         private const val kElevatorSlot = 0
-        private const val kMaxElevatorTicks = 1000 // check this
-        private const val kMinElevatorTicks = 0 // check this
+        public const val kMaxElevatorTicks = 8200 // check this
+        public const val kMinElevatorTicks = 10 // check this
         private const val kTicksPerInch = 1024 // check this
         private const val kPowerSafetyRange = 100 // ticks
     }
@@ -29,7 +26,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     }
 
     private val mMaster: LazyTalonSRX
-    private val mSlave: LazyTalonSRX
+    // private val mSlave: LazyTalonSRX
 
     private var mElevatorMode: ElevatorMode
 
@@ -45,17 +42,17 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     init {
         this.mMaster = masterTalon.apply {
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10)
+            configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10)
             setSensorPhase(false) // check
             setNeutralMode(NeutralMode.Coast)
             setInverted(false) // check this
 
-            config_kP(kElevatorSlot, 0.0, 10)
+            config_kP(kElevatorSlot, 0.1, 10)
             config_kI(kElevatorSlot, 0.0, 10)
             config_kD(kElevatorSlot, 0.0, 10)
             config_kF(kElevatorSlot, 0.0, 10)
-            configMotionCruiseVelocity(0, 10)
-            configMotionAcceleration(0, 10)
+            configMotionCruiseVelocity(0, 200)
+            configMotionAcceleration(0, 100)
             selectProfileSlot(kElevatorSlot, 0)
 
             enableCurrentLimit(true)
@@ -69,10 +66,12 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
             configReverseSoftLimitEnable(true, 10)
         }
 
+        /*
         this.mSlave = slaveTalon.apply {
             follow(mMaster)
             setInverted(InvertType.FollowMaster)
         }
+        */
 
         mElevatorMode = ElevatorMode.ZERO
         zeroed = false
@@ -81,30 +80,35 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         mMaster.set(ControlMode.PercentOutput, 0.0)
     }
 
+    public fun zero() {
+        mMaster.getSensorCollection().setQuadraturePosition(0, 0)
+    }
+
     public fun setPower(power: Double) {
         mElevatorMode = ElevatorMode.OPEN_LOOP
         val limitedPower = Utils.limit(power, -0.6, 1.0)
+        mMaster.set(ControlMode.PercentOutput, limitedPower)
 
-        if (!mEncoderPresent) mMaster.set(ControlMode.PercentOutput, limitedPower)
+        // if (!mEncoderPresent) mMaster.set(ControlMode.PercentOutput, limitedPower)
 
-        if (positionTicks < (kMinElevatorTicks + kPowerSafetyRange) && limitedPower < 0.0) {
-            // check if close to bottom stop and negative power
-            setPositionRaw(kMinElevatorTicks)
-        } else if (positionTicks > (kMaxElevatorTicks - kPowerSafetyRange) && limitedPower > 0.0) {
-            // check if close to top stop and positive power
-            setPositionRaw(kMaxElevatorTicks)
-        } else {
-            mMaster.set(ControlMode.PercentOutput, limitedPower)
-        }
+        // if (positionTicks < (kMinElevatorTicks + kPowerSafetyRange) && limitedPower < 0.0) {
+        //     // check if close to bottom stop and negative power
+        //     setPositionRaw(kMinElevatorTicks)
+        // } else if (positionTicks > (kMaxElevatorTicks - kPowerSafetyRange) && limitedPower > 0.0) {
+        //     // check if close to top stop and positive power
+        //     setPositionRaw(kMaxElevatorTicks)
+        // } else {
+        //     mMaster.set(ControlMode.PercentOutput, limitedPower)
+        // }
     }
 
     public fun setPositionRaw(ticks: Int) {
-        if (!zeroed) return
-        if (!mEncoderPresent) {
-            DriverStation.reportWarning("Elevator encoder is not present! Please use manual power", false)
-            setPower(0.0)
-            return
-        }
+        // if (!zeroed) return
+        // if (!mEncoderPresent) {
+        //     DriverStation.reportWarning("Elevator encoder is not present! Please use manual power", false)
+        //     setPower(0.0)
+        //     return
+        // }
         mElevatorMode = ElevatorMode.MOTION_MAGIC
         val positionTicks = Utils.limit(ticks.toDouble(), kMinElevatorTicks.toDouble(), kMaxElevatorTicks.toDouble())
         mMaster.set(ControlMode.MotionMagic, positionTicks)
@@ -117,7 +121,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     public override fun update() {
         mEncoderPresent = mMaster.getSensorCollection().getPulseWidthRiseToRiseUs() != 0
-        // check if this works ^^ found it on the chief
+        println("elevator position ticks: ${mMaster.getSensorCollection().getQuadraturePosition()}")
     }
 
     public override fun stop() {

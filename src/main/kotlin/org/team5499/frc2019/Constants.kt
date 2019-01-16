@@ -68,7 +68,7 @@ public object Constants {
         public const val RIGHT_DRIVE_SLAVE1 = 2
         public const val RIGHT_DRIVE_SLAVE2 = 23
 
-        public const val LIFT_MASTER = 24
+        public const val LIFT_MASTER = 5
         public const val LIFT_SLAVE = 23
 
         public const val INTAKE_MASTER = 27

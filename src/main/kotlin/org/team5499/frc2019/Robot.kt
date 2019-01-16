@@ -45,7 +45,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
         // init subsystems
         mDrivetrain = Drivetrain()
-        mLift = Lift(mLiftMaster, mLiftSlave)
+        mLift = Lift(mLiftMaster)
         mIntake = Intake()
         mVision = Vision()
         mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision)
@@ -74,14 +74,17 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     override fun autonomousPeriodic() {
         mSandstormController.update()
+        mSubsystemsManager.updateAll()
     }
 
     override fun teleopInit() {
         mTeleopController.reset()
         mTeleopController.start()
+        mSubsystemsManager.lift.zero()
     }
 
     override fun teleopPeriodic() {
         mTeleopController.update()
+        mSubsystemsManager.updateAll()
     }
 }
