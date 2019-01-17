@@ -49,6 +49,7 @@ public class Lift(masterTalon: LazyTalonSRX /*, slaveTalon: LazyTalonSRX*/, zero
                 mMaster.setNeutralMode(NeutralMode.Brake)
             else
                 mMaster.setNeutralMode(NeutralMode.Coast)
+            field = value
         }
 
     init {
