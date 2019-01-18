@@ -17,7 +17,7 @@ import org.team5499.monkeyLib.path.PathFollower
 public class PathAction(
     timeoutSeconds: Double,
     path: Path,
-    var drivetrain: Drivetrain
+    val drivetrain: Drivetrain
 ) : Action(timeoutSeconds) {
 
     // The actuall class from MonkeyLib that does all the math for path following
