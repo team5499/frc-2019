@@ -21,12 +21,16 @@ public class TurnAction(
     val drivetrain: Drivetrain
 ) : Action(timeoutSeconds) {
 
-    // Keep track of the initial pose so we know when to end the auto command
+    // Keep track of the initial pose for absolute heading control
     private val mInitialPose: Pose2d = drivetrain.pose
-    // Fix issue where start() cannot read degrees value
-    private val degrees = degrees
+    // target angle relative to start
+    private val mDegrees: Double
     // Is the drivetrain currently in a turn (used to deturmine if we need to abort in finish())
     private var mIsTurning: Boolean = false
+    
+    init {
+        mDegrees = degrees
+    }
 
     // Called when the action starts
     public override fun start() {
