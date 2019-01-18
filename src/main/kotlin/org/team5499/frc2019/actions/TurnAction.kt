@@ -16,10 +16,10 @@ import kotlin.math.abs
  * @param drivetrain The drivetrain to act on
  */
 public class TurnAction(
-    timeoutseconds: Double,
+    timeoutSeconds: Double,
     degrees: Double,
     val drivetrain: Drivetrain
-) : Action(timeoutseconds) {
+) : Action(timeoutSeconds) {
 
     // Keep track of the initial pose so we know when to end the auto command
     private val mInitialPose: Pose2d = drivetrain.pose
@@ -36,10 +36,12 @@ public class TurnAction(
         mIsTurning = true
     }
 
-    public override fun next(): Boolean {
+    public override fun update() {
         mIsTurning = ((Constants.PID.ACCEPTABLE_TURN_ERROR > abs(drivetrain.turnError)) &&
             (Constants.PID.ACCEPTABLE_VELOCITY_THRESHOLD > abs(drivetrain.angularVelocity)))
+    }
 
+    public override fun next(): Boolean {
         // Return true if super.next() is true or
         // the turn error is les than the acceptable turn error/velocity defined in PID.
         return (super.next() || !mIsTurning)

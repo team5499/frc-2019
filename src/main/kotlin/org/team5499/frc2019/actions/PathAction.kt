@@ -15,10 +15,10 @@ import org.team5499.monkeyLib.path.PathFollower
  * @param drivetrain The drivetrain to act on
  */
 public class PathAction(
-    timeoutseconds: Double,
+    timeoutSeconds: Double,
     path: Path,
     var drivetrain: Drivetrain
-) : Action(timeoutseconds) {
+) : Action(timeoutSeconds) {
 
     // The actuall class from MonkeyLib that does all the math for path following
     private val mPathfollower: PathFollower = PathFollower(path,

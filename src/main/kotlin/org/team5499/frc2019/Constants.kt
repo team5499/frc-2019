@@ -22,6 +22,9 @@ public object Constants {
         public const val ACCEPTABLE_VELOCITY_THRESHOLD_LIFT = 3.0 // inches / s
         public const val ACCEPTABLE_DISTANCE_ERROR_LIFT = 1.0 // inches
 
+        public const val ACCEPTALE_VELOCITY_THRESHOLD_WRIST = 3.0 // inches / s
+        public const val ACCEPTABLE_DISTANCE_ERROR_WRIST = 1.0 // inches
+
         public const val VEL_KP = 2.5
         public const val VEL_KI = 0.0
         public const val VEL_KD = 0.0
@@ -93,9 +96,9 @@ public object Constants {
         public const val WHEEL_RADIUS = WHEEL_DIAMETER / 2.0
         public const val WHEEL_CIR = WHEEL_DIAMETER * Math.PI
 
-        public const val WHEEL_DIAMETER_LIFT = 6.0 // inches
-        public const val WHEEL_RADIUS_LIFT = WHEEL_DIAMETER_LIFT / 2.0
-        public const val WHEEL_CIR_LIFT = WHEEL_DIAMETER_LIFT * Math.PI
+        public const val SPROCKET_DIAMETER_LIFT = 6.0 // inches
+        public const val SPROCKET_RADIUS_LIFT = SPROCKET_DIAMETER_LIFT / 2.0
+        public const val SPROCKET_CIR_LIFT = SPROCKET_DIAMETER_LIFT * Math.PI
     }
 
     object Auto {

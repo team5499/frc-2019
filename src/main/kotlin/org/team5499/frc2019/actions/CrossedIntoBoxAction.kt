@@ -14,12 +14,11 @@ import org.team5499.monkeyLib.math.geometry.Vector2
  * @param drivetrain The drivetrain to act on
  */
 class CrossedIntoBoxAction(
-    timeoutseconds: Double,
     val lowerLeftCorner: Vector2,
     val upperRightCorner: Vector2,
     val drivetrain: Drivetrain
 
-) : Action(timeoutseconds) {
+) : Action(0.0) {
 
     override fun next(): Boolean {
         val driveTranslation = drivetrain.pose.translation

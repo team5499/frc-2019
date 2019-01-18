@@ -40,14 +40,14 @@ public class Lift : Subsystem() {
     public val velocity: Double // inches / second
         get() = Utils.encoderTicksPer100MsToInchesPerSecond(
             Constants.Units.ENCODER_TICKS_PER_ROTATION,
-            Constants.Dimensions.WHEEL_CIR_LIFT,
+            Constants.Dimensions.SPROCKET_CIR_LIFT,
             mMaster.sensorCollection.quadratureVelocity
         )
 
     public val positionError: Double
         get() = Utils.encoderTicksToInches(
             Constants.Units.ENCODER_TICKS_PER_ROTATION,
-            Constants.Dimensions.WHEEL_CIR_LIFT,
+            Constants.Dimensions.SPROCKET_CIR_LIFT,
             mMaster.getClosedLoopError(0)
         )
 

@@ -23,8 +23,14 @@ public class Wrist : Subsystem() {
         private const val kTicksPerDegree = Constants.Units.ENCODER_TICKS_PER_ROTATION / 360
     }
 
-    public val wristAngle: Double // inches
+    public val wristAngle: Double // degrees
         get() = (mMaster.getSelectedSensorPosition(0) / kTicksPerDegree.toDouble()).toDouble()
+
+    public val velocity: Double = 0.0 // degrees / second
+        // INSERT GET FUNCTION TO GET VELOCITY OF WRIST
+
+    public val angleError: Double = 0.0 // degrees
+        // INSERT GET FUNCTION TO GET ERROR OF WRIST
 
     init {
         mMaster = LazyTalonSRX(Constants.HardwarePorts.WRIST_MASTER).apply {
