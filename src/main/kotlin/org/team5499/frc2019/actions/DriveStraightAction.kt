@@ -15,10 +15,10 @@ import kotlin.math.abs
  * @param drivetrain The drivetrain to act on
  */
 public class DriveStraightAction(
-    timeoutseconds: Double,
+    timeoutSeconds: Double,
     val distance: Double,
     val drivetrain: Drivetrain
-) : Action(timeoutseconds) {
+) : Action(timeoutSeconds) {
 
     // Is the drivetrain currently in a turn (used to deturmine if we need to abort in finish())
     private var mIsDriving: Boolean = false
