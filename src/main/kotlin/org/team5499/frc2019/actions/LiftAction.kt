@@ -14,16 +14,16 @@ import kotlin.math.abs
  * @param lift The lift to act on
  */
 public class LiftAction(
-    timeoutseconds: Double,
-    val height: Double,
+    timeoutSeconds: Double,
+    val heightInches: Double,
     val lift: Lift
-) : Action(timeoutseconds) {
+) : Action(timeoutSeconds) {
 
     // Is the lift still moving?
     private var mIsMoving = true
 
     public override fun start() {
-        lift.setPosition(height)
+        lift.setPosition(heightInches)
     }
 
     // Called every tick
