@@ -13,11 +13,10 @@ import org.team5499.monkeyLib.auto.Action
  * @param drivetrain The drivetrain to act on
  */
 public class CrossedYBoundaryAction(
-    timeoutseconds: Double,
     yLine: Double,
     lessThan: Boolean = false,
     val drivetrain: Drivetrain
-) : Action(timeoutseconds) {
+) : Action(0.0) {
 
     private val mLineCoord: Double
     private val mLessThan: Boolean
