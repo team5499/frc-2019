@@ -32,7 +32,7 @@ public class DriveStraightAction(
     }
 
     public override fun next(): Boolean {
-        mIsDriving = ((Constants.PID.ACCEPTABLE_DISTANCE_ERROR_LIFT > abs(drivetrain.positionError)) &&
+        mIsDriving = ((Constants.PID.ACCEPTABLE_DISTANCE_ERROR > abs(drivetrain.positionError)) &&
             (Constants.PID.ACCEPTABLE_VELOCITY_THRESHOLD > abs(drivetrain.averageVelocity)))
 
         // Return true if super.next() is true or
