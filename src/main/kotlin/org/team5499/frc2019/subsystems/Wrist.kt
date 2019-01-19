@@ -23,9 +23,18 @@ public class Wrist : Subsystem() {
         private const val kTicksPerDegree = Constants.Units.ENCODER_TICKS_PER_ROTATION / 360
     }
 
+    public val wristAngle: Double // degrees
+        get() = (mTalon.getSelectedSensorPosition(0) / kTicksPerDegree.toDouble()).toDouble()
+
+    public val velocity: Double = 0.0 // degrees / second
+        // INSERT GET FUNCTION TO GET VELOCITY OF WRIST
+
+    public val angleError: Double = 0.0 // degrees
+        // INSERT GET FUNCTION TO GET ERROR OF WRIST
+
     init {
         mTalon = LazyTalonSRX(Constants.HardwarePorts.WRIST_MASTER).apply {
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10)
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10)
 
             setSensorPhase(false) // check
             setNeutralMode(NeutralMode.Coast)
