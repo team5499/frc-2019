@@ -35,11 +35,6 @@ public class Drivetrain(
     gyro: PigeonIMU
 ) : Subsystem() {
 
-    companion object {
-        private const val kPrimaryPIDSlot = 0
-        private const val kSecondaryPIDSlot = 1
-    }
-
     private enum class DriveMode {
         OPEN_LOOP,
         POSITION,
@@ -511,5 +506,10 @@ public class Drivetrain(
         mLeftMaster.neutralOutput()
         mRightMaster.neutralOutput()
         brakeMode = false
+    }
+
+    companion object {
+        private const val kPrimaryPIDSlot = 0
+        private const val kSecondaryPIDSlot = 1
     }
 }
