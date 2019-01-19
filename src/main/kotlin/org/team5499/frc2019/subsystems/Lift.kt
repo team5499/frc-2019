@@ -7,11 +7,12 @@ import org.team5499.monkeyLib.util.Utils
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
+import com.ctre.phoenix.motorcontrol.InvertType
 
 import edu.wpi.first.wpilibj.DigitalInput
 
 @SuppressWarnings("MagicNumber")
-public class Lift(masterTalon: LazyTalonSRX /*, slaveTalon: LazyTalonSRX*/, zeroSensor: DigitalInput) : Subsystem() {
+public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX, zeroSensor: DigitalInput) : Subsystem() {
 
     companion object {
         private const val kElevatorSlot = 0
@@ -27,7 +28,7 @@ public class Lift(masterTalon: LazyTalonSRX /*, slaveTalon: LazyTalonSRX*/, zero
     }
 
     private val mMaster: LazyTalonSRX
-    // private val mSlave: LazyTalonSRX
+    private val mSlave: LazyTalonSRX
     private val mZeroSensor: DigitalInput
 
     private var mElevatorMode: ElevatorMode
@@ -80,12 +81,10 @@ public class Lift(masterTalon: LazyTalonSRX /*, slaveTalon: LazyTalonSRX*/, zero
             configReverseSoftLimitEnable(true, 10)
         }
 
-        /*
         this.mSlave = slaveTalon.apply {
             follow(mMaster)
             setInverted(InvertType.FollowMaster)
         }
-        */
 
         this.mZeroSensor = zeroSensor
 

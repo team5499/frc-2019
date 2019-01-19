@@ -78,7 +78,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
             mRightMaster, mRightSlave1, mRightSlave2,
             mGyro
         )
-        mLift = Lift(mLiftMaster, mLiftZeroSensor)
+        mLift = Lift(mLiftMaster, mLiftSlave, mLiftZeroSensor)
         mIntake = Intake()
         mVision = Vision()
         mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision)
