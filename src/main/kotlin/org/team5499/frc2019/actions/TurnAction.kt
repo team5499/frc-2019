@@ -27,7 +27,7 @@ public class TurnAction(
     private val mDegrees: Double
     // Is the drivetrain currently in a turn (used to deturmine if we need to abort in finish())
     private var mIsTurning: Boolean = false
-    
+
     init {
         mDegrees = degrees
     }
@@ -36,7 +36,7 @@ public class TurnAction(
     public override fun start() {
         super.start()
 
-        drivetrain.setTurn(degrees)
+        drivetrain.setTurn(mDegrees)
         mIsTurning = true
     }
 
