@@ -4,24 +4,28 @@ import org.team5499.monkeyLib.Subsystem
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
 import org.team5499.monkeyLib.util.Utils
 
+import org.team5499.frc2019.Constants
+
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.InvertType
 
-@SuppressWarnings("MagicNumber")
+@SuppressWarnings("MagicNumber", "TooManyFunctions")
 public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsystem() {
 
     companion object {
         private const val kElevatorSlot = 0
-        private const val kTicksPerInch = 1024 // check this
+        private const val kTicksPerRotation = 1024 // check this
         private const val kZeroingThreshold = 500
+
         public const val kMaxElevatorTicks = 8300 // check this
         public const val kMinElevatorTicks = 50 // check this
     }
 
     public enum class ElevatorMode {
         OPEN_LOOP,
+        VELOCITY,
         MOTION_MAGIC,
         ZERO
     }
@@ -34,11 +38,71 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     private var mZeroed: Boolean
     private var mSetpoint: Double
 
-    public val positionTicks: Int
-        get() = mMaster.getSelectedSensorPosition(0)
+    // first stage numbers
+    public val firstStagePositionRaw: Int
+        get() = mMaster.getSensorCollection().getQuadraturePosition()
 
-    public val positionInches: Double // inches
-        get() = (positionTicks / kTicksPerInch.toDouble()).toDouble()
+    public val firstStagePositionInches: Double
+        get() = Utils.encoderTicksToInches(
+            kTicksPerRotation,
+            Constants.Dimensions.SPROCKET_CIR_LIFT,
+            firstStagePositionRaw
+        )
+
+    public val firstStagePositionErrorRaw: Int
+        get() = mMaster.getClosedLoopError(0)
+
+    public val firstStagePositionErrorInches: Double
+        get() = Utils.encoderTicksToInches(
+            kTicksPerRotation,
+            Constants.Dimensions.SPROCKET_CIR_LIFT,
+            firstStagePositionErrorRaw
+        )
+
+    public val firstStageVelocityRaw: Int
+        get() = mMaster.getSensorCollection().getQuadratureVelocity()
+
+    public val firstStageVelocityInchesPerSecond: Double
+        get() = Utils.encoderTicksPer100MsToInchesPerSecond(
+            kTicksPerRotation,
+            Constants.Dimensions.SPROCKET_CIR_LIFT,
+            firstStageVelocityRaw
+        )
+
+    public val firstStageVelocityErrorRaw: Int
+        get() = mMaster.getClosedLoopError(0)
+
+    public val firstStageVelocityErrorInchesPerSecond: Double
+        get() = Utils.encoderTicksPer100MsToInchesPerSecond(
+            kTicksPerRotation,
+            Constants.Dimensions.SPROCKET_CIR_LIFT,
+            firstStageVelocityErrorRaw
+        )
+
+    // carriage numbers
+    public val secondStagePositionRaw: Int
+        get() = 2 * firstStagePositionRaw
+
+    public val secondStagePositionInches: Double
+        get() = 2.0 * firstStagePositionInches
+
+    public val secondStagePositionErrorRaw: Int
+        get() = 2 * firstStagePositionErrorRaw
+
+    public val secondStagePositionErrorInches: Double
+        get() = 2.0 * firstStagePositionErrorInches
+
+    public val secondStageVelocityRaw: Int
+        get() = 2 * firstStageVelocityRaw
+
+    public val secondStageVelocityInchesPerSecond: Double
+        get() = 2.0 * firstStageVelocityInchesPerSecond
+
+    public val secondStageVelocityErrorRaw: Int
+        get() = 2 * firstStageVelocityErrorRaw
+
+    public val secondStageVelocityErrorInchesPerSecond: Double
+        get() = 2.0 * firstStageVelocityErrorInchesPerSecond
 
     private var mBrakeMode: Boolean = false
         set(value) {
@@ -109,14 +173,47 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     public fun setPositionRaw(ticks: Int) {
         if (!mZeroed) return
         mBrakeMode = false
-        val positionTicks = Utils.limit(ticks.toDouble(), kMinElevatorTicks.toDouble(), kMaxElevatorTicks.toDouble())
+        val positionTicks = Utils.limit(
+            ticks.toDouble(),
+            kMinElevatorTicks.toDouble(),
+            kMaxElevatorTicks.toDouble()
+        )
         mElevatorMode = ElevatorMode.MOTION_MAGIC
         mSetpoint = positionTicks
     }
 
     public fun setPosition(positionInches: Double) {
-        val positionTicks = positionInches * kTicksPerInch
+        val positionTicks = Utils.inchesToEncoderTicks(
+            kTicksPerRotation,
+            Constants.Dimensions.SPROCKET_CIR_LIFT,
+            positionInches
+        )
         setPositionRaw(positionTicks.toInt())
+    }
+
+    public fun setCarriagePosition(positionInches: Double) {
+        setPosition(0.5 * positionInches)
+    }
+
+    public fun setVelocityRaw(ticksPer100ms: Int) {
+        if (!mZeroed) return
+        mBrakeMode = false
+        val speed = Utils.limit(ticksPer100ms.toDouble(), Constants.PID.MAX_LIFT_VELOCITY_SETPOINT.toDouble())
+        mElevatorMode = ElevatorMode.VELOCITY
+        mSetpoint = speed
+    }
+
+    public fun setVelocity(inchesPerSecond: Double) {
+        val speed = Utils.inchesPerSecondToEncoderTicksPer100Ms(
+            kTicksPerRotation,
+            Constants.Dimensions.SPROCKET_CIR_LIFT,
+            inchesPerSecond
+        )
+        setVelocityRaw(speed.toInt())
+    }
+
+    public fun setCarriageVelocity(inchesPerSecond: Double) {
+        setVelocity(inchesPerSecond * 0.5)
     }
 
     public override fun update() {
@@ -134,6 +231,9 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
                 }
                 mMaster.set(ControlMode.PercentOutput, -0.05)
             }
+            ElevatorMode.VELOCITY -> {
+                mMaster.set(ControlMode.Velocity, mSetpoint)
+            }
             ElevatorMode.OPEN_LOOP -> {
                 mMaster.set(ControlMode.PercentOutput, mSetpoint)
             }
@@ -141,9 +241,6 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
                 mMaster.set(ControlMode.MotionMagic, mSetpoint)
             }
         }
-        // println("elevator position target: ${mMaster.getClosedLoopTarget(0)}")
-        // println("elevator position error: ${mMaster.getClosedLoopError(0)}")
-        // println("elevator position position: ${mMaster.getSensorCollection().getQuadraturePosition()}")
     }
 
     public override fun stop() {
