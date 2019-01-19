@@ -9,14 +9,13 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.InvertType
 
-import edu.wpi.first.wpilibj.DigitalInput
-
 @SuppressWarnings("MagicNumber")
-public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX, zeroSensor: DigitalInput) : Subsystem() {
+public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsystem() {
 
     companion object {
         private const val kElevatorSlot = 0
         private const val kTicksPerInch = 1024 // check this
+        private const val kZeroingThreshold = 500
         public const val kMaxElevatorTicks = 8300 // check this
         public const val kMinElevatorTicks = 50 // check this
     }
@@ -29,11 +28,9 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX, zeroSenso
 
     private val mMaster: LazyTalonSRX
     private val mSlave: LazyTalonSRX
-    private val mZeroSensor: DigitalInput
 
     private var mElevatorMode: ElevatorMode
 
-    // private var mEncoderPresent: Boolean
     private var mZeroed: Boolean
     private var mSetpoint: Double
 
@@ -86,8 +83,6 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX, zeroSenso
             setInverted(InvertType.FollowMaster)
         }
 
-        this.mZeroSensor = zeroSensor
-
         mElevatorMode = ElevatorMode.ZERO
         mZeroed = false
         // mEncoderPresent = false
@@ -130,7 +125,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX, zeroSenso
         when (mElevatorMode) {
             ElevatorMode.ZERO -> {
                 // drive downwards until hall effect detects carriage
-                if (mZeroed || mZeroSensor.get()) {
+                if (mZeroed || mMaster.getSensorCollection().getAnalogIn() > kZeroingThreshold) {
                     mZeroed = true
                     mMaster.set(ControlMode.PercentOutput, 0.0)
                     mSetpoint = 0.0

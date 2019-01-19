@@ -2,7 +2,6 @@ package org.team5499.frc2019
 
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj.XboxController
-import edu.wpi.first.wpilibj.DigitalInput
 
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
 import org.team5499.monkeyLib.hardware.LazyVictorSPX
@@ -38,8 +37,6 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mLiftMaster: LazyTalonSRX
     private val mLiftSlave: LazyTalonSRX
 
-    private val mLiftZeroSensor: DigitalInput
-
     // subsystems
     private val mDrivetrain: Drivetrain
     private val mLift: Lift
@@ -70,15 +67,13 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mLiftMaster = LazyTalonSRX(Constants.HardwarePorts.LIFT_MASTER)
         mLiftSlave = LazyTalonSRX(Constants.HardwarePorts.LIFT_SLAVE)
 
-        mLiftZeroSensor = DigitalInput(Constants.HardwarePorts.LIFT_ZERO_SENSOR)
-
         // subsystem init
         mDrivetrain = Drivetrain(
             mLeftMaster, mLeftSlave1, mLeftSlave2,
             mRightMaster, mRightSlave1, mRightSlave2,
             mGyro
         )
-        mLift = Lift(mLiftMaster, mLiftSlave, mLiftZeroSensor)
+        mLift = Lift(mLiftMaster, mLiftSlave)
         mIntake = Intake()
         mVision = Vision()
         mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision)
