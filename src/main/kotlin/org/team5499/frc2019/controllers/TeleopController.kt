@@ -23,8 +23,9 @@ public class TeleopController(
         mCodriver = codriver
     }
 
+    @Suppress("MagicNumber")
     public override fun start() {
-        elevPos = 0
+        elevPos = 50
     }
 
     private var elevPos = 0
