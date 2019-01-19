@@ -14,7 +14,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 
 public class Wrist : Subsystem() {
 
-    private val mMaster: LazyTalonSRX
+    private val mTalon: LazyTalonSRX
 
     companion object {
         private const val kWristSlot = 0
@@ -24,7 +24,7 @@ public class Wrist : Subsystem() {
     }
 
     public val wristAngle: Double // degrees
-        get() = (mMaster.getSelectedSensorPosition(0) / kTicksPerDegree.toDouble()).toDouble()
+        get() = (mTalon.getSelectedSensorPosition(0) / kTicksPerDegree.toDouble()).toDouble()
 
     public val velocity: Double = 0.0 // degrees / second
         // INSERT GET FUNCTION TO GET VELOCITY OF WRIST
@@ -33,7 +33,7 @@ public class Wrist : Subsystem() {
         // INSERT GET FUNCTION TO GET ERROR OF WRIST
 
     init {
-        mMaster = LazyTalonSRX(Constants.HardwarePorts.WRIST_MASTER).apply {
+        mTalon = LazyTalonSRX(Constants.HardwarePorts.WRIST_MASTER).apply {
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10)
 
             setSensorPhase(false) // check
@@ -62,20 +62,20 @@ public class Wrist : Subsystem() {
 
     fun setPower(power: Double) {
         val limitedPower = Utils.limit(power, 1.0)
-        var currentDegrees = mMaster.getSelectedSensorPosition() / kTicksPerDegree
+        var currentDegrees = mTalon.getSelectedSensorPosition() / kTicksPerDegree
         if (currentDegrees > 90.0) {
             setAngle(90.0)
         } else if (currentDegrees < 0.0) {
             setAngle(0.0)
         } else {
-            mMaster.set(ControlMode.PercentOutput, limitedPower)
+            mTalon.set(ControlMode.PercentOutput, limitedPower)
         }
     }
 
     fun setAngle(angleDegrees: Double) {
         var positionTicks = angleDegrees * kTicksPerDegree
         positionTicks = Utils.limit(positionTicks, kMinWristTicks.toDouble(), kMaxWristTicks.toDouble())
-        mMaster.set(ControlMode.MotionMagic, positionTicks)
+        mTalon.set(ControlMode.MotionMagic, positionTicks)
     }
 
     public override fun update() {
