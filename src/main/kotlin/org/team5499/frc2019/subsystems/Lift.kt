@@ -13,7 +13,7 @@ public class Lift(masterTalon: LazyTalonSRX /*, slaveTalon: LazyTalonSRX*/) : Su
 
     companion object {
         private const val kElevatorSlot = 0
-        public const val kMaxElevatorTicks = 8300 // check this
+        public const val kMaxElevatorTicks = 8200 // check this
         public const val kMinElevatorTicks = 10 // check this
         private const val kTicksPerInch = 1024 // check this
         private const val kPowerSafetyRange = 100 // ticks
