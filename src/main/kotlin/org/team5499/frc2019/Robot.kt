@@ -24,6 +24,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mCodriver: XboxController
 
     // hardware
+
     private val mLeftMaster: LazyTalonSRX
     private val mLeftSlave1: LazyVictorSPX
     private val mLeftSlave2: LazyVictorSPX
@@ -33,6 +34,9 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mRightSlave2: LazyVictorSPX
 
     private val mGyro: PigeonIMU
+
+    private val mLiftMaster: LazyTalonSRX
+    private val mLiftSlave: LazyTalonSRX
 
     // subsystems
     private val mDrivetrain: Drivetrain
@@ -47,7 +51,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mTeleopController: TeleopController
 
     init {
-        // input init
+        // inputs init
         mDriver = XboxController(Constants.Input.DRIVER_PORT)
         mCodriver = XboxController(Constants.Input.CODRIVER_PORT)
 
@@ -62,13 +66,16 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
         mGyro = PigeonIMU(Constants.HardwarePorts.GYRO_PORT)
 
+        mLiftMaster = LazyTalonSRX(Constants.HardwarePorts.LIFT_MASTER)
+        mLiftSlave = LazyTalonSRX(Constants.HardwarePorts.LIFT_SLAVE)
+
         // subsystem init
         mDrivetrain = Drivetrain(
             mLeftMaster, mLeftSlave1, mLeftSlave2,
             mRightMaster, mRightSlave1, mRightSlave2,
             mGyro
         )
-        mLift = Lift()
+        mLift = Lift(mLiftMaster, mLiftSlave)
         mIntake = Intake()
         mVision = Vision()
         mWrist = Wrist()
@@ -86,6 +93,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun disabledInit() {
+        mSubsystemsManager.resetAll()
     }
 
     override fun disabledPeriodic() {
@@ -98,6 +106,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     override fun autonomousPeriodic() {
         mSandstormController.update()
+        mSubsystemsManager.updateAll()
     }
 
     override fun teleopInit() {
@@ -107,5 +116,6 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     override fun teleopPeriodic() {
         mTeleopController.update()
+        mSubsystemsManager.updateAll()
     }
 }

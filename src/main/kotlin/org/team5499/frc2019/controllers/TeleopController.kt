@@ -24,8 +24,10 @@ public class TeleopController(
     public override fun start() {
     }
 
+    private var elevPos = 0
+
     public override fun update() {
-        mSubsystems.drivetrain.setPercent(-mDriver.getY(Hand.kLeft), -mDriver.getY(Hand.kRight))
+        mSubsystems.drivetrain.setPercent(mDriver.getY(Hand.kRight), mDriver.getY(Hand.kLeft))
     }
 
     public override fun reset() {

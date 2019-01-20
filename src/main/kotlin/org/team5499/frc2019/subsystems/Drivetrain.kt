@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.SensorTerm
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource
 import com.ctre.phoenix.motorcontrol.FollowerType
-import com.ctre.phoenix.motorcontrol.can.SlotConfiguration
 import com.ctre.phoenix.motorcontrol.InvertType
 import com.ctre.phoenix.ParamEnum
 
@@ -36,11 +35,6 @@ public class Drivetrain(
     gyro: PigeonIMU
 ) : Subsystem() {
 
-    companion object {
-        private const val kPrimaryPIDSlot = 0
-        private const val kSecondaryPIDSlot = 1
-    }
-
     private enum class DriveMode {
         OPEN_LOOP,
         POSITION,
@@ -58,15 +52,6 @@ public class Drivetrain(
     private val mRightSlave2: LazyVictorSPX
 
     private val mGyro: PigeonIMU
-
-    private val mPositionPIDConfig: SlotConfiguration
-    private val mAnglePIDConfig: SlotConfiguration
-
-    private val mVelocityPIDConfig: SlotConfiguration
-
-    private val mTurnPIDConfig: SlotConfiguration
-    private val mFixedPIDConfig: SlotConfiguration
-    // maybe use these at some point
 
     // drive variables
     private var mDriveMode: DriveMode = DriveMode.OPEN_LOOP
@@ -260,15 +245,7 @@ public class Drivetrain(
             setInverted(InvertType.FollowMaster)
         }
 
-        mGyro = PigeonIMU(Constants.HardwarePorts.GYRO_PORT)
-
-        // initialize PID
-        mPositionPIDConfig = SlotConfiguration()
-        mAnglePIDConfig = SlotConfiguration()
-        mVelocityPIDConfig = SlotConfiguration()
-        mTurnPIDConfig = SlotConfiguration()
-        mFixedPIDConfig = SlotConfiguration()
-        loadGains()
+        mGyro = gyro
     }
 
     public fun setPercent(signal: DriveSignal) {
@@ -513,47 +490,6 @@ public class Drivetrain(
         }
     }
 
-    /**
-    * laods the pid gains from the constants file and eventually the dashboard
-    */
-    @Suppress("LongMethod")
-    public fun loadGains() {
-        mPositionPIDConfig.kP = Constants.PID.POS_KP
-        mPositionPIDConfig.kI = Constants.PID.POS_KI
-        mPositionPIDConfig.kD = Constants.PID.POS_KD
-        mPositionPIDConfig.kF = Constants.PID.POS_KF
-        mPositionPIDConfig.integralZone = Constants.PID.POS_IZONE
-        mPositionPIDConfig.closedLoopPeakOutput = Constants.PID.POS_MAX_OUTPUT
-
-        mAnglePIDConfig.kP = Constants.PID.ANGLE_KP
-        mAnglePIDConfig.kI = Constants.PID.ANGLE_KI
-        mAnglePIDConfig.kD = Constants.PID.ANGLE_KD
-        mAnglePIDConfig.kF = Constants.PID.ANGLE_KF
-        mAnglePIDConfig.integralZone = Constants.PID.ANGLE_IZONE
-        mAnglePIDConfig.closedLoopPeakOutput = Constants.PID.ANGLE_MAX_OUTPUT
-
-        mVelocityPIDConfig.kP = Constants.PID.VEL_KP
-        mVelocityPIDConfig.kI = Constants.PID.VEL_KI
-        mVelocityPIDConfig.kD = Constants.PID.VEL_KD
-        mVelocityPIDConfig.kF = Constants.PID.VEL_KF
-        mVelocityPIDConfig.integralZone = Constants.PID.VEL_IZONE
-        mVelocityPIDConfig.closedLoopPeakOutput = Constants.PID.VEL_MAX_OUTPUT
-
-        mTurnPIDConfig.kP = Constants.PID.TURN_KP
-        mTurnPIDConfig.kI = Constants.PID.TURN_KI
-        mTurnPIDConfig.kD = Constants.PID.TURN_KD
-        mTurnPIDConfig.kF = Constants.PID.TURN_KF
-        mTurnPIDConfig.integralZone = Constants.PID.TURN_IZONE
-        mTurnPIDConfig.closedLoopPeakOutput = Constants.PID.TURN_MAX_OUTPUT
-
-        mFixedPIDConfig.kP = Constants.PID.FIXED_KP
-        mFixedPIDConfig.kI = Constants.PID.FIXED_KI
-        mFixedPIDConfig.kD = Constants.PID.FIXED_KD
-        mFixedPIDConfig.kF = Constants.PID.FIXED_KF
-        mFixedPIDConfig.integralZone = Constants.PID.FIXED_IZONE
-        mFixedPIDConfig.closedLoopPeakOutput = Constants.PID.FIXED_MAX_OUTPUT
-    }
-
     public override fun update() {
         mPosition.update(leftDistance, rightDistance, heading.degrees)
     }
@@ -570,6 +506,10 @@ public class Drivetrain(
         mLeftMaster.neutralOutput()
         mRightMaster.neutralOutput()
         brakeMode = false
-        loadGains()
+    }
+
+    companion object {
+        private const val kPrimaryPIDSlot = 0
+        private const val kSecondaryPIDSlot = 1
     }
 }
