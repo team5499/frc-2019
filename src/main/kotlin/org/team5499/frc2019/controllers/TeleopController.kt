@@ -43,6 +43,5 @@ public class TeleopController(
         mSubsystems.drivetrain.setPercent(driveSignal)
     }
 
-    public override fun reset() {
-    }
+    public override fun reset() {}
 }
