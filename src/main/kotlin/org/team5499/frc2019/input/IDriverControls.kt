@@ -16,4 +16,6 @@ public interface IDriverControls {
     public fun getQuickTurn(): Boolean
 
     public fun getCreep(): Boolean
+
+    public fun getExitAuto(): Boolean
 }

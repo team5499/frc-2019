@@ -27,7 +27,9 @@ public class WheelDriver(wheel: Joystick, throttle: Joystick) : IDriverControls 
         return 0.0
     }
 
-    public override fun getQuickTurn() = mWheel.getRawButton(1)
+    public override fun getQuickTurn() = mWheel.getRawButton(1) // paddle
 
     public override fun getCreep() = mThrottle.getTrigger()
+
+    public override fun getExitAuto() = mWheel.getRawButton(1) // paddle
 }

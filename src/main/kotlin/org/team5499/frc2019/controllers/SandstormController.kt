@@ -35,7 +35,7 @@ public class SandstormController(
 
     public override fun update() {
         // check for override
-        if (!mInAuto && mControlBoard.getAnyButtonPressed()) {
+        if (!mInAuto && mControlBoard.driverControls.getExitAuto()) {
             mInAuto = true
             mCurrentController = mTeleopController
         }
