@@ -1,34 +1,11 @@
 package org.team5499.frc2019.controllers
 
-import edu.wpi.first.wpilibj.GenericHID.Hand
-import edu.wpi.first.wpilibj.XboxController
+import org.team5499.frc2019.input.ControlBoard
 
 import org.team5499.monkeyLib.Controller
 
-import kotlin.math.abs
-
-fun XboxController.anyButtonPressed(): Boolean {
-    @Suppress("MagicNumber")
-    val threshold = 0.05
-    return (
-        this.getAButtonPressed() ||
-        this.getBButtonPressed() ||
-        this.getYButtonPressed() ||
-        this.getXButtonPressed() ||
-        this.getBumperPressed(Hand.kLeft) ||
-        this.getBumperPressed(Hand.kRight) ||
-        abs(this.getY(Hand.kLeft)) > threshold ||
-        abs(this.getX(Hand.kLeft)) > threshold ||
-        abs(this.getY(Hand.kRight)) > threshold ||
-        abs(this.getX(Hand.kRight)) > threshold ||
-        this.getTriggerAxis(Hand.kLeft) > threshold ||
-        this.getTriggerAxis(Hand.kRight) > threshold
-    )
-}
-
 public class SandstormController(
-    driver: XboxController,
-    codriver: XboxController,
+    controlBoard: ControlBoard,
     teleopController: TeleopController,
     autoController: AutoController
 ) : Controller() {
@@ -36,8 +13,7 @@ public class SandstormController(
     private var mInAuto: Boolean
     private var mCurrentController: Controller
 
-    private val mDriver: XboxController
-    private val mCodriver: XboxController
+    private val mControlBoard: ControlBoard
 
     private val mTeleopController: TeleopController
     private val mAutoController: AutoController
@@ -45,8 +21,7 @@ public class SandstormController(
     init {
         mInAuto = true
 
-        mDriver = driver
-        mCodriver = codriver
+        mControlBoard = controlBoard
 
         mTeleopController = teleopController
         mAutoController = autoController
@@ -60,7 +35,9 @@ public class SandstormController(
 
     public override fun update() {
         // check for override
-        if (!mInAuto && (mDriver.anyButtonPressed() || mCodriver.anyButtonPressed())) {
+        @Suppress("MagicNumber")
+        if (!mInAuto && (mControlBoard.driverControls.getThrottle() > 0.05 ||
+            mControlBoard.driverControls.getTurn() > 0.05)) {
             mInAuto = true
             mCurrentController = mTeleopController
         }
