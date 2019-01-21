@@ -35,7 +35,6 @@ public class SandstormController(
 
     public override fun update() {
         // check for override
-        @Suppress("MagicNumber")
         if (!mInAuto && mControlBoard.getAnyButtonPressed()) {
             mInAuto = true
             mCurrentController = mTeleopController
