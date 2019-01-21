@@ -1,63 +1,75 @@
 package org.team5499.frc2019.controllers
 
-import org.team5499.frc2019.subsystems.SubsystemsManager
-import org.team5499.frc2019.subsystems.Drivetrain
 import edu.wpi.first.wpilibj.GenericHID.Hand
-import org.team5499.monkeyLib.Controller
 import edu.wpi.first.wpilibj.XboxController
-import org.team5499.monkeyLib.input.TankDriveHelper
-import org.team5499.monkeyLib.input.DriveSignal
+
+import org.team5499.monkeyLib.Controller
+
+import kotlin.math.abs
 
 fun XboxController.anyButtonPressed(): Boolean {
+    @Suppress("MagicNumber")
+    val threshold = 0.05
     return (
         this.getAButtonPressed() ||
         this.getBButtonPressed() ||
         this.getYButtonPressed() ||
         this.getXButtonPressed() ||
         this.getBumperPressed(Hand.kLeft) ||
-        this.getBumperPressed(Hand.kRight)
+        this.getBumperPressed(Hand.kRight) ||
+        abs(this.getY(Hand.kLeft)) > threshold ||
+        abs(this.getX(Hand.kLeft)) > threshold ||
+        abs(this.getY(Hand.kRight)) > threshold ||
+        abs(this.getX(Hand.kRight)) > threshold ||
+        this.getTriggerAxis(Hand.kLeft) > threshold ||
+        this.getTriggerAxis(Hand.kRight) > threshold
     )
 }
 
 public class SandstormController(
-    subsystems: SubsystemsManager,
     driver: XboxController,
-    codriver: XboxController
+    codriver: XboxController,
+    teleopController: TeleopController,
+    autoController: AutoController
 ) : Controller() {
 
-    var manuallOverride: Boolean = false
-    var driveSignal: DriveSignal
-    val mDriver: XboxController
-    val mCodriver: XboxController
-    val mSubsystems: SubsystemsManager
+    private var mInAuto: Boolean
+    private var mCurrentController: Controller
 
-    val driveHelper: TankDriveHelper = TankDriveHelper(0.06, 0.2)
+    private val mDriver: XboxController
+    private val mCodriver: XboxController
 
-    init{
+    private val mTeleopController: TeleopController
+    private val mAutoController: AutoController
+
+    init {
+        mInAuto = true
+
         mDriver = driver
         mCodriver = codriver
-        driveSignal = driveHelper.calculateOutput(mDriver.getY(Hand.kLeft), mDriver.getY(Hand.kRight), false)
-        mSubsystems = subsystems
+
+        mTeleopController = teleopController
+        mAutoController = autoController
+        mCurrentController = mAutoController
     }
 
     public override fun start() {
+        mCurrentController = mAutoController
+        mCurrentController.start()
     }
 
     public override fun update() {
-        if(mDriver.anyButtonPressed()){
-            manuallOverride = true
+        // check for override
+        if (!mInAuto && (mDriver.anyButtonPressed() || mCodriver.anyButtonPressed())) {
+            mInAuto = true
+            mCurrentController = mTeleopController
         }
-        if(!manuallOverride){
-            //Auto
-            mSubsystems.drivetrain.setPercent(0.2, 0.2)
-        }
-        else{
-            //teleop
-            driveSignal = driveHelper.calculateOutput(mDriver.getY(Hand.kLeft), mDriver.getY(Hand.kRight), false)
-            mSubsystems.drivetrain.setPercent(driveSignal.left, driveSignal.right)
-        }
+        // update seleceted controller
+        mCurrentController.update()
     }
 
     public override fun reset() {
+        mInAuto = true
+        mCurrentController = mAutoController
     }
 }

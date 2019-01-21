@@ -13,11 +13,19 @@ public object Constants {
     }
 
     object PID {
+        public const val MAX_LIFT_VELOCITY_SETPOINT = 1000 // encoder ticks per 100ms
+
         public const val MAX_VELOCITY_SETPOINT = 100.0 // inches per seconds
 
         public const val ACCEPTABLE_VELOCITY_THRESHOLD = 3.0 // inches / s
         public const val ACCEPTABLE_TURN_ERROR = 3.0 // degrees (?)
         public const val ACCEPTABLE_DISTANCE_ERROR = 2.0 // inches
+
+        public const val ACCEPTABLE_VELOCITY_THRESHOLD_LIFT = 3.0 // inches / s
+        public const val ACCEPTABLE_DISTANCE_ERROR_LIFT = 1.0 // inches
+
+        public const val ACCEPTALE_VELOCITY_THRESHOLD_WRIST = 3.0 // inches / s
+        public const val ACCEPTABLE_DISTANCE_ERROR_WRIST = 1.0 // inches
 
         public const val VEL_KP = 2.5
         public const val VEL_KI = 0.0
@@ -68,8 +76,11 @@ public object Constants {
         public const val RIGHT_DRIVE_SLAVE1 = 2
         public const val RIGHT_DRIVE_SLAVE2 = 23
 
-        public const val LIFT_MASTER = 24
+        public const val LIFT_MASTER = 5
         public const val LIFT_SLAVE = 23
+
+        public const val LIFT_ZERO_SENSOR = 1
+        public const val WRIST_MASTER = 4 // check this later
 
         public const val INTAKE_MASTER = 27
 
@@ -87,5 +98,13 @@ public object Constants {
         public const val WHEEL_DIAMETER = 6.0 // inches
         public const val WHEEL_RADIUS = WHEEL_DIAMETER / 2.0
         public const val WHEEL_CIR = WHEEL_DIAMETER * Math.PI
+
+        public const val SPROCKET_DIAMETER_LIFT = 1.23 // inches
+        public const val SPROCKET_RADIUS_LIFT = SPROCKET_DIAMETER_LIFT / 2.0
+        public const val SPROCKET_CIR_LIFT = SPROCKET_DIAMETER_LIFT * Math.PI
+    }
+
+    object Auto {
+        public const val LOOKAHEAD_DISTANCE: Double = 12.0
     }
 }
