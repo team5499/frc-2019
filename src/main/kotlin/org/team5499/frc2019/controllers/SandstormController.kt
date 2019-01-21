@@ -36,8 +36,7 @@ public class SandstormController(
     public override fun update() {
         // check for override
         @Suppress("MagicNumber")
-        if (!mInAuto && (mControlBoard.driverControls.getThrottle() > 0.05 ||
-            mControlBoard.driverControls.getTurn() > 0.05)) {
+        if (!mInAuto && mControlBoard.getAnyButtonPressed()) {
             mInAuto = true
             mCurrentController = mTeleopController
         }
