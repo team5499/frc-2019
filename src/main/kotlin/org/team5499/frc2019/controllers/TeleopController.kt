@@ -1,35 +1,42 @@
 package org.team5499.frc2019.controllers
 
-import edu.wpi.first.wpilibj.XboxController
-import edu.wpi.first.wpilibj.GenericHID.Hand
-
 import org.team5499.frc2019.subsystems.SubsystemsManager
+import org.team5499.frc2019.input.ControlBoard
 
 import org.team5499.monkeyLib.Controller
+import org.team5499.monkeyLib.input.DriveHelper
 
 public class TeleopController(
     subsystems: SubsystemsManager,
-    driver: XboxController,
-    codriver: XboxController
-) : Controller() {
+    controlBoard: ControlBoard,
+    driveHelper: DriveHelper
+)
+: Controller() {
 
-    private val mDriver: XboxController
+    private val mControlBoard: ControlBoard
+
     private val mSubsystems: SubsystemsManager
+
+    private val mDriveHelper: DriveHelper
 
     init {
         mSubsystems = subsystems
-        mDriver = driver
+        mControlBoard = controlBoard
+        mDriveHelper = driveHelper
     }
 
     public override fun start() {
+        mSubsystems.drivetrain.brakeMode = false
     }
-
-    private var elevPos = 0
 
     public override fun update() {
-        mSubsystems.drivetrain.setPercent(mDriver.getY(Hand.kRight), mDriver.getY(Hand.kLeft))
+        val driveSignal = mDriveHelper.calculateOutput(
+            mControlBoard.driverControls.getThrottle(),
+            mControlBoard.driverControls.getTurn(),
+            mControlBoard.driverControls.getQuickTurn()
+        )
+        mSubsystems.drivetrain.setPercent(driveSignal)
     }
 
-    public override fun reset() {
-    }
+    public override fun reset() {}
 }

@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.XboxController
 
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
 import org.team5499.monkeyLib.hardware.LazyVictorSPX
+import org.team5499.monkeyLib.input.SpaceDriveHelper
 
 import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.subsystems.Drivetrain
@@ -14,17 +15,27 @@ import org.team5499.frc2019.subsystems.Vision
 import org.team5499.frc2019.subsystems.Wrist
 import org.team5499.frc2019.controllers.SandstormController
 import org.team5499.frc2019.controllers.TeleopController
+import org.team5499.frc2019.controllers.AutoController
+import org.team5499.frc2019.input.ControlBoard
+import org.team5499.frc2019.input.IDriverControls
+import org.team5499.frc2019.input.ICodriverControls
+import org.team5499.frc2019.input.XboxDriver
+import org.team5499.frc2019.input.XboxCodriver
 
 import com.ctre.phoenix.sensors.PigeonIMU
 
 class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
-
     // inputs
     private val mDriver: XboxController
     private val mCodriver: XboxController
 
-    // hardware
+    private val mSpaceDriveHelper: SpaceDriveHelper
 
+    private val mDriverControls: IDriverControls
+    private val mCodriverControls: ICodriverControls
+    private val mControlBoard: ControlBoard
+
+    // hardware
     private val mLeftMaster: LazyTalonSRX
     private val mLeftSlave1: LazyVictorSPX
     private val mLeftSlave2: LazyVictorSPX
@@ -49,11 +60,18 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     // controllers
     private val mSandstormController: SandstormController
     private val mTeleopController: TeleopController
+    private val mAutoController: AutoController
 
     init {
         // inputs init
         mDriver = XboxController(Constants.Input.DRIVER_PORT)
         mCodriver = XboxController(Constants.Input.CODRIVER_PORT)
+
+        mDriverControls = XboxDriver(mDriver)
+        mCodriverControls = XboxCodriver(mCodriver)
+        mControlBoard = ControlBoard(mDriverControls, mCodriverControls)
+
+        mSpaceDriveHelper = SpaceDriveHelper(Constants.Input.JOYSTICK_DEADBAND, Constants.Input.TURN_MULT)
 
         // hardware init
         mLeftMaster = LazyTalonSRX(Constants.HardwarePorts.LEFT_DRIVE_MASTER)
@@ -82,8 +100,9 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision, mWrist)
 
         // controllers init
-        mSandstormController = SandstormController(mSubsystemsManager, mDriver, mCodriver)
-        mTeleopController = TeleopController(mSubsystemsManager, mDriver, mCodriver)
+        mTeleopController = TeleopController(mSubsystemsManager, mControlBoard, mSpaceDriveHelper)
+        mAutoController = AutoController(mSubsystemsManager)
+        mSandstormController = SandstormController(mControlBoard, mTeleopController, mAutoController)
     }
 
     override fun robotInit() {
@@ -110,7 +129,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun teleopInit() {
-        mTeleopController.reset()
+        // mTeleopController.reset()
         mTeleopController.start()
     }
 

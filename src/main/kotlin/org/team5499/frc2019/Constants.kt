@@ -10,6 +10,9 @@ public object Constants {
     object Input {
         public const val DRIVER_PORT = 0
         public const val CODRIVER_PORT = 1
+
+        public const val JOYSTICK_DEADBAND = 0.02
+        public const val TURN_MULT = 0.4
     }
 
     object PID {
