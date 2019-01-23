@@ -1,0 +1,65 @@
+{
+  "devMode": false,
+  "pages": {
+    "dev": {
+      "navbarOrder": 0,
+      "title": "Development",
+      "widgets": []
+    },
+    "test": {
+      "navbarOrder": 2,
+      "title": "Test",
+      "widgets": []
+    },
+    "tune": {
+      "navbarOrder": 1,
+      "title": "Tuning",
+      "widgets": [
+        {
+          "height": "auto",
+          "id": "velocityPEditor",
+          "kwargs": {},
+          "title": "Velocity kP",
+          "type": "RawVarEditor",
+          "variables": {
+            "target": "VEL_KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "velocityIEditor",
+          "kwargs": {},
+          "title": "Velocity kI",
+          "type": "RawVarEditor",
+          "variables": {
+            "target": "VEL_KI"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "velocityDEditor",
+          "kwargs": {},
+          "title": "Velocity kD",
+          "type": "RawVarEditor",
+          "variables": {
+            "target": "VEL_KD"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "velocityFEditor",
+          "kwargs": {},
+          "title": "Velocity kF",
+          "type": "RawVarEditor",
+          "variables": {
+            "target": "VEL_KF"
+          },
+          "width": "12rem"
+        }
+      ]
+    }
+  }
+}

@@ -7,6 +7,8 @@ import org.team5499.monkeyLib.hardware.LazyTalonSRX
 import org.team5499.monkeyLib.hardware.LazyVictorSPX
 import org.team5499.monkeyLib.input.SpaceDriveHelper
 
+import org.team5499.dashboard.Dashboard
+
 import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.frc2019.subsystems.Lift
@@ -63,6 +65,11 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mAutoController: AutoController
 
     init {
+        // start dashboard
+        println("Starting dashboard...")
+        Dashboard.start(this, "DashboardConfig.json", Constants.DASHBOARD_PORT)
+        println("Dashboard started on port ${Constants.DASHBOARD_PORT}")
+        Constants.pushValuesToDashboard()
         // inputs init
         mDriver = XboxController(Constants.Input.DRIVER_PORT)
         mCodriver = XboxController(Constants.Input.CODRIVER_PORT)
@@ -116,6 +123,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun disabledPeriodic() {
+        Constants.pullValuesFromDashboard()
     }
 
     override fun autonomousInit() {
