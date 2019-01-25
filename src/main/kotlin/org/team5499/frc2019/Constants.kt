@@ -110,4 +110,13 @@ public object Constants {
     object Auto {
         public const val LOOKAHEAD_DISTANCE: Double = 12.0
     }
+
+    object Hatch {
+        // If true, hatch will move in the negitive direction when opening
+        public const val OPEN_NEGIGIVE: Boolean = false
+        // If below this number, the hatch reads as closed. If above, the hatch reads as open (or vice versa)
+        public const val HATCH_OPEN_DETECTION_LIMIT = 30
+        // If true, the hatch will read as open if the number is below HATCH_OPEN_DETECTION_LIMIT
+        public const val OPEN_DETECTOR_NEGITIVE: Boolean = false
+    }
 }
