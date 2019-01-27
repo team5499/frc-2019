@@ -17,7 +17,7 @@
 #define BALL_HIGH 10
 #define HATCH_LOW 6
 #define HATCH_MID 11
-#define HATCH_HIGH 10
+#define HATCH_HIGH 8
 #define BALL_HUMAN_PLAYER 5
 
 // init joysticks
