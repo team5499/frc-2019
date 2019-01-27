@@ -4,10 +4,10 @@
 #define NUM_JOYSTICKS 0
 
 // ports
-#define BALL_INTAKE 0
-#define BALL_OUTTAKE 1
+#define BALL_INTAKE 2
+#define BALL_OUTTAKE 0
 
-#define HATCH_INTAKE 2
+#define HATCH_INTAKE 1
 #define HATCH_OUTTAKE 3
 
 #define STOW 4
