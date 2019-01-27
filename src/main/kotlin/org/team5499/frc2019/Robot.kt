@@ -65,11 +65,6 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mAutoController: AutoController
 
     init {
-        // start dashboard
-        println("Starting dashboard...")
-        Dashboard.start(this, "DashboardConfig.json", Constants.DASHBOARD_PORT)
-        println("Dashboard started on port ${Constants.DASHBOARD_PORT}")
-        Constants.pushValuesToDashboard()
         // inputs init
         mDriver = XboxController(Constants.Input.DRIVER_PORT)
         mCodriver = XboxController(Constants.Input.CODRIVER_PORT)
@@ -112,6 +107,12 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mSandstormController = SandstormController(mControlBoard, mTeleopController, mAutoController)
     }
 
+    fun startDashboard() {
+        println("Starting dashboard...")
+        Dashboard.start(this, "DashboardConfig.json", Constants.DASHBOARD_PORT)
+        println("Dashboard started on port ${Constants.DASHBOARD_PORT}")
+    }
+
     override fun robotInit() {
     }
 
@@ -123,7 +124,6 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun disabledPeriodic() {
-        Constants.pullValuesFromDashboard()
     }
 
     override fun autonomousInit() {
