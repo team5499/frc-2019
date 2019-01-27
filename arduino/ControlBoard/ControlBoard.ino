@@ -1,5 +1,6 @@
 #include<Joystick.h>
 
+// parameters
 #define NUM_BUTTONS 12
 #define NUM_JOYSTICKS 0
 
@@ -7,17 +8,17 @@
 #define BALL_INTAKE 2
 #define BALL_OUTTAKE 0
 
-#define HATCH_INTAKE 1
-#define HATCH_OUTTAKE 3
+#define HATCH_INTAKE 3
+#define HATCH_RELEASE 1
 
-#define STOW 4
-#define BALL_LOW 5
-#define BALL_MID 6
-#define BALL_HIGH 7
-#define HATCH_LOW 8
-#define HATCH_MID 9
+#define STOW 7
+#define BALL_LOW 4
+#define BALL_MID 9
+#define BALL_HIGH 10
+#define HATCH_LOW 6
+#define HATCH_MID 11
 #define HATCH_HIGH 10
-#define BALL_HUMAN_PLAYER 11
+#define BALL_HUMAN_PLAYER 5
 
 // init joysticks
 Joystick_ Joystick(JOYSTICK_DEFAULT_REPORT_ID, JOYSTICK_TYPE_GAMEPAD,
@@ -34,7 +35,7 @@ void setup() {
   pinMode(BALL_INTAKE, INPUT_PULLUP);
   pinMode(BALL_OUTTAKE, INPUT_PULLUP);
   pinMode(HATCH_INTAKE, INPUT_PULLUP);
-  pinMode(HATCH_OUTTAKE, INPUT_PULLUP);
+  pinMode(HATCH_RELEASE, INPUT_PULLUP);
   pinMode(STOW, INPUT_PULLUP);
   pinMode(BALL_LOW, INPUT_PULLUP);
   pinMode(BALL_MID, INPUT_PULLUP);
@@ -64,7 +65,7 @@ void loop() {
   checkButtonStatus(BALL_INTAKE);
   checkButtonStatus(BALL_OUTTAKE);
   checkButtonStatus(HATCH_INTAKE);
-  checkButtonStatus(HATCH_OUTTAKE);
+  checkButtonStatus(HATCH_RELEASE);
   checkButtonStatus(STOW);
   checkButtonStatus(BALL_LOW);
   checkButtonStatus(BALL_MID);
