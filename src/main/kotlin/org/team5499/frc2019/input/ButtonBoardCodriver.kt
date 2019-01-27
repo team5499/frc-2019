@@ -39,10 +39,10 @@ public class ButtonBoardCodriver(buttonBoard: Joystick, joystick: Joystick) : IC
     public override fun getBallHigh() = mButtonBoard.getRawButtonPressed(10)
 
     @Suppress("MagicNumber")
-    public override fun getIntake() = mButtonBoard.getRawButtonPressed(2)
+    public override fun getIntake() = mButtonBoard.getRawButton(2)
 
     @Suppress("MagicNumber")
-    public override fun getExaust() = mButtonBoard.getRawButtonPressed(0)
+    public override fun getExaust() = mButtonBoard.getRawButton(0)
 
     @Suppress("MagicNumber")
     public override fun getPickup() = mButtonBoard.getRawButtonPressed(3)

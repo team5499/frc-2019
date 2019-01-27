@@ -2,6 +2,7 @@ package org.team5499.frc2019.controllers
 
 import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.input.ControlBoard
+import org.team5499.frc2019.subsystems.Intake.IntakeMode
 
 import org.team5499.monkeyLib.Controller
 import org.team5499.monkeyLib.input.DriveHelper
@@ -36,6 +37,14 @@ public class TeleopController(
             mControlBoard.driverControls.getQuickTurn()
         )
         mSubsystems.drivetrain.setPercent(driveSignal)
+
+        if (mControlBoard.codriverControls.getIntake()) {
+            mSubsystems.intake.setDesiredIntakeMode(IntakeMode.INTAKE)
+        } else if (mControlBoard.codriverControls.getExaust()) {
+            mSubsystems.intake.setDesiredIntakeMode(IntakeMode.OUTTAKE)
+        } else {
+            mSubsystems.intake.setDesiredIntakeMode(IntakeMode.IDLE)
+        }
     }
 
     public override fun reset() {}
