@@ -12,7 +12,7 @@ import org.team5499.frc2019.Constants
 public class Intake : Subsystem() {
 
     companion object {
-        private const val kBallDetectionThreshold = 512 // analog tickss
+        private const val kBallDetectionThreshold =  // amps
     }
 
     public enum class IntakeMode(val percent: Double) {
@@ -26,11 +26,8 @@ public class Intake : Subsystem() {
 
     private var mMode: IntakeMode
 
-    public val ballDistanceRaw: Int
-        get() = mTalon.getSelectedSensorPosition()
-
     public val ballInIntake: Boolean
-        get() = ballDistanceRaw < kBallDetectionThreshold
+        get() = mTalon.getOutputCurrent() > kBallDetectionThreshold
 
     init {
         mTalon = LazyTalonSRX(Constants.HardwarePorts.INTAKE_MASTER)
@@ -47,15 +44,9 @@ public class Intake : Subsystem() {
     public override fun update() {
         when (mMode) {
             IntakeMode.INTAKE -> {
-                if (ballInIntake) {
-                    mMode = IntakeMode.HOLD
-                }
+                // if(mTalon.getOutputCurrent())
             }
-            IntakeMode.OUTTAKE -> {
-                if (!ballInIntake) {
-                    mMode = IntakeMode.IDLE
-                }
-            }
+            IntakeMode.OUTTAKE -> {}
             IntakeMode.HOLD -> {
                 if (!ballInIntake) {
                     mMode = IntakeMode.IDLE
