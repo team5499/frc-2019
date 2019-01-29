@@ -38,10 +38,10 @@ public class TeleopController(
         )
         mSubsystems.drivetrain.setPercent(driveSignal)
 
-        if (mControlBoard.codriverControls.getIntake()) {
-            mSubsystems.intake.setDesiredIntakeMode(IntakeMode.INTAKE)
-        } else if (mControlBoard.codriverControls.getExaust()) {
+        if (mControlBoard.codriverControls.getExaust()) {
             mSubsystems.intake.setDesiredIntakeMode(IntakeMode.OUTTAKE)
+        } else if (mControlBoard.codriverControls.getIntake()) {
+            mSubsystems.intake.setDesiredIntakeMode(IntakeMode.INTAKE)
         } else {
             mSubsystems.intake.setDesiredIntakeMode(IntakeMode.IDLE)
         }
