@@ -9,7 +9,11 @@ public object Constants {
 
     object Input {
         public const val DRIVER_PORT = 0
-        public const val CODRIVER_PORT = 1
+        public const val CODRIVER_BUTTON_BOARD_PORT = 1
+        public const val CODRIVER_JOYSTICK_PORT = 2
+
+        public const val JOYSTICK_DEADBAND = 0.02
+        public const val TURN_MULT = 0.4
     }
 
     object PID {
@@ -65,6 +69,13 @@ public object Constants {
         public const val INVERT_FIXED_AUX_PIDF = true
         public const val INVERT_ANGLE_AUX_PIDF = true
         public const val INVERT_TURN_AUX_PIDF = false
+    }
+
+    object Intake {
+        public const val INTAKE_SPEED = 0.6
+        public const val OUTTAKE_SPEED = -0.6
+        public const val IDLE_SPEED = 0.0
+        public const val HOLD_SPEED = 0.1
     }
 
     object HardwarePorts {

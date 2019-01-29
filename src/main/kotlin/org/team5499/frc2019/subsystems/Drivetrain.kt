@@ -301,7 +301,7 @@ public class Drivetrain(
     }
 
     private fun configureForPercent() {
-        brakeMode = false
+        // brakeMode = false
         mLeftMaster.set(ControlMode.PercentOutput, 0.0) // make sure its not following right master
         mLeftMaster.apply {
             configNominalOutputForward(0.0, 0)
@@ -323,7 +323,7 @@ public class Drivetrain(
     }
 
     private fun configureForVelocity() {
-        brakeMode = true
+        // brakeMode = true
         mLeftMaster.set(ControlMode.PercentOutput, 0.0) // make sure its not following rightMaster
         mLeftMaster.apply {
             setInverted(false)
@@ -385,7 +385,7 @@ public class Drivetrain(
     }
 
     private fun configureForTurn() {
-        brakeMode = true
+        // brakeMode = true
         mLeftMaster.apply {
             configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
             setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, Constants.TALON_UPDATE_PERIOD_MS, 0)
@@ -439,7 +439,7 @@ public class Drivetrain(
     }
 
     private fun configureForPosition() {
-        brakeMode = true
+        // brakeMode = true
         mLeftMaster.apply {
             configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
             configPeakOutputForward(+1.0, 0)

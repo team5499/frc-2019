@@ -1,0 +1,55 @@
+package org.team5499.frc2019.input
+
+import edu.wpi.first.wpilibj.Joystick
+
+@Suppress("TooManyFunctions")
+@SuppressWarnings("MagicNumber")
+public class ButtonBoardCodriver(buttonBoard: Joystick, joystick: Joystick) : ICodriverControls {
+
+    private val mButtonBoard: Joystick
+    private val mJoystick: Joystick
+
+    init {
+        mButtonBoard = buttonBoard
+        mJoystick = joystick
+    }
+
+    @Suppress("MagicNumber")
+    public override fun getManualInput() = mJoystick.getY()
+
+    @Suppress("MagicNumber")
+    public override fun getStowElevator() = mButtonBoard.getRawButtonPressed(7)
+
+    @Suppress("MagicNumber")
+    public override fun getHatchLow() = mButtonBoard.getRawButtonPressed(6)
+
+    @Suppress("MagicNumber")
+    public override fun getHatchMid() = mButtonBoard.getRawButtonPressed(11)
+
+    @Suppress("MagicNumber")
+    public override fun getHatchHigh() = mButtonBoard.getRawButtonPressed(8)
+
+    @Suppress("MagicNumber")
+    public override fun getBallLow() = mButtonBoard.getRawButtonPressed(4)
+
+    @Suppress("MagicNumber")
+    public override fun getBallMid() = mButtonBoard.getRawButtonPressed(9)
+
+    @Suppress("MagicNumber")
+    public override fun getBallHigh() = mButtonBoard.getRawButtonPressed(10)
+
+    @Suppress("MagicNumber")
+    public override fun getIntake() = mButtonBoard.getRawButton(2)
+
+    @Suppress("MagicNumber")
+    public override fun getExaust() = mButtonBoard.getRawButton(0)
+
+    @Suppress("MagicNumber")
+    public override fun getPickup() = mButtonBoard.getRawButtonPressed(3)
+
+    @Suppress("MagicNumber")
+    public override fun getPlace() = mButtonBoard.getRawButtonPressed(1)
+
+    @Suppress("MagicNumber")
+    public override fun getDropRamp() = false
+}

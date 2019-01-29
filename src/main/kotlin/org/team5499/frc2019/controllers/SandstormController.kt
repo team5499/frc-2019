@@ -1,24 +1,50 @@
 package org.team5499.frc2019.controllers
 
-import edu.wpi.first.wpilibj.XboxController
-
-import org.team5499.frc2019.subsystems.SubsystemsManager
+import org.team5499.frc2019.input.ControlBoard
 
 import org.team5499.monkeyLib.Controller
 
 public class SandstormController(
-    subsystems: SubsystemsManager,
-    driver: XboxController,
-    codriver: XboxController
-)
-: Controller() {
+    controlBoard: ControlBoard,
+    teleopController: TeleopController,
+    autoController: AutoController
+) : Controller() {
+
+    private var mInAuto: Boolean
+    private var mCurrentController: Controller
+
+    private val mControlBoard: ControlBoard
+
+    private val mTeleopController: TeleopController
+    private val mAutoController: AutoController
+
+    init {
+        mInAuto = true
+
+        mControlBoard = controlBoard
+
+        mTeleopController = teleopController
+        mAutoController = autoController
+        mCurrentController = mAutoController
+    }
 
     public override fun start() {
+        mCurrentController = mAutoController
+        mCurrentController.start()
     }
 
     public override fun update() {
+        // check for override
+        if (!mInAuto && mControlBoard.driverControls.getExitAuto()) {
+            mInAuto = true
+            mCurrentController = mTeleopController
+        }
+        // update seleceted controller
+        mCurrentController.update()
     }
 
     public override fun reset() {
+        mInAuto = true
+        mCurrentController = mAutoController
     }
 }
