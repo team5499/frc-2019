@@ -12,7 +12,7 @@ import org.team5499.frc2019.Constants
 public class Intake : Subsystem() {
 
     companion object {
-        private const val kBallDetectionThreshold =  // amps
+        private const val kBallDetectionThreshold = 12 // amps
     }
 
     public enum class IntakeMode(val percent: Double) {
@@ -42,22 +42,22 @@ public class Intake : Subsystem() {
     }
 
     public override fun update() {
-        when (mMode) {
-            IntakeMode.INTAKE -> {
-                // if(mTalon.getOutputCurrent())
-            }
-            IntakeMode.OUTTAKE -> {}
-            IntakeMode.HOLD -> {
-                if (!ballInIntake) {
-                    mMode = IntakeMode.IDLE
-                }
-            }
-            IntakeMode.IDLE -> {
-                if (ballInIntake) {
-                    mMode = IntakeMode.HOLD
-                }
-            }
-        }
+        // when (mMode) {
+        //     IntakeMode.INTAKE -> {
+        //         // if(mTalon.getOutputCurrent())
+        //     }
+        //     IntakeMode.OUTTAKE -> {}
+        //     IntakeMode.HOLD -> {
+        //         if (!ballInIntake) {
+        //             mMode = IntakeMode.IDLE
+        //         }
+        //     }
+        //     IntakeMode.IDLE -> {
+        //         if (ballInIntake) {
+        //             mMode = IntakeMode.HOLD
+        //         }
+        //     }
+        // }
         mTalon.set(ControlMode.PercentOutput, mMode.percent)
     }
 
