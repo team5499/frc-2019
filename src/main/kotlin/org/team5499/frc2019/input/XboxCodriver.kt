@@ -49,6 +49,12 @@ public class XboxCodriver(xbox: XboxController) : ICodriverControls {
         return pov >= 330 && pov <= 30
     }
 
+    @Suppress("MagicNumber")
+    public override fun getBallHumanPlayer(): Boolean {
+        val pov = mXbox.getPOV()
+        return pov >= 240 && pov <= 300
+    }
+
     public override fun getIntake() = mXbox.getBumperPressed(Hand.kLeft)
 
     public override fun getExaust() = mXbox.getBumperPressed(Hand.kRight)

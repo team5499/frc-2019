@@ -30,6 +30,17 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         ZERO
     }
 
+    public enum class ElevatorHeight(val carriageHeightInches: Double = 0.0) {
+        BOTTOM(0.45),
+        HATCH_LOW(9.0),
+        HATCH_MID(),
+        HATCH_HIGH,
+        BALL_LOW,
+        BALL_MID,
+        BALL_HIGH,
+        BALL_HUMAN_PLAYER(21.0)
+    }
+
     private val mMaster: LazyTalonSRX
     private val mSlave: LazyTalonSRX
 
@@ -128,7 +139,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
             config_kD(kElevatorSlot, 0.2, 10)
             config_kF(kElevatorSlot, 0.0, 10)
             configMotionCruiseVelocity(1000, 10)
-            configMotionAcceleration(900, 10)
+            configMotionAcceleration(800, 10)
             selectProfileSlot(kElevatorSlot, 0)
 
             enableCurrentLimit(true)
@@ -153,7 +164,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         mSetpoint = 0.0
 
         // set brake
-        mBrakeMode = false
+        mBrakeMode = true
 
         // set speed
         mMaster.set(ControlMode.PercentOutput, 0.0)
@@ -172,7 +183,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     public fun setPositionRaw(ticks: Int) {
         if (!mZeroed) return
-        mBrakeMode = false
+        mBrakeMode = true
         val positionTicks = Utils.limit(
             ticks.toDouble(),
             kMinElevatorTicks.toDouble(),
@@ -195,9 +206,13 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         setPosition(0.5 * positionInches)
     }
 
+    public fun setIntakeHeight(height: ElevatorHeight) {
+        setCarriagePosition(height.carriageHeightInches)
+    }
+
     public fun setVelocityRaw(ticksPer100ms: Int) {
         if (!mZeroed) return
-        mBrakeMode = false
+        mBrakeMode = true
         val speed = Utils.limit(ticksPer100ms.toDouble(), Constants.PID.MAX_LIFT_VELOCITY_SETPOINT.toDouble())
         mElevatorMode = ElevatorMode.VELOCITY
         mSetpoint = speed
@@ -229,7 +244,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
                     setZero()
                     mElevatorMode = ElevatorMode.OPEN_LOOP
                 }
-                mMaster.set(ControlMode.PercentOutput, -0.05)
+                // mMaster.set(ControlMode.PercentOutput, -0.05)
             }
             ElevatorMode.VELOCITY -> {
                 mMaster.set(ControlMode.Velocity, mSetpoint)
@@ -246,10 +261,11 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     public override fun stop() {
         mBrakeMode = true
         setPower(0.0)
+        mSetpoint = 0.0
         mMaster.neutralOutput()
     }
 
     public override fun reset() {
-        stop()
+        mSetpoint = 0.0
     }
 }

@@ -7,6 +7,8 @@ import org.team5499.frc2019.subsystems.Intake.IntakeMode
 import org.team5499.monkeyLib.Controller
 import org.team5499.monkeyLib.input.DriveHelper
 
+import org.team5499.frc2019.subsystems.Lift.ElevatorHeight
+
 public class TeleopController(
     subsystems: SubsystemsManager,
     controlBoard: ControlBoard,
@@ -30,6 +32,7 @@ public class TeleopController(
         mSubsystems.drivetrain.brakeMode = false
     }
 
+    @Suppress("ComplexMethod")
     public override fun update() {
         val driveSignal = mDriveHelper.calculateOutput(
             mControlBoard.driverControls.getThrottle(),
@@ -44,6 +47,14 @@ public class TeleopController(
             mSubsystems.intake.setDesiredIntakeMode(IntakeMode.INTAKE)
         } else {
             mSubsystems.intake.setDesiredIntakeMode(IntakeMode.IDLE)
+        }
+
+        if (mControlBoard.codriverControls.getHatchLow()) {
+            mSubsystems.lift.setIntakeHeight(ElevatorHeight.HATCH_LOW)
+        } else if (mControlBoard.codriverControls.getStowElevator()) {
+            mSubsystems.lift.setIntakeHeight(ElevatorHeight.BOTTOM)
+        } else if (mControlBoard.codriverControls.getBallHumanPlayer()) {
+            mSubsystems.lift.setIntakeHeight(ElevatorHeight.BALL_HUMAN_PLAYER)
         }
     }
 

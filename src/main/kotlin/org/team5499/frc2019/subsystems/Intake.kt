@@ -9,7 +9,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 
 import org.team5499.frc2019.Constants
 
-public class Intake : Subsystem() {
+public class Intake(talon: LazyTalonSRX) : Subsystem() {
 
     companion object {
         private const val kBallDetectionThreshold = 12 // amps
@@ -30,7 +30,7 @@ public class Intake : Subsystem() {
         get() = mTalon.getOutputCurrent() > kBallDetectionThreshold
 
     init {
-        mTalon = LazyTalonSRX(Constants.HardwarePorts.INTAKE_MASTER)
+        mTalon = talon
         mTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog)
         mTalon.setNeutralMode(NeutralMode.Coast)
 

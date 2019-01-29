@@ -91,9 +91,9 @@ public object Constants {
         public const val LIFT_SLAVE = 23
 
         public const val LIFT_ZERO_SENSOR = 1
-        public const val WRIST_MASTER = 4 // check this later
+        public const val WRIST_MASTER = 25 // check this later
 
-        public const val INTAKE_MASTER = 27
+        public const val INTAKE_MASTER = 4
 
         public const val GYRO_PORT = 10
     }
@@ -110,7 +110,7 @@ public object Constants {
         public const val WHEEL_RADIUS = WHEEL_DIAMETER / 2.0
         public const val WHEEL_CIR = WHEEL_DIAMETER * Math.PI
 
-        public const val SPROCKET_DIAMETER_LIFT = 1.23 // inches
+        public const val SPROCKET_DIAMETER_LIFT = 1.273 // inches
         public const val SPROCKET_RADIUS_LIFT = SPROCKET_DIAMETER_LIFT / 2.0
         public const val SPROCKET_CIR_LIFT = SPROCKET_DIAMETER_LIFT * Math.PI
     }
