@@ -42,7 +42,7 @@ public class TeleopController(
         } else if (mControlBoard.codriverControls.getIntake()) {
             mSubsystems.intake.intake()
         } else {
-            mSubsystems.intake.idle()
+            mSubsystems.intake.hold()
         }
     }
 
