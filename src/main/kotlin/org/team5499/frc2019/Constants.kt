@@ -93,7 +93,7 @@ public object Constants {
         public const val LIFT_ZERO_SENSOR = 1
         public const val WRIST_MASTER = 4 // check this later
 
-        public const val INTAKE_MASTER = 27
+        public const val INTAKE = 27
 
         public const val GYRO_PORT = 10
     }

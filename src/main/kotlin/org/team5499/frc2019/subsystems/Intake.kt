@@ -9,7 +9,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 
 import org.team5499.frc2019.Constants
 
-public class Intake : Subsystem() {
+public class Intake(talon: LazyTalonSRX) : Subsystem() {
 
     companion object {
         private const val kBallDetectionThreshold = 12 // amps
@@ -30,34 +30,36 @@ public class Intake : Subsystem() {
         get() = mTalon.getOutputCurrent() > kBallDetectionThreshold
 
     init {
-        mTalon = LazyTalonSRX(Constants.HardwarePorts.INTAKE_MASTER)
+        mTalon = talon
         mTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog)
         mTalon.setNeutralMode(NeutralMode.Coast)
 
         mMode = IntakeMode.IDLE
     }
 
-    public fun setDesiredIntakeMode(desiredMode: IntakeMode) {
-        mMode = desiredMode
+    public fun intake() {
+        mMode = IntakeMode.INTAKE
+    }
+
+    public fun outtake() {
+        mMode = IntakeMode.OUTTAKE
+    }
+
+    public fun idle() {
+        mMode = IntakeMode.IDLE
+    }
+
+    public fun hold() {
+        mMode = IntakeMode.HOLD
     }
 
     public override fun update() {
-        // when (mMode) {
-        //     IntakeMode.INTAKE -> {
-        //         // if(mTalon.getOutputCurrent())
-        //     }
-        //     IntakeMode.OUTTAKE -> {}
-        //     IntakeMode.HOLD -> {
-        //         if (!ballInIntake) {
-        //             mMode = IntakeMode.IDLE
-        //         }
-        //     }
-        //     IntakeMode.IDLE -> {
-        //         if (ballInIntake) {
-        //             mMode = IntakeMode.HOLD
-        //         }
-        //     }
-        // }
+        when (mMode) {
+            IntakeMode.INTAKE -> {}
+            IntakeMode.OUTTAKE -> {}
+            IntakeMode.HOLD -> {}
+            IntakeMode.IDLE -> {}
+        }
         mTalon.set(ControlMode.PercentOutput, mMode.percent)
     }
 

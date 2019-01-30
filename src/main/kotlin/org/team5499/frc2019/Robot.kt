@@ -51,6 +51,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mLiftMaster: LazyTalonSRX
     private val mLiftSlave: LazyTalonSRX
 
+    private val mIntakeTalon: LazyTalonSRX
+
     // subsystems
     private val mDrivetrain: Drivetrain
     private val mLift: Lift
@@ -90,6 +92,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mLiftMaster = LazyTalonSRX(Constants.HardwarePorts.LIFT_MASTER)
         mLiftSlave = LazyTalonSRX(Constants.HardwarePorts.LIFT_SLAVE)
 
+        mIntakeTalon = LazyTalonSRX(Constants.HardwarePorts.INTAKE)
+
         // subsystem init
         mDrivetrain = Drivetrain(
             mLeftMaster, mLeftSlave1, mLeftSlave2,
@@ -97,7 +101,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
             mGyro
         )
         mLift = Lift(mLiftMaster, mLiftSlave)
-        mIntake = Intake()
+        mIntake = Intake(mIntakeTalon)
         mVision = Vision()
         mWrist = Wrist()
         mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision, mWrist)
