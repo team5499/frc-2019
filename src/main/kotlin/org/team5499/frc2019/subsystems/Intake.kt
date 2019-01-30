@@ -55,7 +55,11 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
 
     public override fun update() {
         when (mMode) {
-            IntakeMode.INTAKE -> {}
+            IntakeMode.INTAKE -> {
+                if (ballInIntake) {
+                    mMode = IntakeMode.HOLD
+                }
+            }
             IntakeMode.OUTTAKE -> {}
             IntakeMode.HOLD -> {}
             IntakeMode.IDLE -> {}
@@ -69,5 +73,7 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
         mMode = IntakeMode.IDLE
     }
 
-    public override fun reset() {}
+    public override fun reset() {
+        stop()
+    }
 }
