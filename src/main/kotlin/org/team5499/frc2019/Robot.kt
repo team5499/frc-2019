@@ -94,6 +94,22 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
         mIntakeTalon = LazyTalonSRX(Constants.HardwarePorts.INTAKE)
 
+        // reset hardware
+        mLeftMaster.configFactoryDefault()
+        mLeftSlave1.configFactoryDefault()
+        mLeftSlave2.configFactoryDefault()
+
+        mRightMaster.configFactoryDefault()
+        mRightSlave1.configFactoryDefault()
+        mRightSlave2.configFactoryDefault()
+
+        mGyro.configFactoryDefault()
+
+        mLiftMaster.configFactoryDefault()
+        mLiftSlave.configFactoryDefault()
+
+        mIntakeTalon.configFactoryDefault()
+
         // subsystem init
         mDrivetrain = Drivetrain(
             mLeftMaster, mLeftSlave1, mLeftSlave2,
