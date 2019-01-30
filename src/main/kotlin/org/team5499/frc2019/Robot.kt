@@ -24,6 +24,11 @@ import org.team5499.frc2019.input.XboxCodriver
 
 import com.ctre.phoenix.sensors.PigeonIMU
 
+import org.tinylog.Logger
+import org.tinylog.configuration.Configuration
+
+import java.time.LocalDateTime
+
 class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     // inputs
     private val mDriver: XboxController
@@ -106,6 +111,12 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun robotInit() {
+        Configuration.set("writer1", "rolling file")
+        Configuration.set("writer1.level", "trace")
+        Configuration.set("writer2", "console")
+        Configuration.set("writer2.level", "warn")
+
+        Logger.info("Robot started at: {}", LocalDateTime.now())
     }
 
     override fun robotPeriodic() {
