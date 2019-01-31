@@ -14,32 +14,42 @@ public class ButtonBoardCodriver(buttonBoard: Joystick, joystick: Joystick) : IC
         mJoystick = joystick
     }
 
-        @Suppress("MagicNumber")
+    @Suppress("MagicNumber")
     public override fun getManualInput() = mJoystick.getY()
+
     @Suppress("MagicNumber")
-    public override fun getManualInputEnabled() = mJoystick.getTriggerPressed()
+    public override fun getStowElevator() = mButtonBoard.getRawButtonPressed(7)
+
     @Suppress("MagicNumber")
-    public override fun getStowElevator() = mButtonBoard.getRawButtonPressed(0)
+    public override fun getHatchLow() = mButtonBoard.getRawButtonPressed(6)
+
     @Suppress("MagicNumber")
-    public override fun getHatchLow() = mButtonBoard.getRawButtonPressed(1)
+    public override fun getHatchMid() = mButtonBoard.getRawButtonPressed(11)
+
     @Suppress("MagicNumber")
-    public override fun getHatchMid() = mButtonBoard.getRawButtonPressed(2)
-    @Suppress("MagicNumber")
-    public override fun getHatchHigh() = mButtonBoard.getRawButtonPressed(3)
+    public override fun getHatchHigh() = mButtonBoard.getRawButtonPressed(8)
+
     @Suppress("MagicNumber")
     public override fun getBallLow() = mButtonBoard.getRawButtonPressed(4)
+
     @Suppress("MagicNumber")
-    public override fun getBallMid() = mButtonBoard.getRawButtonPressed(5)
+    public override fun getBallMid() = mButtonBoard.getRawButtonPressed(9)
+
     @Suppress("MagicNumber")
-    public override fun getBallHigh() = mButtonBoard.getRawButtonPressed(6)
+    public override fun getBallHigh() = mButtonBoard.getRawButtonPressed(10)
+
     @Suppress("MagicNumber")
-    public override fun getIntake() = mButtonBoard.getRawButtonPressed(7)
+    public override fun getIntake() = mButtonBoard.getRawButton(2)
+
     @Suppress("MagicNumber")
-    public override fun getExaust() = mButtonBoard.getRawButtonPressed(8)
+    public override fun getExaust() = mButtonBoard.getRawButton(0)
+
     @Suppress("MagicNumber")
-    public override fun getPickup() = mButtonBoard.getRawButtonPressed(9)
+    public override fun getPickup() = mButtonBoard.getRawButtonPressed(3)
+
     @Suppress("MagicNumber")
-    public override fun getPlace() = mButtonBoard.getRawButtonPressed(10)
+    public override fun getPlace() = mButtonBoard.getRawButtonPressed(1)
+
     @Suppress("MagicNumber")
-    public override fun getDropRamp() = mButtonBoard.getRawButtonPressed(11)
+    public override fun getDropRamp() = false
 }

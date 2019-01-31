@@ -19,8 +19,6 @@ public class XboxCodriver(xbox: XboxController) : ICodriverControls {
 
     public override fun getManualInput() = mXbox.getY(Hand.kRight)
 
-    public override fun getManualInputEnabled() = mXbox.getStartButtonPressed()
-
     public override fun getStowElevator() = mXbox.getXButtonPressed()
 
     public override fun getHatchLow() = mXbox.getAButtonPressed()

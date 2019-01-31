@@ -14,11 +14,6 @@ public class HatchMech(
     val mArmMotor: LazyTalonSRX,
     val mHookMotor: LazyTalonSRX
 ) : Subsystem() {
-
-    private enum class ArmMode {
-
-    }
-
     private enum class HookMode {
         OPEN,
         CLOSED
@@ -33,7 +28,6 @@ public class HatchMech(
             }
         }
 
-
     public fun setArmPercent(precent: Double) {
         mArmMotor.set(ControlMode.PercentOutput, precent)
     }
@@ -41,11 +35,13 @@ public class HatchMech(
     init {
         mArmMotor.apply {
             config_kP()
-            
         }
     }
 
     @SuppressWarnings("MagicNumber")
+    /**
+     * Open or close the latch
+     */
     public fun setLatchState(shouldOpen: Boolean) {
         mHookMotor.setInverted(Constants.Hatch.OPEN_NEGIGIVE)
 
@@ -59,7 +55,6 @@ public class HatchMech(
     }
 
     public override fun update() {
-
     }
 
     public override fun reset() {

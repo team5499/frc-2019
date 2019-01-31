@@ -1,19 +1,17 @@
 package org.team5499.frc2019.subsystems
 
-public class SubsystemsManager(drivetrain: Drivetrain, lift: Lift, intake: Intake, vision: Vision, wrist: Wrist) {
+public class SubsystemsManager(drivetrain: Drivetrain, lift: Lift, intake: Intake, vision: Vision) {
 
     public val drivetrain: Drivetrain
     public val lift: Lift
     public val intake: Intake
     public val vision: Vision
-    public val wrist: Wrist
 
     init {
         this.drivetrain = drivetrain
         this.lift = lift
         this.intake = intake
         this.vision = vision
-        this.wrist = wrist
     }
 
     public fun updateAll() {
@@ -21,7 +19,6 @@ public class SubsystemsManager(drivetrain: Drivetrain, lift: Lift, intake: Intak
         lift.update()
         intake.update()
         vision.update()
-        wrist.update()
     }
 
     public fun stopAll() {
@@ -29,7 +26,6 @@ public class SubsystemsManager(drivetrain: Drivetrain, lift: Lift, intake: Intak
         lift.stop()
         intake.stop()
         vision.stop()
-        wrist.stop()
     }
 
     public fun resetAll() {
@@ -37,6 +33,5 @@ public class SubsystemsManager(drivetrain: Drivetrain, lift: Lift, intake: Intak
         lift.reset()
         intake.reset()
         vision.reset()
-        wrist.reset()
     }
 }
