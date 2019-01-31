@@ -29,8 +29,6 @@ import org.tinylog.configuration.Configuration
 
 import java.time.LocalDateTime
 
-import java.io.File
-
 class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     // inputs
     private val mDriver: XboxController
@@ -137,31 +135,35 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         Configuration.set("writer1.level", "trace")
         Configuration.set("writer1.buffered", "true")
 
-        var pathToLogFolder: String = ""
-        // find log folder on flashdrive
-        val mediaDir = File("/media/")
-        var list = mediaDir.list()
+        // var pathToLogFolder: String = ""
+        // // find log folder on flashdrive
+        // val mediaDir = File("/media/")
+        // var list = mediaDir.list()
 
-        a@ for (i in list.indices) {
-            val temp = File("/media/${list[i]}")
-            var list2 = temp.list()
-            for (j in list2.indices) {
-                pathToLogFolder = "/media/${list[i]}/${list2[j]}/"
-                break@a
-            }
-        }
+        // a@ for (i in list.indices) {
+        //     val temp = File("/media/${list[i]}")
+        //     var list2 = temp.list()
+        //     for (j in list2.indices) {
+        //         pathToLogFolder = "/media/${list[i]}/${list2[j]}/"
+        //         break@a
+        //     }
+        // }
 
-        if (pathToLogFolder.trim().equals("")) {
-            pathToLogFolder = "log/"
-            if (!File("log/").exists() || !File("log/").isDirectory()) {
-                File("log/").mkdir()
-            }
-        }
+        // if (pathToLogFolder.trim().equals("")) {
+        //     pathToLogFolder = "log/"
+        //     println("using /logs")
+        //     if (!File("log/").exists() || !File("log/").isDirectory()) {
+        //         File("log/").mkdir()
+        //     }
+        // }
 
-        Configuration.set("writer1.file", "${pathToLogFolder}robot_log_{count}.log")
+        Configuration.set("writer1.file", "logs/robot_log_{count}.log")
+        Configuration.set("writer1.policies", "startup, size: 1kb")
 
         Configuration.set("writer2", "console")
-        Configuration.set("writer2.level", "debug")
+        Configuration.set("writer2.level", "info")
+
+        Configuration.set("writingthread", "true")
 
         Logger.info("Robot started at: {}", LocalDateTime.now())
     }
@@ -174,6 +176,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun disabledPeriodic() {
+        Logger.info("yeet", 0)
     }
 
     override fun autonomousInit() {
