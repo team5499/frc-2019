@@ -2,6 +2,7 @@ package org.team5499.frc2019
 
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj.XboxController
+import edu.wpi.first.wpilibj.Joystick
 
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
 import org.team5499.monkeyLib.hardware.LazyVictorSPX
@@ -19,14 +20,15 @@ import org.team5499.frc2019.input.ControlBoard
 import org.team5499.frc2019.input.IDriverControls
 import org.team5499.frc2019.input.ICodriverControls
 import org.team5499.frc2019.input.XboxDriver
-import org.team5499.frc2019.input.XboxCodriver
+import org.team5499.frc2019.input.ButtonBoardCodriver
 
 import com.ctre.phoenix.sensors.PigeonIMU
 
 class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     // inputs
     private val mDriver: XboxController
-    private val mCodriver: XboxController
+    private val mCodriverButtonBoard: Joystick
+    private val mCodriverJoystick: Joystick
 
     private val mSpaceDriveHelper: SpaceDriveHelper
 
@@ -48,6 +50,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mLiftMaster: LazyTalonSRX
     private val mLiftSlave: LazyTalonSRX
 
+    private val mIntakeTalon: LazyTalonSRX
+
     // subsystems
     private val mDrivetrain: Drivetrain
     private val mLift: Lift
@@ -63,10 +67,11 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     init {
         // inputs init
         mDriver = XboxController(Constants.Input.DRIVER_PORT)
-        mCodriver = XboxController(Constants.Input.CODRIVER_PORT)
+        mCodriverButtonBoard = Joystick(Constants.Input.CODRIVER_BUTTON_BOARD_PORT)
+        mCodriverJoystick = Joystick(Constants.Input.CODRIVER_JOYSTICK_PORT)
 
         mDriverControls = XboxDriver(mDriver)
-        mCodriverControls = XboxCodriver(mCodriver)
+        mCodriverControls = ButtonBoardCodriver(mCodriverButtonBoard, mCodriverJoystick)
         mControlBoard = ControlBoard(mDriverControls, mCodriverControls)
 
         mSpaceDriveHelper = SpaceDriveHelper(Constants.Input.JOYSTICK_DEADBAND, Constants.Input.TURN_MULT)
@@ -85,6 +90,24 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mLiftMaster = LazyTalonSRX(Constants.HardwarePorts.LIFT_MASTER)
         mLiftSlave = LazyTalonSRX(Constants.HardwarePorts.LIFT_SLAVE)
 
+        mIntakeTalon = LazyTalonSRX(Constants.HardwarePorts.INTAKE)
+
+        // reset hardware
+        mLeftMaster.configFactoryDefault()
+        mLeftSlave1.configFactoryDefault()
+        mLeftSlave2.configFactoryDefault()
+
+        mRightMaster.configFactoryDefault()
+        mRightSlave1.configFactoryDefault()
+        mRightSlave2.configFactoryDefault()
+
+        mGyro.configFactoryDefault()
+
+        mLiftMaster.configFactoryDefault()
+        mLiftSlave.configFactoryDefault()
+
+        mIntakeTalon.configFactoryDefault()
+
         // subsystem init
         mDrivetrain = Drivetrain(
             mLeftMaster, mLeftSlave1, mLeftSlave2,
@@ -92,7 +115,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
             mGyro
         )
         mLift = Lift(mLiftMaster, mLiftSlave)
-        mIntake = Intake()
+        mIntake = Intake(mIntakeTalon)
         mVision = Vision()
         mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision)
 
