@@ -3,6 +3,7 @@ package org.team5499.frc2019.subsystems
 import org.team5499.monkeyLib.Subsystem
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
 import org.team5499.monkeyLib.math.physics.DCMotorTransmission
+import org.team5499.monkeyLib.util.CircularDoubleBuffer
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
@@ -12,6 +13,13 @@ import org.team5499.frc2019.Constants
 import edu.wpi.first.wpilibj.Timer
 
 public class Intake(talon: LazyTalonSRX) : Subsystem() {
+
+    companion object {
+        public const val kBufferSize = 10
+        public const val kSpeedDifferenceThreshold = 20.0 // rads / second
+        public const val kCurrenSpeedThreshold = 20.0 // rads /second
+        public const val kAccelerationThreshold = 10.0 // rads / s^2
+    }
 
     public enum class IntakeMode(val percent: Double) {
         INTAKE(Constants.Intake.INTAKE_SPEED),
@@ -25,20 +33,25 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
     private val mTransmission: DCMotorTransmission
     private val mTimer: Timer
 
-    private var mLastAngularVelocity: Double
-    private var mLastTime: Double
+    private val mVelocityBuffer: CircularDoubleBuffer
+    private val mTimeBuffer: CircularDoubleBuffer
 
     init {
         mTalon = talon
         mTalon.setNeutralMode(NeutralMode.Coast)
 
-        mTransmission = DCMotorTransmission(-1.0, -1.0, -1.0) // check these numbers
+        mTransmission = DCMotorTransmission(-1.0, -1.0, -1.0, -1.0) // check these numbers
 
         mMode = IntakeMode.HOLD
 
         mTimer = Timer()
-        mLastAngularVelocity = 0.0
-        mLastTime = 0.0
+        mTimer.start()
+
+        mVelocityBuffer = CircularDoubleBuffer(kBufferSize)
+        mTimeBuffer = CircularDoubleBuffer(kBufferSize)
+
+        mVelocityBuffer.add(0.0)
+        mTimeBuffer.add(mTimer.get())
     }
 
     public fun intake() {
@@ -53,18 +66,28 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
         mMode = IntakeMode.HOLD
     }
 
-    private fun checkForHold(deltaTime: Double): Boolean {
-        return true
+    private fun checkForHold(): Boolean {
+        val voltage = mTalon.getBusVoltage()
+        val current = mTalon.getOutputCurrent()
+        val theorheticalSpeed = mTransmission.freeSpeedAtVoltage(voltage)
+        val actualSpeed = mTransmission.getSpeedForVoltageAndAmperage(voltage, current)
+        val speedDifference = theorheticalSpeed - actualSpeed
+
+        mTimeBuffer.add(mTimer.get())
+        mVelocityBuffer.add(actualSpeed)
+
+        val acceleration = (mVelocityBuffer.average) /
+            (mTimeBuffer.elements[mTimeBuffer.elements.size - 1] - mTimeBuffer.elements[0])
+        return speedDifference > kSpeedDifferenceThreshold &&
+            acceleration < kAccelerationThreshold &&
+            actualSpeed < kCurrenSpeedThreshold
     }
 
     public override fun update() {
-        val now = Timer.get()
-        val deltaTime = now - mLastTime
-        mLastTime = now
-
+        val hold = checkForHold()
         when (mMode) {
             IntakeMode.INTAKE -> {
-                if (checkForHold(deltaTime)) {
+                if (hold) {
                     mMode = IntakeMode.HOLD
                 }
             }
@@ -81,7 +104,8 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
 
     public override fun reset() {
         stop()
-        mLastTime = 0.0
-        mLastAngularVelocity = 0.0
+        mVelocityBuffer.clear()
+        mVelocityBuffer.add(0.0)
+        mTimeBuffer.add(mTimer.get())
     }
 }
