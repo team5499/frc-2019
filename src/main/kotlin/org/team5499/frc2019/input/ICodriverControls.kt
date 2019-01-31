@@ -6,8 +6,6 @@ public interface ICodriverControls {
     // manual control
     public fun getManualInput(): Double
 
-    public fun getManualInputEnabled(): Boolean
-
     // misc elevator
     public fun getStowElevator(): Boolean
 

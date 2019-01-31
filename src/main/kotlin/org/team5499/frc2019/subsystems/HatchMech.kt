@@ -36,8 +36,6 @@ public class HatchMech(
     /**
      * Open or close the latch
      */
-
-    @Supress
     public fun setLatchState(shouldOpen: Boolean) {
         mHookMotor.setInverted(Constants.Hatch.OPEN_NEGIGIVE)
 

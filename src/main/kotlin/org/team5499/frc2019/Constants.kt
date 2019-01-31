@@ -9,7 +9,8 @@ public object Constants {
 
     object Input {
         public const val DRIVER_PORT = 0
-        public const val CODRIVER_PORT = 1
+        public const val CODRIVER_BUTTON_BOARD_PORT = 1
+        public const val CODRIVER_JOYSTICK_PORT = 2
 
         public const val JOYSTICK_DEADBAND = 0.02
         public const val TURN_MULT = 0.4
@@ -70,6 +71,13 @@ public object Constants {
         public const val INVERT_TURN_AUX_PIDF = false
     }
 
+    object Intake {
+        public const val INTAKE_SPEED = 0.6
+        public const val OUTTAKE_SPEED = -0.6
+        public const val IDLE_SPEED = 0.0
+        public const val HOLD_SPEED = 0.1
+    }
+
     object HardwarePorts {
         public const val LEFT_DRIVE_MASTER = 6
         public const val LEFT_DRIVE_SLAVE1 = 1
@@ -85,7 +93,7 @@ public object Constants {
         public const val LIFT_ZERO_SENSOR = 1
         public const val WRIST_MASTER = 4 // check this later
 
-        public const val INTAKE_MASTER = 27
+        public const val INTAKE = 27
 
         public const val GYRO_PORT = 10
     }
@@ -109,14 +117,5 @@ public object Constants {
 
     object Auto {
         public const val LOOKAHEAD_DISTANCE: Double = 12.0
-    }
-
-    object Hatch {
-        // If true, hatch will move in the negitive direction when opening
-        public const val OPEN_NEGIGIVE: Boolean = false
-        // If below this number, the hatch reads as closed. If above, the hatch reads as open (or vice versa)
-        public const val HATCH_OPEN_DETECTION_LIMIT = 30
-        // If true, the hatch will read as open if the number is below HATCH_OPEN_DETECTION_LIMIT
-        public const val OPEN_DETECTOR_NEGITIVE: Boolean = false
     }
 }

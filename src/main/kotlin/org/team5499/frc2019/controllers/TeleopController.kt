@@ -36,6 +36,14 @@ public class TeleopController(
             mControlBoard.driverControls.getQuickTurn()
         )
         mSubsystems.drivetrain.setPercent(driveSignal)
+
+        if (mControlBoard.codriverControls.getExaust()) {
+            mSubsystems.intake.outtake()
+        } else if (mControlBoard.codriverControls.getIntake()) {
+            mSubsystems.intake.intake()
+        } else {
+            mSubsystems.intake.idle()
+        }
     }
 
     public override fun reset() {}
