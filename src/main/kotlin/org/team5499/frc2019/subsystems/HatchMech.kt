@@ -41,7 +41,7 @@ public class HatchMech(
     init {
         mArmMotor.apply {
             config_kP()
-
+            
         }
     }
 
@@ -59,7 +59,7 @@ public class HatchMech(
     }
 
     public override fun update() {
-        
+
     }
 
     public override fun reset() {
