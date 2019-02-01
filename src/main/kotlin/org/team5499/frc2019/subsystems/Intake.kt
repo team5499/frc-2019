@@ -37,27 +37,33 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
         mMode = IntakeMode.IDLE
     }
 
-    public fun setDesiredIntakeMode(desiredMode: IntakeMode) {
-        mMode = desiredMode
+    public fun intake() {
+        mMode = IntakeMode.INTAKE
+    }
+
+    public fun outtake() {
+        mMode = IntakeMode.OUTTAKE
+    }
+
+    public fun idle() {
+        mMode = IntakeMode.IDLE
+    }
+
+    public fun hold() {
+        mMode = IntakeMode.HOLD
     }
 
     public override fun update() {
-        // when (mMode) {
-        //     IntakeMode.INTAKE -> {
-        //         // if(mTalon.getOutputCurrent())
-        //     }
-        //     IntakeMode.OUTTAKE -> {}
-        //     IntakeMode.HOLD -> {
-        //         if (!ballInIntake) {
-        //             mMode = IntakeMode.IDLE
-        //         }
-        //     }
-        //     IntakeMode.IDLE -> {
-        //         if (ballInIntake) {
-        //             mMode = IntakeMode.HOLD
-        //         }
-        //     }
-        // }
+        when (mMode) {
+            IntakeMode.INTAKE -> {
+                if (ballInIntake) {
+                    mMode = IntakeMode.HOLD
+                }
+            }
+            IntakeMode.OUTTAKE -> {}
+            IntakeMode.HOLD -> {}
+            IntakeMode.IDLE -> {}
+        }
         mTalon.set(ControlMode.PercentOutput, mMode.percent)
     }
 
@@ -67,5 +73,7 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
         mMode = IntakeMode.IDLE
     }
 
-    public override fun reset() {}
+    public override fun reset() {
+        stop()
+    }
 }

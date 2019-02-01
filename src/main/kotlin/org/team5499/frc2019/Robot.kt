@@ -13,7 +13,6 @@ import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.frc2019.subsystems.Lift
 import org.team5499.frc2019.subsystems.Intake
 import org.team5499.frc2019.subsystems.Vision
-import org.team5499.frc2019.subsystems.Wrist
 import org.team5499.frc2019.controllers.SandstormController
 import org.team5499.frc2019.controllers.TeleopController
 import org.team5499.frc2019.controllers.AutoController
@@ -59,7 +58,6 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mLift: Lift
     private val mIntake: Intake
     private val mVision: Vision
-    private val mWrist: Wrist
     private val mSubsystemsManager: SubsystemsManager
 
     // controllers
@@ -93,7 +91,23 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mLiftMaster = LazyTalonSRX(Constants.HardwarePorts.LIFT_MASTER)
         mLiftSlave = LazyTalonSRX(Constants.HardwarePorts.LIFT_SLAVE)
 
-        mIntakeTalon = LazyTalonSRX(Constants.HardwarePorts.INTAKE_MASTER)
+        mIntakeTalon = LazyTalonSRX(Constants.HardwarePorts.INTAKE)
+
+        // reset hardware
+        mLeftMaster.configFactoryDefault()
+        mLeftSlave1.configFactoryDefault()
+        mLeftSlave2.configFactoryDefault()
+
+        mRightMaster.configFactoryDefault()
+        mRightSlave1.configFactoryDefault()
+        mRightSlave2.configFactoryDefault()
+
+        mGyro.configFactoryDefault()
+
+        mLiftMaster.configFactoryDefault()
+        mLiftSlave.configFactoryDefault()
+
+        mIntakeTalon.configFactoryDefault()
 
         // subsystem init
         mDrivetrain = Drivetrain(
@@ -104,8 +118,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mLift = Lift(mLiftMaster, mLiftSlave)
         mIntake = Intake(mIntakeTalon)
         mVision = Vision()
-        mWrist = Wrist()
-        mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision, mWrist)
+        mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision)
 
         // controllers init
         mTeleopController = TeleopController(mSubsystemsManager, mControlBoard, mSpaceDriveHelper)
