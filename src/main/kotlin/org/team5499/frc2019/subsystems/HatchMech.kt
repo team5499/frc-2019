@@ -26,10 +26,26 @@ public class HatchMech(
         CLOSED(100)
     }
 
+    @SuppressWarnings("MagicNumber")
+    public enum class ArmPosition(val setpointTicks: Int) {
+        STOWED(100),
+        PLACE(1000),
+        PICKUP(1200)
+    }
+
     private var mLatchState: LatchState = LatchState.OPEN
 
     public val latchPositionRaw: Int
         get() = mHookMotor.getSensorCollection().getAnalogInRaw()
+
+    public val armPositionRaw: Int
+        get() = mArmMotor.getSensorCollection().getAnalogInRaw()
+
+    public val armVelocityRaw: Int
+        get() = mArmMotor.getSensorCollection().getAnalogInVel()
+
+    public val armPositionError: Int
+        get() = mArmMotor.getClosedLoopError(0)
 
     public val isOpen: Boolean
         get() {
@@ -47,9 +63,11 @@ public class HatchMech(
     init {
         mArmMotor.apply {
             configSelectedFeedbackSensor(FeedbackDevice.Analog)
-            // config_kP()
-            // config_kI()
-            // config_kD()
+            config_kP(0, 1.0, 0)
+            config_kI(0, 0.0, 0)
+            config_kD(0, 0.0, 0)
+            config_kF(0, 0.0, 0)
+            setSensorPhase(true) // check this
         }
 
         mHookMotor.apply {
@@ -63,13 +81,14 @@ public class HatchMech(
      */
     public fun setLatchState(shouldOpen: Boolean) {
         mLatchState = if (shouldOpen) LatchState.OPEN else LatchState.CLOSED
-        // if (shouldOpen) {
-        //     @Suppress("MagicNumber")
-        //     mHookMotor.set(ControlMode.PercentOutput, 1.0)
-        // } else {
-        //     @Suppress("MagicNumber")
-        //     mHookMotor.set(ControlMode.PercentOutput, -1.0)
-        // }
+    }
+
+    public fun setLatchPosition(armPosition: ArmPosition) {
+        mArmMotor.set(ControlMode.Position, armPosition.setpointTicks.toDouble())
+    }
+
+    public fun setLatchSetpoint(ticks: Int) {
+        mArmMotor.set(ControlMode.Position, ticks.toDouble())
     }
 
     public override fun update() {
