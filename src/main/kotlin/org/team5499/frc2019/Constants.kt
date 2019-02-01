@@ -115,6 +115,12 @@ public object Constants {
         public const val SPROCKET_CIR_LIFT = SPROCKET_DIAMETER_LIFT * Math.PI
     }
 
+    object Hatch {
+        public const val OPEN_NEGATIVE = false
+        public const val OPEN_DETECTOR_NEGATIVE = false
+        public const val OPEN_DETECTION_LIMIT = 0
+    }
+
     object Auto {
         public const val LOOKAHEAD_DISTANCE: Double = 12.0
     }
