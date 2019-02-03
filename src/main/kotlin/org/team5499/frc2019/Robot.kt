@@ -81,9 +81,9 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mLeftSlave1 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE1)
         mLeftSlave2 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE2)
 
-        mRightMaster = LazyTalonSRX(Constants.HardwarePorts.LEFT_DRIVE_MASTER)
-        mRightSlave1 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE1)
-        mRightSlave2 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE2)
+        mRightMaster = LazyTalonSRX(Constants.HardwarePorts.RIGHT_DRIVE_MASTER)
+        mRightSlave1 = LazyVictorSPX(Constants.HardwarePorts.RIGHT_DRIVE_SLAVE1)
+        mRightSlave2 = LazyVictorSPX(Constants.HardwarePorts.RIGHT_DRIVE_SLAVE2)
 
         mGyro = PigeonIMU(Constants.HardwarePorts.GYRO_PORT)
 
