@@ -67,7 +67,7 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
     }
 
     private fun checkForHold(): Boolean {
-        val voltage = mTalon.getBusVoltage()
+        val voltage = mTalon.getBusVoltage() // this may not give output voltage
         val current = mTalon.getOutputCurrent()
         val theorheticalSpeed = mTransmission.freeSpeedAtVoltage(voltage)
         val actualSpeed = mTransmission.getSpeedForVoltageAndAmperage(voltage, current)
