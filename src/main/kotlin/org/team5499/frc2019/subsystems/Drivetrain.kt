@@ -211,7 +211,7 @@ public class Drivetrain(
         // initialze hardware
         mLeftMaster = leftMaster.apply {
             setInverted(false)
-            setSensorPhase(false)
+            setSensorPhase(true)
             setStatusFramePeriod(
                 StatusFrameEnhanced.Status_3_Quadrature,
                 Constants.TALON_UPDATE_PERIOD_MS,
@@ -229,7 +229,7 @@ public class Drivetrain(
 
         mRightMaster = rightMaster.apply {
             setInverted(true)
-            setSensorPhase(false)
+            setSensorPhase(true)
             setStatusFramePeriod(
                 StatusFrameEnhanced.Status_3_Quadrature,
                 Constants.TALON_UPDATE_PERIOD_MS,
@@ -327,7 +327,7 @@ public class Drivetrain(
         mLeftMaster.set(ControlMode.PercentOutput, 0.0) // make sure its not following rightMaster
         mLeftMaster.apply {
             setInverted(false)
-            configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
             configPeakOutputForward(+1.0, 0)
             configPeakOutputReverse(-1.0, 0)
             setSensorPhase(false)
@@ -352,7 +352,7 @@ public class Drivetrain(
         }
 
         mRightMaster.apply {
-            configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
             configRemoteFeedbackFilter(0x00, RemoteSensorSource.Off, 0, 0)
             configRemoteFeedbackFilter(0x00, RemoteSensorSource.Off, 1, 0)
             // configSensorTerm(SensorTerm.Sum0, FeedbackDevice.None, 0)
@@ -387,7 +387,7 @@ public class Drivetrain(
     private fun configureForTurn() {
         // brakeMode = true
         mLeftMaster.apply {
-            configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
             setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, Constants.TALON_UPDATE_PERIOD_MS, 0)
             configPeakOutputForward(+1.0, 0)
             configPeakOutputReverse(-1.0, 0)
@@ -400,7 +400,7 @@ public class Drivetrain(
             configRemoteFeedbackFilter(mLeftMaster.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor, 0, 0)
             configRemoteFeedbackFilter(mGyro.getDeviceID(), RemoteSensorSource.Pigeon_Yaw, 1, 0)
             configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0, 0)
-            configSensorTerm(SensorTerm.Sum1, FeedbackDevice.QuadEncoder, 0)
+            configSensorTerm(SensorTerm.Sum1, FeedbackDevice.CTRE_MagEncoder_Relative, 0)
             configSelectedFeedbackSensor(FeedbackDevice.SensorSum, 1, 0)
             @Suppress("MagicNumber")
             configSelectedFeedbackCoefficient(0.5, 1, 0)
@@ -441,7 +441,7 @@ public class Drivetrain(
     private fun configureForPosition() {
         // brakeMode = true
         mLeftMaster.apply {
-            configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
             configPeakOutputForward(+1.0, 0)
             configPeakOutputReverse(-1.0, 0)
             setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, Constants.TALON_UPDATE_PERIOD_MS, 0)
@@ -454,7 +454,7 @@ public class Drivetrain(
             configRemoteFeedbackFilter(mLeftMaster.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor, 0, 0)
             configRemoteFeedbackFilter(mGyro.getDeviceID(), RemoteSensorSource.Pigeon_Yaw, 1, 0)
             configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0, 0)
-            configSensorTerm(SensorTerm.Sum1, FeedbackDevice.QuadEncoder, 0)
+            configSensorTerm(SensorTerm.Sum1, FeedbackDevice.CTRE_MagEncoder_Relative, 0)
             configSelectedFeedbackSensor(FeedbackDevice.SensorSum, 0, 0)
             @Suppress("MagicNumber")
             configSelectedFeedbackCoefficient(0.5, 0, 0)
@@ -486,12 +486,16 @@ public class Drivetrain(
             selectProfileSlot(0, 0)
             selectProfileSlot(1, 1)
             configAuxPIDPolarity(!Constants.PID.INVERT_ANGLE_AUX_PIDF, 0)
-            setSensorPhase(true)
+            setSensorPhase(false)
         }
     }
 
     public override fun update() {
         mPosition.update(leftDistance, rightDistance, heading.degrees)
+        println("left setpoint: ${mLeftMaster.getClosedLoopTarget(0)}" +
+            ", left error: ${mLeftMaster.getClosedLoopError(0)}")
+        println("right setpoint: ${mRightMaster.getClosedLoopTarget(0)}" +
+            ", right error: ${mRightMaster.getClosedLoopError(0)}")
     }
 
     public override fun stop() {

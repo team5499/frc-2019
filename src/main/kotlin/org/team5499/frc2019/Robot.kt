@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Joystick
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
 import org.team5499.monkeyLib.hardware.LazyVictorSPX
 import org.team5499.monkeyLib.input.SpaceDriveHelper
+import org.team5499.monkeyLib.path.PathGenerator
 
 import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.subsystems.Drivetrain
@@ -21,6 +22,8 @@ import org.team5499.frc2019.input.IDriverControls
 import org.team5499.frc2019.input.ICodriverControls
 import org.team5499.frc2019.input.XboxDriver
 import org.team5499.frc2019.input.ButtonBoardCodriver
+import org.team5499.frc2019.auto.Paths
+import org.team5499.frc2019.auto.Routines
 
 import com.ctre.phoenix.sensors.PigeonIMU
 
@@ -58,6 +61,11 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mIntake: Intake
     private val mVision: Vision
     private val mSubsystemsManager: SubsystemsManager
+
+    // path
+    private val mPathGenerator: PathGenerator
+    private val mPaths: Paths
+    private val mRoutines: Routines
 
     // controllers
     private val mSandstormController: SandstormController
@@ -119,9 +127,14 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mVision = Vision()
         mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision)
 
+        // path init
+        mPathGenerator = PathGenerator(0.0, 0.0, 0.0, 0.0)
+        mPaths = Paths(mPathGenerator)
+        mRoutines = Routines(mPaths, mSubsystemsManager)
+
         // controllers init
         mTeleopController = TeleopController(mSubsystemsManager, mControlBoard, mSpaceDriveHelper)
-        mAutoController = AutoController(mSubsystemsManager)
+        mAutoController = AutoController(mSubsystemsManager, mRoutines)
         mSandstormController = SandstormController(mControlBoard, mTeleopController, mAutoController)
     }
 

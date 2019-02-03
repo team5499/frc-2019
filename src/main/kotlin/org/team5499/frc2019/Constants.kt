@@ -31,14 +31,14 @@ public object Constants {
         public const val ACCEPTALE_VELOCITY_THRESHOLD_WRIST = 3.0 // inches / s
         public const val ACCEPTABLE_DISTANCE_ERROR_WRIST = 1.0 // inches
 
-        public const val VEL_KP = 2.5
+        public const val VEL_KP = 2.0
         public const val VEL_KI = 0.0
         public const val VEL_KD = 0.0
         public const val VEL_KF = 0.95
         public const val VEL_IZONE = 10
         public const val VEL_MAX_OUTPUT = 1.0
 
-        public const val POS_KP = 0.79
+        public const val POS_KP = 1.0
         public const val POS_KI = 0.0
         public const val POS_KD = 0.3
         public const val POS_KF = 0.0
@@ -95,7 +95,7 @@ public object Constants {
 
         public const val INTAKE = 27
 
-        public const val GYRO_PORT = 10
+        public const val GYRO_PORT = 12
     }
 
     object Units {
