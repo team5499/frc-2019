@@ -77,20 +77,20 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mSpaceDriveHelper = SpaceDriveHelper(Constants.Input.JOYSTICK_DEADBAND, Constants.Input.TURN_MULT)
 
         // hardware init
-        mLeftMaster = LazyTalonSRX(Constants.HardwarePorts.LEFT_DRIVE_MASTER)
-        mLeftSlave1 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE1)
-        mLeftSlave2 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE2)
+        mLeftMaster = LazyTalonSRX(Constants.Drivetrain.LEFT_MASTER_TALON_PORT)
+        mLeftSlave1 = LazyVictorSPX(Constants.Drivetrain.LEFT_SLAVE1_TALON_PORT)
+        mLeftSlave2 = LazyVictorSPX(Constants.Drivetrain.LEFT_SLAVE2_TALON_PORT)
 
-        mRightMaster = LazyTalonSRX(Constants.HardwarePorts.LEFT_DRIVE_MASTER)
-        mRightSlave1 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE1)
-        mRightSlave2 = LazyVictorSPX(Constants.HardwarePorts.LEFT_DRIVE_SLAVE2)
+        mRightMaster = LazyTalonSRX(Constants.Drivetrain.RIGHT_MASTER_TALON_PORT)
+        mRightSlave1 = LazyVictorSPX(Constants.Drivetrain.RIGHT_SLAVE1_TALON_PORT)
+        mRightSlave2 = LazyVictorSPX(Constants.Drivetrain.RIGHT_SLAVE2_TALON_PORT)
 
-        mGyro = PigeonIMU(Constants.HardwarePorts.GYRO_PORT)
+        mGyro = PigeonIMU(Constants.Drivetrain.GYRO_PORT)
 
-        mLiftMaster = LazyTalonSRX(Constants.HardwarePorts.LIFT_MASTER)
-        mLiftSlave = LazyTalonSRX(Constants.HardwarePorts.LIFT_SLAVE)
+        mLiftMaster = LazyTalonSRX(Constants.Lift.MASTER_TALON_PORT)
+        mLiftSlave = LazyTalonSRX(Constants.Lift.SLAVE_TALON_PORT)
 
-        mIntakeTalon = LazyTalonSRX(Constants.HardwarePorts.INTAKE)
+        mIntakeTalon = LazyTalonSRX(Constants.Intake.TALON_PORT)
 
         // reset hardware
         mLeftMaster.configFactoryDefault()
