@@ -41,8 +41,8 @@ public class TurnAction(
     }
 
     public override fun update() {
-        mIsTurning = ((Constants.PID.ACCEPTABLE_TURN_ERROR > abs(drivetrain.turnError)) &&
-            (Constants.PID.ACCEPTABLE_VELOCITY_THRESHOLD > abs(drivetrain.angularVelocity)))
+        mIsTurning = ((Constants.Drivetrain.ACCEPTABLE_TURN_ERROR > abs(drivetrain.turnError)) &&
+            (Constants.Drivetrain.ACCEPTABLE_VELOCITY_THRESHOLD > abs(drivetrain.angularVelocity)))
     }
 
     public override fun next(): Boolean {
