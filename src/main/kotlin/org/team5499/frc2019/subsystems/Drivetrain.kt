@@ -447,8 +447,8 @@ public class Drivetrain(
             configPeakOutputReverse(-1.0, 0)
             setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, Constants.TALON_UPDATE_PERIOD_MS, 0)
             follow(mRightMaster, FollowerType.AuxOutput1)
-            setSensorPhase(false)
-            setInverted(false)
+            setSensorPhase(true)
+            setInverted(true)
         }
 
         mRightMaster.apply {
@@ -488,14 +488,14 @@ public class Drivetrain(
             selectProfileSlot(kPrimaryPIDSlot, 0)
             selectProfileSlot(kSecondaryPIDSlot, 1)
             configAuxPIDPolarity(!Constants.Drivetrain.INVERT_ANGLE_AUX_PIDF, 0)
-            setSensorPhase(false)
+            setSensorPhase(true)
         }
     }
 
     public override fun update() {
         mPosition.update(leftDistance, rightDistance, heading.degrees)
-        println("left setpoint: ${mLeftMaster.getClosedLoopTarget(0)}" +
-            ", left error: ${mLeftMaster.getClosedLoopError(0)}")
+        // println("left setpoint: ${mLeftMaster.getClosedLoopTarget(0)}" +
+            // ", left error: ${mLeftMaster.getClosedLoopError(0)}")
         println("right setpoint: ${mRightMaster.getClosedLoopTarget(0)}" +
             ", right error: ${mRightMaster.getClosedLoopError(0)}")
     }

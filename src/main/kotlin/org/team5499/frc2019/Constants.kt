@@ -19,15 +19,15 @@ public object Constants {
     object Drivetrain {
         // talon port
         public const val LEFT_MASTER_TALON_PORT = 6
-        public const val LEFT_SLAVE1_TALON_PORT = 1
-        public const val LEFT_SLAVE2_TALON_PORT = 22 // check this later
+        public const val LEFT_SLAVE1_TALON_PORT = 7
+        public const val LEFT_SLAVE2_TALON_PORT = 8
 
-        public const val RIGHT_MASTER_TALON_PORT = 8
+        public const val RIGHT_MASTER_TALON_PORT = 1
         public const val RIGHT_SLAVE1_TALON_PORT = 2
-        public const val RIGHT_SLAVE2_TALON_PORT = 23
+        public const val RIGHT_SLAVE2_TALON_PORT = 3
 
         // gyro
-        public const val GYRO_PORT = 10
+        public const val GYRO_PORT = 12
 
         // units
         public const val ENCODER_TICKS_PER_ROTATION = 4096
@@ -56,10 +56,10 @@ public object Constants {
 
         public const val POS_KP = 1.0
         public const val POS_KI = 0.0
-        public const val POS_KD = 0.3
+        public const val POS_KD = 0.0
         public const val POS_KF = 0.0
         public const val POS_IZONE = 10
-        public const val POS_MAX_OUTPUT = 0.5
+        public const val POS_MAX_OUTPUT = 0.6
 
         public const val ANGLE_KP = 2.0
         public const val ANGLE_KI = 0.0
