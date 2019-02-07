@@ -103,7 +103,7 @@ public object Constants {
     }
 
     object Intake {
-        public const val TALON_PORT = 27
+        public const val TALON_PORT = 9
 
         public const val INTAKE_SPEED = 0.6
         public const val OUTTAKE_SPEED = -0.6
