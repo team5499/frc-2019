@@ -22,12 +22,12 @@ public object Constants {
         public const val LEFT_SLAVE1_TALON_PORT = 7
         public const val LEFT_SLAVE2_TALON_PORT = 8
 
-        public const val RIGHT_MASTER_TALON_PORT = 1
+        public const val RIGHT_MASTER_TALON_PORT = 12
         public const val RIGHT_SLAVE1_TALON_PORT = 2
         public const val RIGHT_SLAVE2_TALON_PORT = 3
 
         // gyro
-        public const val GYRO_PORT = 12
+        public const val GYRO_PORT = 13
 
         // units
         public const val ENCODER_TICKS_PER_ROTATION = 4096
@@ -41,25 +41,26 @@ public object Constants {
         public const val WHEEL_CIR = WHEEL_DIAMETER * Math.PI
 
         // pid thresholds
-        public const val MAX_VELOCITY_SETPOINT = 100.0 // inches per seconds
+        public const val MAX_VELOCITY = 100.0 // inches per second
+        public const val MAX_ACCELERATION = 100.0 // inches per second^2
         public const val ACCEPTABLE_VELOCITY_THRESHOLD = 3.0 // inches / s
         public const val ACCEPTABLE_TURN_ERROR = 3.0 // degrees (?)
         public const val ACCEPTABLE_DISTANCE_ERROR = 2.0 // inches
 
         // pid constants
-        public const val VEL_KP = 2.5
+        public const val VEL_KP = 0.5
         public const val VEL_KI = 0.0
         public const val VEL_KD = 0.0
-        public const val VEL_KF = 0.95
+        public const val VEL_KF = 0.15
         public const val VEL_IZONE = 10
         public const val VEL_MAX_OUTPUT = 1.0
 
-        public const val POS_KP = 1.0
+        public const val POS_KP = 0.8
         public const val POS_KI = 0.0
-        public const val POS_KD = 0.0
+        public const val POS_KD = 0.2
         public const val POS_KF = 0.0
         public const val POS_IZONE = 10
-        public const val POS_MAX_OUTPUT = 0.6
+        public const val POS_MAX_OUTPUT = 0.5
 
         public const val ANGLE_KP = 2.0
         public const val ANGLE_KI = 0.0
@@ -68,9 +69,9 @@ public object Constants {
         public const val ANGLE_IZONE = 10
         public const val ANGLE_MAX_OUTPUT = 1.0
 
-        public const val TURN_KP = 1.3
+        public const val TURN_KP = 1.5
         public const val TURN_KI = 0.0
-        public const val TURN_KD = 12.0
+        public const val TURN_KD = 0.0
         public const val TURN_KF = 0.0
         public const val TURN_IZONE = 10
         public const val TURN_MAX_OUTPUT = 1.0
@@ -88,8 +89,8 @@ public object Constants {
     }
 
     object Lift {
-        public const val MASTER_TALON_PORT = 5
-        public const val SLAVE_TALON_PORT = 23
+        public const val MASTER_TALON_PORT = 4
+        public const val SLAVE_TALON_PORT = 5
 
         public const val MAX_VELOCITY_SETPOINT = 1000 // ticks per 100ms
 

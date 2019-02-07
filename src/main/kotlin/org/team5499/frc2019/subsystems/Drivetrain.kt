@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.RemoteSensorSource
 import com.ctre.phoenix.motorcontrol.FollowerType
 import com.ctre.phoenix.motorcontrol.InvertType
 import com.ctre.phoenix.ParamEnum
+import com.ctre.phoenix.motorcontrol.StatusFrame
 
 import org.team5499.frc2019.Constants
 
@@ -100,10 +101,12 @@ public class Drivetrain(
     public var heading: Rotation2d
         get() {
             return Rotation2d.fromDegrees(mGyro.getFusedHeading()).rotateBy(mGyroOffset)
+            // return Rotation2d.fromDegrees(mGyro.getFusedHeading())
         }
         set(value) {
             println("SET HEADING: ${heading.degrees}")
             mGyroOffset = value.rotateBy(Rotation2d.fromDegrees(mGyro.getFusedHeading()).inverse())
+            // mGyro.setFusedHeading(value.degrees, 0)
             println("Gyro offset: ${mGyroOffset.degrees}")
         }
 
@@ -141,10 +144,12 @@ public class Drivetrain(
             )
         }
         set(inches) {
-            mRightMaster.sensorCollection.setQuadraturePosition(
-                Utils.inchesToEncoderTicks(Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
-                Constants.Drivetrain.WHEEL_CIR,
-                inches), 0)
+            mRightMaster.getSensorCollection().setQuadraturePosition(
+                Utils.inchesToEncoderTicks(
+                    Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
+                    Constants.Drivetrain.WHEEL_CIR,
+                    inches
+                ), 0)
         }
 
     public val leftVelocity: Double
@@ -267,7 +272,7 @@ public class Drivetrain(
             ((leftDistance + rightDistance) / 2.0) + distance
         )
         val angleTarget = mRightMaster.getSelectedSensorPosition(1)
-        mRightMaster.set(ControlMode.Position, absDistance.toDouble(), DemandType.AuxPID, angleTarget.toDouble())
+        mRightMaster.set(ControlMode.MotionMagic, absDistance.toDouble(), DemandType.AuxPID, angleTarget.toDouble())
     }
 
     public fun setTurn(angle: Double) {
@@ -278,14 +283,14 @@ public class Drivetrain(
             (leftDistance + rightDistance) / 2.0
         )
         val angleTarget = mRightMaster.getSelectedSensorPosition(1) +
-            Utils.degreesToTalonAngle(Constants.Drivetrain.TURN_UNITS_PER_ROTATION, angle)
-        mRightMaster.set(ControlMode.Position, angleTarget.toDouble(), DemandType.AuxPID, fixedDistance.toDouble())
+            Utils.degreesToTalonAngle(Constants.Drivetrain.TURN_UNITS_PER_ROTATION, angle - mGyroOffset.degrees)
+        mRightMaster.set(ControlMode.MotionMagic, angleTarget.toDouble(), DemandType.AuxPID, fixedDistance.toDouble())
     }
 
     public fun setVelocity(leftSpeed: Double, rightSpeed: Double) {
         mDriveMode = DriveMode.VELOCITY
-        val left = Utils.limit(leftSpeed, Constants.Drivetrain.MAX_VELOCITY_SETPOINT)
-        val right = Utils.limit(rightSpeed, Constants.Drivetrain.MAX_VELOCITY_SETPOINT)
+        val left = Utils.limit(leftSpeed, Constants.Drivetrain.MAX_VELOCITY)
+        val right = Utils.limit(rightSpeed, Constants.Drivetrain.MAX_VELOCITY)
         mLeftMaster.set(ControlMode.Velocity,
             Utils.inchesPerSecondToEncoderTicksPer100Ms(
                 Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
@@ -355,11 +360,11 @@ public class Drivetrain(
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
             configRemoteFeedbackFilter(0x00, RemoteSensorSource.Off, 0, 0)
             configRemoteFeedbackFilter(0x00, RemoteSensorSource.Off, 1, 0)
-            // configSensorTerm(SensorTerm.Sum0, FeedbackDevice.None, 0)
-            // configSensorTerm(SensorTerm.Sum1, FeedbackDevice.None, 0)
+            configSensorTerm(SensorTerm.Sum0, FeedbackDevice.SoftwareEmulatedSensor, 0)
+            configSensorTerm(SensorTerm.Sum1, FeedbackDevice.SoftwareEmulatedSensor, 0)
             configSelectedFeedbackCoefficient(1.0, 1, 0)
             configSelectedFeedbackCoefficient(1.0, 0, 0)
-            // configSelectedFeedbackSensor(FeedbackDevice.None, 1, 0)
+            configSelectedFeedbackSensor(FeedbackDevice.Tachometer, 1, 0)
             configPeakOutputForward(+1.0, 0)
             configPeakOutputReverse(-1.0, 0)
             setSensorPhase(true)
@@ -424,6 +429,22 @@ public class Drivetrain(
             config_kD(1, Constants.Drivetrain.FIXED_KD, 0)
             config_kF(1, Constants.Drivetrain.FIXED_KF, 0)
 
+            configMotionCruiseVelocity(
+                Utils.inchesPerSecondToEncoderTicksPer100Ms(
+                    Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
+                    Constants.Drivetrain.WHEEL_CIR,
+                    Constants.Drivetrain.MAX_VELOCITY
+                ).toInt()
+            )
+
+            configMotionAcceleration(
+                Utils.inchesPerSecondToEncoderTicksPer100Ms(
+                    Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
+                    Constants.Drivetrain.WHEEL_CIR,
+                    Constants.Drivetrain.MAX_ACCELERATION
+                ).toInt()
+            )
+
             config_IntegralZone(0, Constants.Drivetrain.TURN_IZONE, 0)
             configClosedLoopPeakOutput(0, Constants.Drivetrain.TURN_MAX_OUTPUT, 0)
             config_IntegralZone(1, Constants.Drivetrain.FIXED_IZONE, 0)
@@ -440,54 +461,69 @@ public class Drivetrain(
     }
 
     private fun configureForPosition() {
-        // brakeMode = true
         mLeftMaster.apply {
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
+
             configPeakOutputForward(+1.0, 0)
             configPeakOutputReverse(-1.0, 0)
-            setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, Constants.TALON_UPDATE_PERIOD_MS, 0)
-            follow(mRightMaster, FollowerType.AuxOutput1)
+            setInverted(false)
             setSensorPhase(true)
-            setInverted(true)
+
+            follow(mRightMaster, FollowerType.AuxOutput1)
         }
 
+        @Suppress("MagicNumber")
         mRightMaster.apply {
             configRemoteFeedbackFilter(mLeftMaster.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor, 0, 0)
             configRemoteFeedbackFilter(mGyro.getDeviceID(), RemoteSensorSource.Pigeon_Yaw, 1, 0)
             configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0, 0)
-            configSensorTerm(SensorTerm.Sum1, FeedbackDevice.CTRE_MagEncoder_Relative, 0)
+            configSensorTerm(SensorTerm.Sum1, FeedbackDevice.QuadEncoder, 0)
             configSelectedFeedbackSensor(FeedbackDevice.SensorSum, 0, 0)
-            @Suppress("MagicNumber")
             configSelectedFeedbackCoefficient(0.5, 0, 0)
-            configSelectedFeedbackCoefficient(
-                (Constants.Drivetrain.TURN_UNITS_PER_ROTATION /
-                Constants.Drivetrain.PIGEON_UNITS_PER_ROTATION).toDouble(), 1, 0)
             configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, 1, 0)
-            setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, Constants.TALON_UPDATE_PERIOD_MS, 0)
-            setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, Constants.TALON_UPDATE_PERIOD_MS, 0)
-            setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, Constants.TALON_UPDATE_PERIOD_MS, 0)
-            setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, Constants.TALON_UPDATE_PERIOD_MS, 0)
-            configPeakOutputForward(+1.0, 0)
-            configPeakOutputReverse(-1.0, 0)
-            config_kP(kPrimaryPIDSlot, Constants.Drivetrain.POS_KP, 0)
-            config_kI(kPrimaryPIDSlot, Constants.Drivetrain.POS_KI, 0)
-            config_kD(kPrimaryPIDSlot, Constants.Drivetrain.POS_KD, 0)
-            config_kF(kPrimaryPIDSlot, Constants.Drivetrain.POS_KF, 0)
-            config_kP(kSecondaryPIDSlot, Constants.Drivetrain.ANGLE_KP, 0)
-            config_kI(kSecondaryPIDSlot, Constants.Drivetrain.ANGLE_KI, 0)
-            config_kD(kSecondaryPIDSlot, Constants.Drivetrain.ANGLE_KF, 0)
-            config_kF(kSecondaryPIDSlot, Constants.Drivetrain.ANGLE_KF, 0)
+            configSelectedFeedbackCoefficient(1.0, 1, 0)
+            setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 20, 0)
+            setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 20, 0)
+            setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1, 20, 0)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 0)
+            configAuxPIDPolarity(false, 0)
+
+            config_kP(0, Constants.Drivetrain.POS_KP, 0)
+            config_kI(0, Constants.Drivetrain.POS_KI, 0)
+            config_kD(0, Constants.Drivetrain.POS_KD, 0)
+            config_kF(0, Constants.Drivetrain.POS_KF, 0)
             config_IntegralZone(0, Constants.Drivetrain.POS_IZONE, 0)
             configClosedLoopPeakOutput(0, Constants.Drivetrain.POS_MAX_OUTPUT, 0)
+
+            config_kP(1, Constants.Drivetrain.ANGLE_KP, 0)
+            config_kP(1, Constants.Drivetrain.ANGLE_KI, 0)
+            config_kP(1, Constants.Drivetrain.ANGLE_KD, 0)
+            config_kP(1, Constants.Drivetrain.ANGLE_KF, 0)
             config_IntegralZone(1, Constants.Drivetrain.ANGLE_IZONE, 0)
             configClosedLoopPeakOutput(1, Constants.Drivetrain.ANGLE_MAX_OUTPUT, 0)
-            configSetParameter(ParamEnum.ePIDLoopPeriod,
-                Constants.TALON_PIDF_UPDATE_PERIOD_MS.toDouble(), 0x00, 0, 0)
-            configSetParameter(ParamEnum.ePIDLoopPeriod,
-                Constants.TALON_PIDF_UPDATE_PERIOD_MS.toDouble(), 0x00, 1, 0)
-            selectProfileSlot(kPrimaryPIDSlot, 0)
-            selectProfileSlot(kSecondaryPIDSlot, 1)
-            configAuxPIDPolarity(!Constants.Drivetrain.INVERT_ANGLE_AUX_PIDF, 0)
+
+            configMotionCruiseVelocity(
+                Utils.inchesPerSecondToEncoderTicksPer100Ms(
+                    Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
+                    Constants.Drivetrain.WHEEL_CIR,
+                    Constants.Drivetrain.MAX_VELOCITY
+                ).toInt()
+            )
+
+            configMotionAcceleration(
+                Utils.inchesPerSecondToEncoderTicksPer100Ms(
+                    Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
+                    Constants.Drivetrain.WHEEL_CIR,
+                    Constants.Drivetrain.MAX_ACCELERATION
+                ).toInt()
+            )
+
+            selectProfileSlot(0, 0)
+            selectProfileSlot(1, 1)
+
+            configPeakOutputForward(+1.0, 0)
+            configPeakOutputReverse(-1.0, 0)
+            setInverted(true)
             setSensorPhase(true)
         }
     }
@@ -496,8 +532,12 @@ public class Drivetrain(
         mPosition.update(leftDistance, rightDistance, heading.degrees)
         // println("left setpoint: ${mLeftMaster.getClosedLoopTarget(0)}" +
             // ", left error: ${mLeftMaster.getClosedLoopError(0)}")
-        println("right setpoint: ${mRightMaster.getClosedLoopTarget(0)}" +
-            ", right error: ${mRightMaster.getClosedLoopError(0)}")
+        // println("Left distance $leftDistance, Right distance $rightDistance")
+        // println("right distance: ${mRightMaster.getClosedLoopTarget(0)}" +
+        //     ", right error: ${mRightMaster.getClosedLoopError(0)}"
+        // println("heading: $heading degrees, raw gyro: ${mGyro.getFusedHeading()}, gyro offset: ${mGyroOffset}")
+        // println("target heading: ${mRightMaster.getClosedLoopTarget(1)} turn error: ${turnError}")
+        println("left error: $leftVelocityError,  right error: $rightVelocityError")
     }
 
     public override fun stop() {
@@ -509,6 +549,8 @@ public class Drivetrain(
 
     public override fun reset() {
         setPercent(0.0, 0.0)
+        stop()
+        println("drivetrain distances: $leftDistance, $rightDistance")
         mLeftMaster.neutralOutput()
         mRightMaster.neutralOutput()
         brakeMode = false

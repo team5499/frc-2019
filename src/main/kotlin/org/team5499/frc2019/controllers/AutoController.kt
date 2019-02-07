@@ -28,13 +28,14 @@ public class AutoController(subsystems: SubsystemsManager, routines: Routines) :
 
     public override fun start() {
         // TODO choose routine from dashboard
-        // reset()
+        reset()
         // mSubsystems.drivetrain.brakeMode = true
         // mSubsystems.drivetrain.heading = Rotation2d(currentRoutine.startHeading)
+        // mSubsystems.drivetrain.heading = Rotation2d.fromDegrees(0.0)
         // currentAction = currentRoutine.getCurrentAction()
         // currentAction!!.start()
         @Suppress("MagicNumber")
-        mSubsystems.drivetrain.setPosition(12.0)
+        mSubsystems.drivetrain.setVelocity(12.0, 12.0)
     }
 
     public override fun update() {
@@ -60,9 +61,9 @@ public class AutoController(subsystems: SubsystemsManager, routines: Routines) :
     }
 
     public override fun reset() {
-        // currentAction = null
-        // currentRoutine = mRoutines.baseline
-        // mRoutines.resetAll()
-        // isFinished = false
+        currentAction = null
+        currentRoutine = mRoutines.baseline
+        mRoutines.resetAll()
+        isFinished = false
     }
 }

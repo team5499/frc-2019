@@ -110,6 +110,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mRightSlave2.configFactoryDefault()
 
         mGyro.configFactoryDefault()
+        mGyro.setFusedHeading(0.0)
 
         mLiftMaster.configFactoryDefault()
         mLiftSlave.configFactoryDefault()
@@ -152,6 +153,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun autonomousInit() {
+        mSubsystemsManager.resetAll()
         mSandstormController.reset()
         mSandstormController.start()
     }

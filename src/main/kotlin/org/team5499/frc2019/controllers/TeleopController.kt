@@ -37,6 +37,14 @@ public class TeleopController(
         )
         mSubsystems.drivetrain.setPercent(driveSignal)
 
+        // if(mControlBoard.codriverControls.getHatchLow()) {
+        //     mSubsystems.lift.setCarriagePosition()
+        // } else if (mControlBoard.codriverControls.gethatchMid()) {
+        //     mSubsystems.lift.setCarriagePosition()
+        // } else if (mControlBoard.codriverControls.getHatchHigh()) {
+
+        // }
+
         if (mControlBoard.codriverControls.getExaust()) {
             mSubsystems.intake.outtake()
         } else if (mControlBoard.codriverControls.getIntake()) {
