@@ -34,7 +34,7 @@ public class TeleopController(
     @Suppress("ComplexMethod")
     public override fun update() {
         val driveSignal = mDriveHelper.calculateOutput(
-            mControlBoard.driverControls.getThrottle(),
+            -mControlBoard.driverControls.getThrottle(),
             mControlBoard.driverControls.getTurn(),
             mControlBoard.driverControls.getQuickTurn()
         )
