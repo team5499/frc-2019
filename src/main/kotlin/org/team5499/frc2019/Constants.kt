@@ -16,7 +16,7 @@ public object Constants {
         public const val CODRIVER_JOYSTICK_PORT = 2
 
         // driver constants
-        public const val JOYSTICK_DEADBAND = 0.04
+        public const val JOYSTICK_DEADBAND = 0.05
         public const val TURN_MULT = 0.4
 
         // codriver constants
@@ -99,6 +99,11 @@ public object Constants {
         public const val MASTER_TALON_PORT = 4
         public const val SLAVE_TALON_PORT = 5
 
+        public const val KP = 2.5
+        public const val KI = 0.0
+        public const val KD = 0.0
+        public const val KF = 0.0
+
         public const val ENCODER_TICKS_PER_ROTATION = 1024
         public const val MAX_ENCODER_TICKS = 8000
         public const val MIN_ENCODER_TICKS = 50
@@ -118,9 +123,9 @@ public object Constants {
         public const val TALON_PORT = 9
 
         public const val INTAKE_SPEED = 0.6
-        public const val OUTTAKE_SPEED = -0.6
+        public const val OUTTAKE_SPEED = -1.0
         public const val IDLE_SPEED = 0.0
-        public const val HOLD_SPEED = 0.1
+        public const val HOLD_SPEED = 0.2
     }
 
     object Hatch

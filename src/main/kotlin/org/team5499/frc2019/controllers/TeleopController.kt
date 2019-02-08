@@ -50,12 +50,8 @@ public class TeleopController(
         }
 
         val manualElevatorInput = mControlBoard.codriverControls.getManualInput()
-        if (Epsilon.epsilonEquals(manualElevatorInput, Constants.EPSILON)) {
-            if (Epsilon.epsilonEquals(manualElevatorInput, Constants.Input.MANUAL_CONTROL_DEADBAND)) {
-                mSubsystems.lift.setPower(0.0)
-            } else {
-                mSubsystems.lift.setPower(mControlBoard.codriverControls.getManualInput())
-            }
+        if (Epsilon.epsilonEquals(manualElevatorInput, Constants.Input.MANUAL_CONTROL_DEADBAND)) {
+            mSubsystems.lift.setPower(manualElevatorInput)
         } else if (mControlBoard.codriverControls.getHatchLow()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.HATCH_LOW)
         } else if (mControlBoard.codriverControls.getHatchMid()) {

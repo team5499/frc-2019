@@ -537,7 +537,7 @@ public class Drivetrain(
         //     ", right error: ${mRightMaster.getClosedLoopError(0)}"
         // println("heading: $heading degrees, raw gyro: ${mGyro.getFusedHeading()}, gyro offset: ${mGyroOffset}")
         // println("target heading: ${mRightMaster.getClosedLoopTarget(1)} turn error: ${turnError}")
-        println("left error: $leftVelocityError,  right error: $rightVelocityError")
+        // println("left error: $leftVelocityError,  right error: $rightVelocityError")
     }
 
     public override fun stop() {

@@ -28,11 +28,11 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     public enum class ElevatorHeight(val carriageHeightInches: Double = 0.45) {
         BOTTOM(0.45),
         HATCH_LOW(9.0),
-        HATCH_MID(),
-        HATCH_HIGH(),
-        BALL_LOW(),
-        BALL_MID(),
-        BALL_HIGH(),
+        HATCH_MID(1.0),
+        HATCH_HIGH(2.0),
+        BALL_LOW(3.0),
+        BALL_MID(4.0),
+        BALL_HIGH(5.0),
         BALL_HUMAN_PLAYER(21.0)
     }
 
@@ -124,15 +124,14 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         this.mMaster = masterTalon.apply {
             configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10)
             setSensorPhase(true) // check
-            setNeutralMode(NeutralMode.Coast)
             setInverted(true) // check this
 
             configClosedLoopPeakOutput(kElevatorSlot, 1.0)
 
-            config_kP(kElevatorSlot, 2.5, 10)
-            config_kI(kElevatorSlot, 0.0, 10)
-            config_kD(kElevatorSlot, 0.2, 10)
-            config_kF(kElevatorSlot, 0.0, 10)
+            config_kP(kElevatorSlot, Constants.Lift.KP, 10)
+            config_kI(kElevatorSlot, Constants.Lift.KI, 10)
+            config_kD(kElevatorSlot, Constants.Lift.KD, 10)
+            config_kF(kElevatorSlot, Constants.Lift.KF, 10)
             configMotionCruiseVelocity(1000, 10)
             configMotionAcceleration(800, 10)
             selectProfileSlot(kElevatorSlot, 0)
@@ -142,8 +141,8 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
             configPeakCurrentLimit(0, 10)
             configContinuousCurrentLimit(25, 10) // amps
             enableVoltageCompensation(false)
-            configForwardSoftLimitThreshold(Constants.Lift.MIN_ENCODER_TICKS, 10)
-            configReverseSoftLimitThreshold(Constants.Lift.MAX_ENCODER_TICKS, 10)
+            configForwardSoftLimitThreshold(Constants.Lift.MAX_ENCODER_TICKS, 10)
+            configReverseSoftLimitThreshold(Constants.Lift.MIN_ENCODER_TICKS, 10)
             configForwardSoftLimitEnable(true, 10)
             configReverseSoftLimitEnable(true, 10)
         }
@@ -154,7 +153,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         }
 
         mElevatorMode = ElevatorMode.ZERO
-        mZeroed = false
+        mZeroed = false // CHANGE THIS TO FALSE
         // mEncoderPresent = false
         mSetpoint = 0.0
 
@@ -165,7 +164,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         mMaster.set(ControlMode.PercentOutput, 0.0)
     }
 
-    private fun setZero() {
+    public fun setZero() {
         mMaster.getSensorCollection().setQuadraturePosition(0, 0)
     }
 
@@ -173,7 +172,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         mElevatorMode = ElevatorMode.OPEN_LOOP
         val limitedPower = Utils.limit(power, -0.6, 1.0)
         mBrakeMode = true
-        mMaster.set(ControlMode.PercentOutput, limitedPower)
+        mSetpoint = limitedPower
     }
 
     public fun setPositionRaw(ticks: Int) {
@@ -186,6 +185,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         )
         mElevatorMode = ElevatorMode.MOTION_MAGIC
         mSetpoint = positionTicks
+        mMaster.set(ControlMode.MotionMagic, mSetpoint)
     }
 
     public fun setPosition(positionInches: Double) {
@@ -211,6 +211,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         val speed = Utils.limit(ticksPer100ms.toDouble(), Constants.Lift.MAX_VELOCITY_SETPOINT.toDouble())
         mElevatorMode = ElevatorMode.VELOCITY
         mSetpoint = speed
+        mMaster.set(ControlMode.Velocity, speed)
     }
 
     public fun setVelocity(inchesPerSecond: Double) {
@@ -228,6 +229,9 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     public override fun update() {
         // mEncoderPresent = mMaster.getSensorCollection().getPulseWidthRiseToRiseUs() != 0
+        println("elevator current: ${mMaster.getOutputCurrent()} amps")
+        // println("elevator position: $firstStagePositionRaw")
+        // println("elevator setpoint: ${mMaster.getClosedLoopTarget(0)}")
         if (!mZeroed) mElevatorMode = ElevatorMode.ZERO
         when (mElevatorMode) {
             ElevatorMode.ZERO -> {
@@ -239,7 +243,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
                     setZero()
                     mElevatorMode = ElevatorMode.OPEN_LOOP
                 }
-                mMaster.set(ControlMode.PercentOutput, -0.05)
+                mMaster.set(ControlMode.PercentOutput, -0.1)
             }
             ElevatorMode.VELOCITY -> {
                 mMaster.set(ControlMode.Velocity, mSetpoint)

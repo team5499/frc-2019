@@ -40,7 +40,8 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
         mTalon = talon
         mTalon.setNeutralMode(NeutralMode.Coast)
 
-        mTransmission = DCMotorTransmission(-1.0, -1.0, -1.0, -1.0) // check these numbers
+        @Suppress("MagicNumber")
+        mTransmission = DCMotorTransmission(100.0, 100.0, 100.0, 100.0) // bs numbers
 
         mMode = IntakeMode.HOLD
 
@@ -87,9 +88,9 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
         val hold = checkForHold()
         when (mMode) {
             IntakeMode.INTAKE -> {
-                if (hold) {
-                    mMode = IntakeMode.HOLD
-                }
+                // if (hold) {
+                //     mMode = IntakeMode.HOLD
+                // }
             }
             IntakeMode.OUTTAKE -> {}
             IntakeMode.HOLD -> {}
