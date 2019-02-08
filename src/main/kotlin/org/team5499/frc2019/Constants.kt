@@ -7,13 +7,20 @@ public object Constants {
     public const val TALON_UPDATE_PERIOD_MS = 1
     public const val TALON_PIDF_UPDATE_PERIOD_MS = 1
 
+    public const val EPSILON = 1E-5
+
     object Input {
+        // ports
         public const val DRIVER_PORT = 0
         public const val CODRIVER_BUTTON_BOARD_PORT = 1
         public const val CODRIVER_JOYSTICK_PORT = 2
 
-        public const val JOYSTICK_DEADBAND = 0.02
+        // driver constants
+        public const val JOYSTICK_DEADBAND = 0.04
         public const val TURN_MULT = 0.4
+
+        // codriver constants
+        public const val MANUAL_CONTROL_DEADBAND = 0.10
     }
 
     object Drivetrain {
@@ -91,6 +98,11 @@ public object Constants {
     object Lift {
         public const val MASTER_TALON_PORT = 4
         public const val SLAVE_TALON_PORT = 5
+
+        public const val ENCODER_TICKS_PER_ROTATION = 1024
+        public const val MAX_ENCODER_TICKS = 8000
+        public const val MIN_ENCODER_TICKS = 50
+        public const val ZEROING_AMP_THRESHOLD = 10 // check this pls
 
         public const val MAX_VELOCITY_SETPOINT = 1000 // ticks per 100ms
 

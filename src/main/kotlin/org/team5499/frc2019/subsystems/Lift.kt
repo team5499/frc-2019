@@ -16,11 +16,6 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     companion object {
         private const val kElevatorSlot = 0
-        private const val kTicksPerRotation = 1024 // check this
-        private const val kZeroingThreshold = 500
-
-        public const val kMaxElevatorTicks = 8000 // check this
-        public const val kMinElevatorTicks = 50 // check this
     }
 
     public enum class ElevatorMode {
@@ -30,14 +25,14 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         ZERO
     }
 
-    public enum class ElevatorHeight(val carriageHeightInches: Double = 0.0) {
+    public enum class ElevatorHeight(val carriageHeightInches: Double = 0.45) {
         BOTTOM(0.45),
         HATCH_LOW(9.0),
         HATCH_MID(),
-        HATCH_HIGH,
-        BALL_LOW,
-        BALL_MID,
-        BALL_HIGH,
+        HATCH_HIGH(),
+        BALL_LOW(),
+        BALL_MID(),
+        BALL_HIGH(),
         BALL_HUMAN_PLAYER(21.0)
     }
 
@@ -147,8 +142,8 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
             configPeakCurrentLimit(0, 10)
             configContinuousCurrentLimit(25, 10) // amps
             enableVoltageCompensation(false)
-            configForwardSoftLimitThreshold(kMaxElevatorTicks, 10)
-            configReverseSoftLimitThreshold(kMinElevatorTicks, 10)
+            configForwardSoftLimitThreshold(Constants.Lift.MIN_ENCODER_TICKS, 10)
+            configReverseSoftLimitThreshold(Constants.Lift.MAX_ENCODER_TICKS, 10)
             configForwardSoftLimitEnable(true, 10)
             configReverseSoftLimitEnable(true, 10)
         }
@@ -195,7 +190,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     public fun setPosition(positionInches: Double) {
         val positionTicks = Utils.inchesToEncoderTicks(
-            kTicksPerRotation,
+            Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
             positionInches
         )
@@ -237,14 +232,14 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         when (mElevatorMode) {
             ElevatorMode.ZERO -> {
                 // drive downwards until hall effect detects carriage
-                if (mZeroed || mMaster.getSensorCollection().getAnalogIn() > kZeroingThreshold) {
+                if (mZeroed || mMaster.getOutputCurrent() > Constants.Lift.ZEROING_AMP_THRESHOLD) {
                     mZeroed = true
                     mMaster.set(ControlMode.PercentOutput, 0.0)
                     mSetpoint = 0.0
                     setZero()
                     mElevatorMode = ElevatorMode.OPEN_LOOP
                 }
-                // mMaster.set(ControlMode.PercentOutput, -0.05)
+                mMaster.set(ControlMode.PercentOutput, -0.05)
             }
             ElevatorMode.VELOCITY -> {
                 mMaster.set(ControlMode.Velocity, mSetpoint)
@@ -266,6 +261,6 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     }
 
     public override fun reset() {
-        mSetpoint = 0.0
+        stop()
     }
 }

@@ -2,11 +2,12 @@ package org.team5499.frc2019.controllers
 
 import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.input.ControlBoard
+import org.team5499.frc2019.subsystems.Lift.ElevatorHeight
+import org.team5499.frc2019.Constants
 
 import org.team5499.monkeyLib.Controller
 import org.team5499.monkeyLib.input.DriveHelper
-
-import org.team5499.frc2019.subsystems.Lift.ElevatorHeight
+import org.team5499.monkeyLib.math.Epsilon
 
 public class TeleopController(
     subsystems: SubsystemsManager,
@@ -48,8 +49,25 @@ public class TeleopController(
             mSubsystems.intake.hold()
         }
 
-        if (mControlBoard.codriverControls.getHatchLow()) {
+        val manualElevatorInput = mControlBoard.codriverControls.getManualInput()
+        if (Epsilon.epsilonEquals(manualElevatorInput, Constants.EPSILON)) {
+            if (Epsilon.epsilonEquals(manualElevatorInput, Constants.Input.MANUAL_CONTROL_DEADBAND)) {
+                mSubsystems.lift.setPower(0.0)
+            } else {
+                mSubsystems.lift.setPower(mControlBoard.codriverControls.getManualInput())
+            }
+        } else if (mControlBoard.codriverControls.getHatchLow()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.HATCH_LOW)
+        } else if (mControlBoard.codriverControls.getHatchMid()) {
+            mSubsystems.lift.setIntakeHeight(ElevatorHeight.HATCH_MID)
+        } else if (mControlBoard.codriverControls.getHatchHigh()) {
+            mSubsystems.lift.setIntakeHeight(ElevatorHeight.HATCH_HIGH)
+        } else if (mControlBoard.codriverControls.getBallLow()) {
+            mSubsystems.lift.setIntakeHeight(ElevatorHeight.BALL_LOW)
+        } else if (mControlBoard.codriverControls.getBallMid()) {
+            mSubsystems.lift.setIntakeHeight(ElevatorHeight.BALL_MID)
+        } else if (mControlBoard.codriverControls.getBallHigh()) {
+            mSubsystems.lift.setIntakeHeight(ElevatorHeight.BALL_HIGH)
         } else if (mControlBoard.codriverControls.getStowElevator()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.BOTTOM)
         } else if (mControlBoard.codriverControls.getBallHumanPlayer()) {
