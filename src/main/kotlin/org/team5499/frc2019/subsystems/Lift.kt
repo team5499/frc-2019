@@ -46,7 +46,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     // first stage numbers
     public val firstStagePositionRaw: Int
-        get() = mMaster.getSensorCollection().getQuadraturePosition()
+        get() = mMaster.getSelectedSensorPosition(0)
 
     public val firstStagePositionInches: Double
         get() = Utils.encoderTicksToInches(
