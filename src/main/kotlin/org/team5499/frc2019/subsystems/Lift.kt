@@ -66,7 +66,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         )
 
     public val firstStageVelocityRaw: Int
-        get() = mMaster.getSensorCollection().getQuadratureVelocity()
+        get() = mMaster.getSelectedSensorVelocity(0)
 
     public val firstStageVelocityInchesPerSecond: Double
         get() = Utils.encoderTicksPer100MsToInchesPerSecond(
@@ -165,7 +165,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     }
 
     public fun setZero() {
-        mMaster.getSensorCollection().setQuadraturePosition(0, 0)
+        mMaster.setSelectedSensorPosition(0, 0, 0)
     }
 
     public fun setPower(power: Double) {
@@ -229,21 +229,27 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     public override fun update() {
         // mEncoderPresent = mMaster.getSensorCollection().getPulseWidthRiseToRiseUs() != 0
-        println("elevator current: ${mMaster.getOutputCurrent()} amps")
+        // println("elevator speed: ${mMaster.getSelectedSensorVelocity(0)}")
         // println("elevator position: $firstStagePositionRaw")
         // println("elevator setpoint: ${mMaster.getClosedLoopTarget(0)}")
-        if (!mZeroed) mElevatorMode = ElevatorMode.ZERO
+        if (!mZeroed) {
+            mElevatorMode = ElevatorMode.ZERO
+            mMaster.configReverseSoftLimitEnable(false)
+        }
         when (mElevatorMode) {
             ElevatorMode.ZERO -> {
                 // drive downwards until hall effect detects carriage
-                if (mZeroed || mMaster.getOutputCurrent() > Constants.Lift.ZEROING_AMP_THRESHOLD) {
+                if (Math.abs(mMaster.getSelectedSensorVelocity(0)) < Constants.Lift.ZEROING_THRESHOLD) {
                     mZeroed = true
                     mMaster.set(ControlMode.PercentOutput, 0.0)
                     mSetpoint = 0.0
                     setZero()
                     mElevatorMode = ElevatorMode.OPEN_LOOP
+                    mMaster.configReverseSoftLimitEnable(true)
+                    println("Elevator zeroed!")
                 }
-                mMaster.set(ControlMode.PercentOutput, -0.1)
+                // println("going down!")
+                mMaster.set(ControlMode.PercentOutput, -0.3)
             }
             ElevatorMode.VELOCITY -> {
                 mMaster.set(ControlMode.Velocity, mSetpoint)

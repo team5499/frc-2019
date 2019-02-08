@@ -165,10 +165,10 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun teleopInit() {
-        mSubsystemsManager.resetAll()
+        // mSubsystemsManager.resetAll()
         mTeleopController.reset()
         mTeleopController.start()
-        mLift.setZero()
+        // mLift.setZero()
     }
 
     override fun teleopPeriodic() {

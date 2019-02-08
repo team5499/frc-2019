@@ -107,7 +107,7 @@ public object Constants {
         public const val ENCODER_TICKS_PER_ROTATION = 1024
         public const val MAX_ENCODER_TICKS = 8000
         public const val MIN_ENCODER_TICKS = 50
-        public const val ZEROING_AMP_THRESHOLD = 10 // check this pls
+        public const val ZEROING_THRESHOLD = 10 // check this pls
 
         public const val MAX_VELOCITY_SETPOINT = 1000 // ticks per 100ms
 
@@ -131,6 +131,6 @@ public object Constants {
     object Hatch
 
     object Auto {
-        public const val LOOKAHEAD_DISTANCE: Double = 12.0
+        public const val LOOKAHEAD_DISTANCE = 12.0
     }
 }
