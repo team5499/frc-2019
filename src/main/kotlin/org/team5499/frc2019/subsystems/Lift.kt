@@ -26,14 +26,14 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     }
 
     public enum class ElevatorHeight(val carriageHeightInches: Double = 0.45) {
-        BOTTOM(0.45),
-        HATCH_LOW(9.0),
-        HATCH_MID(1.0),
-        HATCH_HIGH(2.0),
-        BALL_LOW(3.0),
-        BALL_MID(4.0),
-        BALL_HIGH(5.0),
-        BALL_HUMAN_PLAYER(21.0)
+        BOTTOM(Constants.Lift.STOW_HEIGHT),
+        HATCH_LOW(Constants.Lift.HATCH_LOW_HEIGHT),
+        HATCH_MID(Constants.Lift.HATCH_MID_HEIGHT),
+        HATCH_HIGH(Constants.Lift.HATCH_HIGH_HEIGHT),
+        BALL_LOW(Constants.Lift.BALL_LOW_HEIGHT),
+        BALL_MID(Constants.Lift.BALL_MID_HEIGHT),
+        BALL_HIGH(Constants.Lift.BALL_HIGH_HEIGHT),
+        BALL_HUMAN_PLAYER(Constants.Lift.BALL_HUMAN_PLAYER_HEIGHT)
     }
 
     private val mMaster: LazyTalonSRX
@@ -122,29 +122,29 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     init {
         this.mMaster = masterTalon.apply {
-            configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10)
+            configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
             setSensorPhase(true) // check
             setInverted(true) // check this
 
             configClosedLoopPeakOutput(kElevatorSlot, 1.0)
 
-            config_kP(kElevatorSlot, Constants.Lift.KP, 10)
-            config_kI(kElevatorSlot, Constants.Lift.KI, 10)
-            config_kD(kElevatorSlot, Constants.Lift.KD, 10)
-            config_kF(kElevatorSlot, Constants.Lift.KF, 10)
-            configMotionCruiseVelocity(1000, 10)
-            configMotionAcceleration(800, 10)
+            config_kP(kElevatorSlot, Constants.Lift.KP, 0)
+            config_kI(kElevatorSlot, Constants.Lift.KI, 0)
+            config_kD(kElevatorSlot, Constants.Lift.KD, 0)
+            config_kF(kElevatorSlot, Constants.Lift.KF, 0)
+            configMotionCruiseVelocity(Constants.Lift.MOTION_MAGIC_VELOCITY, 0)
+            configMotionAcceleration(Constants.Lift.MOTION_MAGIC_ACCELERATION, 0)
             selectProfileSlot(kElevatorSlot, 0)
 
             enableCurrentLimit(true)
-            configPeakCurrentDuration(0, 10)
-            configPeakCurrentLimit(0, 10)
-            configContinuousCurrentLimit(25, 10) // amps
+            configPeakCurrentDuration(0, 0)
+            configPeakCurrentLimit(0, 0)
+            configContinuousCurrentLimit(25, 0) // amps
             enableVoltageCompensation(false)
-            configForwardSoftLimitThreshold(Constants.Lift.MAX_ENCODER_TICKS, 10)
-            configReverseSoftLimitThreshold(Constants.Lift.MIN_ENCODER_TICKS, 10)
-            configForwardSoftLimitEnable(true, 10)
-            configReverseSoftLimitEnable(true, 10)
+            configForwardSoftLimitThreshold(Constants.Lift.MAX_ENCODER_TICKS, 0)
+            configReverseSoftLimitThreshold(Constants.Lift.MIN_ENCODER_TICKS, 0)
+            configForwardSoftLimitEnable(true, 0)
+            configReverseSoftLimitEnable(true, 0)
         }
 
         this.mSlave = slaveTalon.apply {

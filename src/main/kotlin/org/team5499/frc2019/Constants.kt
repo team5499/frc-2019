@@ -96,14 +96,31 @@ public object Constants {
     }
 
     object Lift {
+        // ports
         public const val MASTER_TALON_PORT = 4
         public const val SLAVE_TALON_PORT = 5
 
+        // pid
         public const val KP = 2.5
         public const val KI = 0.0
         public const val KD = 0.0
         public const val KF = 0.0
 
+        public const val MOTION_MAGIC_VELOCITY = 1000
+        public const val MOTION_MAGIC_ACCELERATION = 800
+
+        // heights (carriage height in inches)
+        public const val HOLE_SPACING = 3.0
+        public const val STOW_HEIGHT = 0.3
+        public const val HATCH_LOW_HEIGHT = 8.0
+        public const val HATCH_MID_HEIGHT = HATCH_LOW_HEIGHT + HOLE_SPACING
+        public const val HATCH_HIGH_HEIGHT = HATCH_MID_HEIGHT + HOLE_SPACING
+        public const val BALL_LOW_HEIGHT = HOLE_SPACING
+        public const val BALL_MID_HEIGHT = BALL_LOW_HEIGHT + HOLE_SPACING
+        public const val BALL_HIGH_HEIGHT = BALL_MID_HEIGHT + HOLE_SPACING
+        public const val BALL_HUMAN_PLAYER_HEIGHT = 20.0
+
+        // constants
         public const val ENCODER_TICKS_PER_ROTATION = 1024
         public const val MAX_ENCODER_TICKS = 8000
         public const val MIN_ENCODER_TICKS = 50
@@ -114,6 +131,7 @@ public object Constants {
         public const val ACCEPTABLE_VELOCITY_THRESHOLD = 3.0 // inches / s
         public const val ACCEPTABLE_DISTANCE_ERROR = 1.0 // inche
 
+        // dimension
         public const val SPROCKET_DIAMETER = 1.23 // inches
         public const val SPROCKET_RADIUS = SPROCKET_DIAMETER / 2.0
         public const val SPROCKET_CIR = SPROCKET_DIAMETER * Math.PI
