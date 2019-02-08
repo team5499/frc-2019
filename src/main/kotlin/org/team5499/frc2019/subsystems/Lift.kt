@@ -18,7 +18,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         private const val kElevatorSlot = 0
     }
 
-    public enum class ElevatorMode {
+    private enum class ElevatorMode {
         OPEN_LOOP,
         VELOCITY,
         MOTION_MAGIC,
