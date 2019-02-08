@@ -50,7 +50,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     public val firstStagePositionInches: Double
         get() = Utils.encoderTicksToInches(
-            kTicksPerRotation,
+            Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
             firstStagePositionRaw
         )
@@ -60,7 +60,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     public val firstStagePositionErrorInches: Double
         get() = Utils.encoderTicksToInches(
-            kTicksPerRotation,
+            Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
             firstStagePositionErrorRaw
         )
@@ -70,7 +70,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     public val firstStageVelocityInchesPerSecond: Double
         get() = Utils.encoderTicksPer100MsToInchesPerSecond(
-            kTicksPerRotation,
+            Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
             firstStageVelocityRaw
         )
@@ -80,7 +80,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     public val firstStageVelocityErrorInchesPerSecond: Double
         get() = Utils.encoderTicksPer100MsToInchesPerSecond(
-            kTicksPerRotation,
+            Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
             firstStageVelocityErrorRaw
         )
@@ -181,8 +181,8 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         mBrakeMode = true
         val positionTicks = Utils.limit(
             ticks.toDouble(),
-            kMinElevatorTicks.toDouble(),
-            kMaxElevatorTicks.toDouble()
+            Constants.Lift.MIN_ENCODER_TICKS.toDouble(),
+            Constants.Lift.MAX_ENCODER_TICKS.toDouble()
         )
         mElevatorMode = ElevatorMode.MOTION_MAGIC
         mSetpoint = positionTicks
@@ -215,7 +215,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     public fun setVelocity(inchesPerSecond: Double) {
         val speed = Utils.inchesPerSecondToEncoderTicksPer100Ms(
-            kTicksPerRotation,
+            Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
             inchesPerSecond
         )
