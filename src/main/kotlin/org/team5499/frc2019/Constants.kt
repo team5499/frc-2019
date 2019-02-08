@@ -110,14 +110,14 @@ public object Constants {
         public const val MOTION_MAGIC_ACCELERATION = 800
 
         // heights (carriage height in inches)
-        public const val HOLE_SPACING = 3.0
+        public const val ROCKET_HOLE_SPACING = 3.0
         public const val STOW_HEIGHT = 0.3
         public const val HATCH_LOW_HEIGHT = 4.0
-        public const val HATCH_MID_HEIGHT = HATCH_LOW_HEIGHT + HOLE_SPACING
-        public const val HATCH_HIGH_HEIGHT = HATCH_MID_HEIGHT + HOLE_SPACING
+        public const val HATCH_MID_HEIGHT = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
+        public const val HATCH_HIGH_HEIGHT = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING
         public const val BALL_LOW_HEIGHT = 5.0
-        public const val BALL_MID_HEIGHT = BALL_LOW_HEIGHT + HOLE_SPACING
-        public const val BALL_HIGH_HEIGHT = BALL_MID_HEIGHT + HOLE_SPACING
+        public const val BALL_MID_HEIGHT = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING
+        public const val BALL_HIGH_HEIGHT = BALL_MID_HEIGHT + ROCKET_HOLE_SPACING
         public const val BALL_HUMAN_PLAYER_HEIGHT = 20.0
 
         // constants
@@ -125,6 +125,7 @@ public object Constants {
         public const val MAX_ENCODER_TICKS = 8000
         public const val MIN_ENCODER_TICKS = 50
         public const val ZEROING_THRESHOLD = 10 // check this pls
+        public const val ZEROING_SPEED = -0.2 // percent output
 
         public const val MAX_VELOCITY_SETPOINT = 1000 // ticks per 100ms
 

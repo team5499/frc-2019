@@ -249,7 +249,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
                     println("Elevator zeroed!")
                 }
                 // println("going down!")
-                mMaster.set(ControlMode.PercentOutput, -0.3)
+                mMaster.set(ControlMode.PercentOutput, Constants.Lift.ZEROING_SPEED)
             }
             ElevatorMode.VELOCITY -> {
                 mMaster.set(ControlMode.Velocity, mSetpoint)
