@@ -125,11 +125,11 @@ public class Drivetrain(
             return Utils.encoderTicksToInches(
                 Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
                 Constants.Drivetrain.WHEEL_CIR,
-                mLeftMaster.sensorCollection.quadraturePosition
+                mLeftMaster.getSelectedSensorPosition(0)
             )
         }
         set(inches) {
-            mLeftMaster.sensorCollection.setQuadraturePosition(
+            mLeftMaster.setSelectedSensorPosition(0,
                 Utils.inchesToEncoderTicks(Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
                 Constants.Drivetrain.WHEEL_CIR,
                 inches), 0)
@@ -140,16 +140,19 @@ public class Drivetrain(
             return Utils.encoderTicksToInches(
                 Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
                 Constants.Drivetrain.WHEEL_CIR,
-                mRightMaster.sensorCollection.quadraturePosition
+                mRightMaster.getSelectedSensorPosition(0)
             )
         }
         set(inches) {
-            mRightMaster.getSensorCollection().setQuadraturePosition(
+            mRightMaster.setSelectedSensorPosition(
+                0,
                 Utils.inchesToEncoderTicks(
                     Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
                     Constants.Drivetrain.WHEEL_CIR,
                     inches
-                ), 0)
+                ),
+                0
+            )
         }
 
     public val leftVelocity: Double
@@ -314,7 +317,7 @@ public class Drivetrain(
             configPeakOutputForward(+1.0, 0)
             configPeakOutputReverse(-1.0, 0)
             setInverted(false)
-            setSensorPhase(false)
+            setSensorPhase(true)
         }
 
         mRightMaster.apply {
@@ -323,7 +326,7 @@ public class Drivetrain(
             configPeakOutputForward(+1.0, 0)
             configPeakOutputReverse(-1.0, 0)
             setInverted(true)
-            setSensorPhase(false)
+            setSensorPhase(true)
         }
     }
 
@@ -335,7 +338,7 @@ public class Drivetrain(
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
             configPeakOutputForward(+1.0, 0)
             configPeakOutputReverse(-1.0, 0)
-            setSensorPhase(false)
+            setSensorPhase(true)
             config_kP(0, Constants.Drivetrain.VEL_KP, 0)
             config_kI(0, Constants.Drivetrain.VEL_KI, 0)
             config_kD(0, Constants.Drivetrain.VEL_KD, 0)
@@ -358,13 +361,8 @@ public class Drivetrain(
 
         mRightMaster.apply {
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
-            configRemoteFeedbackFilter(0x00, RemoteSensorSource.Off, 0, 0)
-            configRemoteFeedbackFilter(0x00, RemoteSensorSource.Off, 1, 0)
-            configSensorTerm(SensorTerm.Sum0, FeedbackDevice.SoftwareEmulatedSensor, 0)
-            configSensorTerm(SensorTerm.Sum1, FeedbackDevice.SoftwareEmulatedSensor, 0)
             configSelectedFeedbackCoefficient(1.0, 1, 0)
             configSelectedFeedbackCoefficient(1.0, 0, 0)
-            configSelectedFeedbackSensor(FeedbackDevice.Tachometer, 1, 0)
             configPeakOutputForward(+1.0, 0)
             configPeakOutputReverse(-1.0, 0)
             setSensorPhase(true)
@@ -397,7 +395,7 @@ public class Drivetrain(
             configPeakOutputForward(+1.0, 0)
             configPeakOutputReverse(-1.0, 0)
             follow(mRightMaster, FollowerType.AuxOutput1)
-            setSensorPhase(false)
+            setSensorPhase(true)
             setInverted(true)
         }
 

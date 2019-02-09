@@ -48,10 +48,10 @@ public object Constants {
         public const val ACCEPTABLE_DISTANCE_ERROR = 2.0 // inches
 
         // pid constants
-        public const val VEL_KP = 0.5
+        public const val VEL_KP = 0.1
         public const val VEL_KI = 0.0
         public const val VEL_KD = 0.0
-        public const val VEL_KF = 0.15
+        public const val VEL_KF = 0.1
         public const val VEL_IZONE = 10
         public const val VEL_MAX_OUTPUT = 1.0
 
@@ -69,7 +69,7 @@ public object Constants {
         public const val ANGLE_IZONE = 10
         public const val ANGLE_MAX_OUTPUT = 1.0
 
-        public const val TURN_KP = 1.5
+        public const val TURN_KP = 1.0
         public const val TURN_KI = 0.0
         public const val TURN_KD = 0.0
         public const val TURN_KF = 0.0
