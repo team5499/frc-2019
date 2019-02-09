@@ -23,6 +23,8 @@ public interface ICodriverControls {
 
     public fun getBallHigh(): Boolean
 
+    public fun getBallHumanPlayer(): Boolean
+
     // cargo mech
     public fun getIntake(): Boolean
 
