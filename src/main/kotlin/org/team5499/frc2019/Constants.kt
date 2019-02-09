@@ -16,7 +16,7 @@ public object Constants {
         public const val CODRIVER_JOYSTICK_PORT = 2
 
         // driver constants
-        public const val JOYSTICK_DEADBAND = 0.05
+        public const val JOYSTICK_DEADBAND = 0.07
         public const val TURN_MULT = 0.4
 
         // codriver constants
@@ -110,12 +110,12 @@ public object Constants {
         public const val MOTION_MAGIC_ACCELERATION = 800
 
         // heights (carriage height in inches)
-        public const val ROCKET_HOLE_SPACING = 3.0
+        public const val ROCKET_HOLE_SPACING = 27.5
         public const val STOW_HEIGHT = 0.3
         public const val HATCH_LOW_HEIGHT = 4.0
         public const val HATCH_MID_HEIGHT = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
         public const val HATCH_HIGH_HEIGHT = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING
-        public const val BALL_LOW_HEIGHT = 5.0
+        public const val BALL_LOW_HEIGHT = 4.0
         public const val BALL_MID_HEIGHT = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING
         public const val BALL_HIGH_HEIGHT = BALL_MID_HEIGHT + ROCKET_HOLE_SPACING
         public const val BALL_HUMAN_PLAYER_HEIGHT = 20.0
@@ -142,7 +142,7 @@ public object Constants {
         public const val TALON_PORT = 9
 
         public const val INTAKE_SPEED = 0.6
-        public const val OUTTAKE_SPEED = -1.0
+        public const val OUTTAKE_SPEED = -0.45
         public const val IDLE_SPEED = 0.0
         public const val HOLD_SPEED = 0.2
     }

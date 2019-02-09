@@ -130,7 +130,12 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision)
 
         // path init
-        mPathGenerator = PathGenerator(0.0, 0.0, 0.0, 0.0)
+        mPathGenerator = PathGenerator(
+            Constants.Drivetrain.MAX_VELOCITY,
+            Constants.Drivetrain.MAX_ACCELERATION,
+            0.0,
+            0.0
+        )
         mPaths = Paths(mPathGenerator)
         mRoutines = Routines(mPaths, mSubsystemsManager)
 
