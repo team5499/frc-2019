@@ -4,15 +4,15 @@ import org.team5499.monkeyLib.Subsystem
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
 import org.team5499.monkeyLib.math.physics.DCMotorTransmission
 import org.team5499.monkeyLib.util.CircularDoubleBuffer
+import org.team5499.monkeyLib.util.time.ITimer
+import org.team5499.monkeyLib.util.time.WPITimer
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
 
 import org.team5499.frc2019.Constants
 
-import edu.wpi.first.wpilibj.Timer
-
-public class Intake(talon: LazyTalonSRX) : Subsystem() {
+public class Intake(talon: LazyTalonSRX, timer: ITimer = WPITimer()) : Subsystem() {
 
     companion object {
         public const val kBufferSize = 10
@@ -31,7 +31,7 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
 
     private var mMode: IntakeMode
     private val mTransmission: DCMotorTransmission
-    private val mTimer: Timer
+    private val mTimer: ITimer
 
     private val mVelocityBuffer: CircularDoubleBuffer
     private val mTimeBuffer: CircularDoubleBuffer
@@ -40,11 +40,12 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
         mTalon = talon
         mTalon.setNeutralMode(NeutralMode.Coast)
 
-        mTransmission = DCMotorTransmission(-1.0, -1.0, -1.0, -1.0) // check these numbers
+        @Suppress("MagicNumber")
+        mTransmission = DCMotorTransmission(100.0, 100.0, 100.0, 100.0) // bs numbers
 
         mMode = IntakeMode.HOLD
 
-        mTimer = Timer()
+        mTimer = timer
         mTimer.start()
 
         mVelocityBuffer = CircularDoubleBuffer(kBufferSize)
@@ -67,7 +68,7 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
     }
 
     private fun checkForHold(): Boolean {
-        val voltage = mTalon.getBusVoltage() // this may not give output voltage
+        val voltage = mTalon.getMotorOutputVoltage()
         val current = mTalon.getOutputCurrent()
         val theorheticalSpeed = mTransmission.freeSpeedAtVoltage(voltage)
         val actualSpeed = mTransmission.getSpeedForVoltageAndAmperage(voltage, current)
@@ -87,9 +88,9 @@ public class Intake(talon: LazyTalonSRX) : Subsystem() {
         val hold = checkForHold()
         when (mMode) {
             IntakeMode.INTAKE -> {
-                if (hold) {
-                    mMode = IntakeMode.HOLD
-                }
+                // if (hold) {
+                //     mMode = IntakeMode.HOLD
+                // }
             }
             IntakeMode.OUTTAKE -> {}
             IntakeMode.HOLD -> {}

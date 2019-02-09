@@ -1,4 +1,4 @@
-package org.team5499.frc2019.actions
+package org.team5499.frc2019.auto.actions
 
 import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.frc2019.Constants
@@ -41,8 +41,8 @@ public class TurnAction(
     }
 
     public override fun update() {
-        mIsTurning = ((Constants.PID.ACCEPTABLE_TURN_ERROR > abs(drivetrain.turnError)) &&
-            (Constants.PID.ACCEPTABLE_VELOCITY_THRESHOLD > abs(drivetrain.angularVelocity)))
+        mIsTurning = ((Constants.Drivetrain.ACCEPTABLE_TURN_ERROR > abs(drivetrain.turnError)) &&
+            (Constants.Drivetrain.ACCEPTABLE_VELOCITY_THRESHOLD > abs(drivetrain.angularVelocity)))
     }
 
     public override fun next(): Boolean {

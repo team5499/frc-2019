@@ -1,4 +1,4 @@
-package org.team5499.frc2019.actions
+package org.team5499.frc2019.auto.actions
 
 import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.frc2019.Constants
@@ -22,7 +22,7 @@ public class PathAction(
 
     // The actuall class from MonkeyLib that does all the math for path following
     private val mPathfollower: PathFollower = PathFollower(path,
-                            Constants.Dimensions.WHEEL_BASE, Constants.Auto.LOOKAHEAD_DISTANCE)
+                            Constants.Drivetrain.WHEEL_BASE, Constants.Auto.LOOKAHEAD_DISTANCE)
 
     // Called every tick
     public override fun update() {

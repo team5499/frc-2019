@@ -1,4 +1,4 @@
-package org.team5499.frc2019.actions
+package org.team5499.frc2019.auto.actions
 
 import org.team5499.frc2019.subsystems.Lift
 import org.team5499.frc2019.Constants
@@ -29,8 +29,8 @@ public class LiftAction(
     // Called every tick
     public override fun update() {
         // calculate if we're still moving
-        mIsMoving = ((lift.secondStageVelocityInchesPerSecond >= Constants.PID.ACCEPTABLE_VELOCITY_THRESHOLD_LIFT) ||
-            (abs(lift.secondStagePositionErrorInches) > (Constants.PID.ACCEPTABLE_DISTANCE_ERROR_LIFT)))
+        mIsMoving = ((lift.secondStageVelocityInchesPerSecond >= Constants.Lift.ACCEPTABLE_VELOCITY_THRESHOLD) ||
+            (abs(lift.secondStagePositionErrorInches) > (Constants.Lift.ACCEPTABLE_DISTANCE_ERROR)))
     }
 
     // Returns true if we are ready to move on to the next action

@@ -2,6 +2,7 @@ package org.team5499.frc2019.input
 
 public interface IDriverControls {
 
+    // normal speeds
     public fun getThrottle(): Double
 
     public fun getTurn(): Double
@@ -12,7 +13,6 @@ public interface IDriverControls {
     public fun getRight(): Double
 
     // other methods
-
     public fun getQuickTurn(): Boolean
 
     public fun getCreep(): Boolean

@@ -1,4 +1,4 @@
-package org.team5499.frc2019.actions
+package org.team5499.frc2019.auto.actions
 
 import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.frc2019.Constants
@@ -32,8 +32,8 @@ public class DriveStraightAction(
     }
 
     public override fun next(): Boolean {
-        mIsDriving = ((Constants.PID.ACCEPTABLE_DISTANCE_ERROR > abs(drivetrain.positionError)) &&
-            (Constants.PID.ACCEPTABLE_VELOCITY_THRESHOLD > abs(drivetrain.averageVelocity)))
+        mIsDriving = ((Constants.Drivetrain.ACCEPTABLE_DISTANCE_ERROR > abs(drivetrain.positionError)) &&
+            (Constants.Drivetrain.ACCEPTABLE_VELOCITY_THRESHOLD > abs(drivetrain.averageVelocity)))
 
         // Return true if super.next() is true or
         // the distance error is less than the acceptable distance error/velocity defined in PID.
