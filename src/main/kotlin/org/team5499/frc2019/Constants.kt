@@ -1,29 +1,12 @@
 package org.team5499.frc2019
 
-import org.team5499.dashboard.Dashboard
-import kotlin.reflect.KProperty
-import kotlin.reflect.KClass
-import kotlin.reflect.full.memberProperties
-import kotlin.reflect.KVisibility
+import org.team5499.dashboard.DashboardVar
 
 @SuppressWarnings("MagicNumber")
 public object Constants {
 
     fun initConstants() {
-        initClassProps(Constants::class)
-    }
-
-    private fun initClassProps(clazz: KClass<*>) {
-        clazz.memberProperties.forEach({
-            if (it.visibility == KVisibility.PUBLIC) {
-                println("${it.name}")
-                it.getter.call(clazz)
-            }
-            // println("$clazz : ${it.get(clazz)}")
-        })
-        clazz.nestedClasses.forEach({
-            initClassProps(it)
-        })
+        DashboardVar.initClassProps(Constants::class)
     }
 
     public const val DASHBOARD_PORT = 5800
@@ -54,44 +37,44 @@ public object Constants {
         public var ACCEPTALE_VELOCITY_THRESHOLD_WRIST = 3.0 // inches / s
         public var ACCEPTABLE_DISTANCE_ERROR_WRIST = 1.0 // inches
 
-        public var VEL_KP by DashboardDelegate(2.5)
-        public var VEL_KI by DashboardDelegate(0.0)
-        public var VEL_KD by DashboardDelegate(0.0)
-        public var VEL_KF by DashboardDelegate(0.95)
-        public var VEL_IZONE by DashboardDelegate(10)
-        public var VEL_MAX_OUTPUT by DashboardDelegate(1.0)
+        public var VEL_KP by DashboardVar(2.5)
+        public var VEL_KI by DashboardVar(0.0)
+        public var VEL_KD by DashboardVar(0.0)
+        public var VEL_KF by DashboardVar(0.95)
+        public var VEL_IZONE by DashboardVar(10)
+        public var VEL_MAX_OUTPUT by DashboardVar(1.0)
 
-        public var POS_KP by DashboardDelegate(0.79)
-        public var POS_KI by DashboardDelegate(0.0)
-        public var POS_KD by DashboardDelegate(0.3)
-        public var POS_KF by DashboardDelegate(0.0)
-        public var POS_IZONE by DashboardDelegate(10)
-        public var POS_MAX_OUTPUT by DashboardDelegate(0.5)
+        public var POS_KP by DashboardVar(0.79)
+        public var POS_KI by DashboardVar(0.0)
+        public var POS_KD by DashboardVar(0.3)
+        public var POS_KF by DashboardVar(0.0)
+        public var POS_IZONE by DashboardVar(10)
+        public var POS_MAX_OUTPUT by DashboardVar(0.5)
 
-        public var ANGLE_KP by DashboardDelegate(2.0)
-        public var ANGLE_KI by DashboardDelegate(0.0)
-        public var ANGLE_KD by DashboardDelegate(0.0)
-        public var ANGLE_KF by DashboardDelegate(0.0)
-        public var ANGLE_IZONE by DashboardDelegate(10)
-        public var ANGLE_MAX_OUTPUT by DashboardDelegate(1.0)
+        public var ANGLE_KP by DashboardVar(2.0)
+        public var ANGLE_KI by DashboardVar(0.0)
+        public var ANGLE_KD by DashboardVar(0.0)
+        public var ANGLE_KF by DashboardVar(0.0)
+        public var ANGLE_IZONE by DashboardVar(10)
+        public var ANGLE_MAX_OUTPUT by DashboardVar(1.0)
 
-        public var TURN_KP by DashboardDelegate(1.3)
-        public var TURN_KI by DashboardDelegate(0.0)
-        public var TURN_KD by DashboardDelegate(12.0)
-        public var TURN_KF by DashboardDelegate(0.0)
-        public var TURN_IZONE by DashboardDelegate(10)
-        public var TURN_MAX_OUTPUT by DashboardDelegate(1.0)
+        public var TURN_KP by DashboardVar(1.3)
+        public var TURN_KI by DashboardVar(0.0)
+        public var TURN_KD by DashboardVar(12.0)
+        public var TURN_KF by DashboardVar(0.0)
+        public var TURN_IZONE by DashboardVar(10)
+        public var TURN_MAX_OUTPUT by DashboardVar(1.0)
 
-        public var FIXED_KP by DashboardDelegate(0.1)
-        public var FIXED_KI by DashboardDelegate(0.0)
-        public var FIXED_KD by DashboardDelegate(0.0)
-        public var FIXED_KF by DashboardDelegate(0.0)
-        public var FIXED_IZONE by DashboardDelegate(10)
-        public var FIXED_MAX_OUTPUT by DashboardDelegate(0.5)
+        public var FIXED_KP by DashboardVar(0.1)
+        public var FIXED_KI by DashboardVar(0.0)
+        public var FIXED_KD by DashboardVar(0.0)
+        public var FIXED_KF by DashboardVar(0.0)
+        public var FIXED_IZONE by DashboardVar(10)
+        public var FIXED_MAX_OUTPUT by DashboardVar(0.5)
 
-        public var INVERT_FIXED_AUX_PIDF by DashboardDelegate(true)
-        public var INVERT_ANGLE_AUX_PIDF by DashboardDelegate(true)
-        public var INVERT_TURN_AUX_PIDF by DashboardDelegate(false)
+        public var INVERT_FIXED_AUX_PIDF by DashboardVar(true)
+        public var INVERT_ANGLE_AUX_PIDF by DashboardVar(true)
+        public var INVERT_TURN_AUX_PIDF by DashboardVar(false)
     }
 
     object HardwarePorts {
@@ -133,22 +116,5 @@ public object Constants {
 
     object Auto {
         public const val LOOKAHEAD_DISTANCE: Double = 12.0
-    }
-
-    class DashboardDelegate<T>(var initValue: T) {
-
-        var isInit = false
-
-        operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-            if (!isInit) {
-                Dashboard.setVariable(property.name, initValue as Any)
-                return initValue
-            }
-            return Dashboard.getVariable(property.name)
-        }
-
-        operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-            Dashboard.setVariable(property.name, value as Any)
-        }
     }
 }

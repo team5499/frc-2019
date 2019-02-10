@@ -1,0 +1,32 @@
+{
+  "pages": {
+    "dev": {
+      "navbarOrder": 0,
+      "title": "Development",
+      "widgets": [
+        {
+          "height": "auto",
+          "id": "velKpEditor",
+          "kwargs": {},
+          "title": "Velocity kP",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "VEL_KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "velKdEditor",
+          "kwargs": {},
+          "title": "Velocity kD",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "VEL_KD"
+          },
+          "width": "12rem"
+        }
+      ]
+    }
+  }
+}
