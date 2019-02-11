@@ -1,0 +1,32 @@
+{
+  "pages": {
+    "drive": {
+      "navbarOrder": 0,
+      "title": "Drive",
+      "widgets": [
+        {
+          "height": "auto",
+          "id": "liftKp",
+          "kwargs": {},
+          "title": "Lift kP",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "LIFT_KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "liftKi",
+          "kwargs": {},
+          "title": "Lift kI",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "LIFT_KI"
+          },
+          "width": "12rem"
+        }
+      ]
+    }
+  }
+}

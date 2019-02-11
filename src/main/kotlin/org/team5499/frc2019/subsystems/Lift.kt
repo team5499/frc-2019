@@ -128,10 +128,10 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
             configClosedLoopPeakOutput(kElevatorSlot, 1.0)
 
-            config_kP(kElevatorSlot, Constants.Lift.KP, 0)
-            config_kI(kElevatorSlot, Constants.Lift.KI, 0)
-            config_kD(kElevatorSlot, Constants.Lift.KD, 0)
-            config_kF(kElevatorSlot, Constants.Lift.KF, 0)
+            config_kP(kElevatorSlot, Constants.Lift.LIFT_KP, 0)
+            config_kI(kElevatorSlot, Constants.Lift.LIFT_KI, 0)
+            config_kD(kElevatorSlot, Constants.Lift.LIFT_KD, 0)
+            config_kF(kElevatorSlot, Constants.Lift.LIFT_KF, 0)
             configMotionCruiseVelocity(Constants.Lift.MOTION_MAGIC_VELOCITY, 0)
             configMotionAcceleration(Constants.Lift.MOTION_MAGIC_ACCELERATION, 0)
             selectProfileSlot(kElevatorSlot, 0)

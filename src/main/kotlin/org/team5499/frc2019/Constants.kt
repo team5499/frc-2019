@@ -1,7 +1,13 @@
 package org.team5499.frc2019
 
+import org.team5499.dashboard.DashboardVar
+
 @SuppressWarnings("MagicNumber")
 public object Constants {
+
+    fun initConstants() {
+        DashboardVar.initClassProps(Constants::class)
+    }
 
     public const val ROBOT_UPDATE_PERIOD = 0.005
     public const val TALON_UPDATE_PERIOD_MS = 1
@@ -11,16 +17,16 @@ public object Constants {
 
     object Input {
         // ports
-        public const val DRIVER_PORT = 0
-        public const val CODRIVER_BUTTON_BOARD_PORT = 1
-        public const val CODRIVER_JOYSTICK_PORT = 2
+        public var DRIVER_PORT by DashboardVar(0)
+        public var CODRIVER_BUTTON_BOARD_PORT by DashboardVar(1)
+        public var CODRIVER_JOYSTICK_PORT by DashboardVar(2)
 
         // driver constants
-        public const val JOYSTICK_DEADBAND = 0.07
-        public const val TURN_MULT = 0.4
+        public var JOYSTICK_DEADBAND by DashboardVar(0.07)
+        public var TURN_MULT by DashboardVar(0.4)
 
         // codriver constants
-        public const val MANUAL_CONTROL_DEADBAND = 0.10
+        public var MANUAL_CONTROL_DEADBAND by DashboardVar(0.10)
     }
 
     object Drivetrain {
@@ -48,51 +54,51 @@ public object Constants {
         public const val WHEEL_CIR = WHEEL_DIAMETER * Math.PI
 
         // pid thresholds
-        public const val MAX_VELOCITY = 100.0 // inches per second
-        public const val MAX_ACCELERATION = 100.0 // inches per second^2
-        public const val ACCEPTABLE_VELOCITY_THRESHOLD = 3.0 // inches / s
-        public const val ACCEPTABLE_TURN_ERROR = 3.0 // degrees (?)
-        public const val ACCEPTABLE_DISTANCE_ERROR = 2.0 // inches
+        public var MAX_VELOCITY by DashboardVar(100.0) // inches per second
+        public var MAX_ACCELERATION by DashboardVar(100.0) // inches per second^2
+        public var ACCEPTABLE_VELOCITY_THRESHOLD by DashboardVar(3.0) // inches / s
+        public var ACCEPTABLE_TURN_ERROR by DashboardVar(3.0) // degrees (?)
+        public var ACCEPTABLE_DISTANCE_ERROR by DashboardVar(2.0) // inches
 
         // pid constants
-        public const val VEL_KP = 0.5
-        public const val VEL_KI = 0.0
-        public const val VEL_KD = 0.0
-        public const val VEL_KF = 0.15
-        public const val VEL_IZONE = 10
-        public const val VEL_MAX_OUTPUT = 1.0
+        public var VEL_KP by DashboardVar(0.5)
+        public var VEL_KI by DashboardVar(0.0)
+        public var VEL_KD by DashboardVar(0.0)
+        public var VEL_KF by DashboardVar(0.15)
+        public var VEL_IZONE by DashboardVar(10)
+        public var VEL_MAX_OUTPUT by DashboardVar(1.0)
 
-        public const val POS_KP = 0.8
-        public const val POS_KI = 0.0
-        public const val POS_KD = 0.2
-        public const val POS_KF = 0.0
-        public const val POS_IZONE = 10
-        public const val POS_MAX_OUTPUT = 0.5
+        public var POS_KP by DashboardVar(0.8)
+        public var POS_KI by DashboardVar(0.0)
+        public var POS_KD by DashboardVar(0.2)
+        public var POS_KF by DashboardVar(0.0)
+        public var POS_IZONE by DashboardVar(10)
+        public var POS_MAX_OUTPUT by DashboardVar(0.5)
 
-        public const val ANGLE_KP = 2.0
-        public const val ANGLE_KI = 0.0
-        public const val ANGLE_KD = 0.0
-        public const val ANGLE_KF = 0.0
-        public const val ANGLE_IZONE = 10
-        public const val ANGLE_MAX_OUTPUT = 1.0
+        public var ANGLE_KP by DashboardVar(2.0)
+        public var ANGLE_KI by DashboardVar(0.0)
+        public var ANGLE_KD by DashboardVar(0.0)
+        public var ANGLE_KF by DashboardVar(0.0)
+        public var ANGLE_IZONE by DashboardVar(10)
+        public var ANGLE_MAX_OUTPUT by DashboardVar(1.0)
 
-        public const val TURN_KP = 1.5
-        public const val TURN_KI = 0.0
-        public const val TURN_KD = 0.0
-        public const val TURN_KF = 0.0
-        public const val TURN_IZONE = 10
-        public const val TURN_MAX_OUTPUT = 1.0
+        public var TURN_KP by DashboardVar(1.5)
+        public var TURN_KI by DashboardVar(0.0)
+        public var TURN_KD by DashboardVar(0.0)
+        public var TURN_KF by DashboardVar(0.0)
+        public var TURN_IZONE by DashboardVar(10)
+        public var TURN_MAX_OUTPUT by DashboardVar(1.0)
 
-        public const val FIXED_KP = 0.0
-        public const val FIXED_KI = 0.0
-        public const val FIXED_KD = 0.0
-        public const val FIXED_KF = 0.0
-        public const val FIXED_IZONE = 10
-        public const val FIXED_MAX_OUTPUT = 0.5
+        public var FIXED_KP by DashboardVar(0.0)
+        public var FIXED_KI by DashboardVar(0.0)
+        public var FIXED_KD by DashboardVar(0.0)
+        public var FIXED_KF by DashboardVar(0.0)
+        public var FIXED_IZONE by DashboardVar(10)
+        public var FIXED_MAX_OUTPUT by DashboardVar(0.5)
 
-        public const val INVERT_FIXED_AUX_PIDF = true
-        public const val INVERT_ANGLE_AUX_PIDF = true
-        public const val INVERT_TURN_AUX_PIDF = false
+        public var INVERT_FIXED_AUX_PIDF by DashboardVar(true)
+        public var INVERT_ANGLE_AUX_PIDF by DashboardVar(true)
+        public var INVERT_TURN_AUX_PIDF by DashboardVar(false)
     }
 
     object Lift {
@@ -101,36 +107,36 @@ public object Constants {
         public const val SLAVE_TALON_PORT = 5
 
         // pid
-        public const val KP = 2.5
-        public const val KI = 0.0
-        public const val KD = 0.0
-        public const val KF = 0.0
+        public var LIFT_KP by DashboardVar(2.5)
+        public var LIFT_KI by DashboardVar(0.0)
+        public var LIFT_KD by DashboardVar(0.0)
+        public var LIFT_KF by DashboardVar(0.0)
 
-        public const val MOTION_MAGIC_VELOCITY = 1000
-        public const val MOTION_MAGIC_ACCELERATION = 800
+        public var MOTION_MAGIC_VELOCITY by DashboardVar(1000)
+        public var MOTION_MAGIC_ACCELERATION by DashboardVar(800)
 
         // heights (carriage height in inches)
-        public const val ROCKET_HOLE_SPACING = 27.5
-        public const val STOW_HEIGHT = 0.3
-        public const val HATCH_LOW_HEIGHT = 4.0
-        public const val HATCH_MID_HEIGHT = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
-        public const val HATCH_HIGH_HEIGHT = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING
-        public const val BALL_LOW_HEIGHT = 4.0
-        public const val BALL_MID_HEIGHT = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING
-        public const val BALL_HIGH_HEIGHT = BALL_MID_HEIGHT + ROCKET_HOLE_SPACING
-        public const val BALL_HUMAN_PLAYER_HEIGHT = 20.0
+        public var ROCKET_HOLE_SPACING by DashboardVar(27.5)
+        public var STOW_HEIGHT by DashboardVar(0.3)
+        public var HATCH_LOW_HEIGHT by DashboardVar(4.0)
+        public var HATCH_MID_HEIGHT = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
+        public var HATCH_HIGH_HEIGHT = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING
+        public var BALL_LOW_HEIGHT by DashboardVar(4.0)
+        public var BALL_MID_HEIGHT = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING
+        public var BALL_HIGH_HEIGHT = BALL_MID_HEIGHT + ROCKET_HOLE_SPACING
+        public var BALL_HUMAN_PLAYER_HEIGHT by DashboardVar(20.0)
 
         // constants
         public const val ENCODER_TICKS_PER_ROTATION = 1024
-        public const val MAX_ENCODER_TICKS = 8000
-        public const val MIN_ENCODER_TICKS = 50
-        public const val ZEROING_THRESHOLD = 10 // check this pls
-        public const val ZEROING_SPEED = -0.2 // percent output
+        public var MAX_ENCODER_TICKS by DashboardVar(8000)
+        public var MIN_ENCODER_TICKS by DashboardVar(50)
+        public var ZEROING_THRESHOLD by DashboardVar(10) // check this pls
+        public var ZEROING_SPEED by DashboardVar(-0.2) // percent output
 
-        public const val MAX_VELOCITY_SETPOINT = 1000 // ticks per 100ms
+        public var MAX_VELOCITY_SETPOINT by DashboardVar(1000) // ticks per 100ms
 
-        public const val ACCEPTABLE_VELOCITY_THRESHOLD = 3.0 // inches / s
-        public const val ACCEPTABLE_DISTANCE_ERROR = 1.0 // inche
+        public var ACCEPTABLE_VELOCITY_THRESHOLD by DashboardVar(3.0) // inches / s
+        public var ACCEPTABLE_DISTANCE_ERROR by DashboardVar(1.0) // inche
 
         // dimension
         public const val SPROCKET_DIAMETER = 1.23 // inches
@@ -141,15 +147,15 @@ public object Constants {
     object Intake {
         public const val TALON_PORT = 9
 
-        public const val INTAKE_SPEED = 0.6
-        public const val OUTTAKE_SPEED = -0.45
-        public const val IDLE_SPEED = 0.0
-        public const val HOLD_SPEED = 0.2
+        public var INTAKE_SPEED by DashboardVar(0.6)
+        public var OUTTAKE_SPEED by DashboardVar(-0.45)
+        public var IDLE_SPEED by DashboardVar(0.0)
+        public var HOLD_SPEED by DashboardVar(0.2)
     }
 
     object Hatch
 
     object Auto {
-        public const val LOOKAHEAD_DISTANCE = 12.0
+        public var LOOKAHEAD_DISTANCE by DashboardVar(12.0)
     }
 }

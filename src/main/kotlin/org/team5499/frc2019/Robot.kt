@@ -25,6 +25,8 @@ import org.team5499.frc2019.input.ButtonBoardCodriver
 import org.team5499.frc2019.auto.Paths
 import org.team5499.frc2019.auto.Routines
 
+import org.team5499.dashboard.Dashboard
+
 import com.ctre.phoenix.sensors.PigeonIMU
 
 class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
@@ -74,6 +76,10 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mAutoController: AutoController
 
     init {
+        // dashboard init
+        Dashboard.start(this, "dashConfig.json")
+        Constants.initConstants()
+
         // inputs init
         mDriver = XboxController(Constants.Input.DRIVER_PORT)
         mCodriverButtonBoard = Joystick(Constants.Input.CODRIVER_BUTTON_BOARD_PORT)
