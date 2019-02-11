@@ -16,9 +16,6 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     companion object {
         private const val kElevatorSlot = 0
-
-        private fun encoderTicksToInches() {
-        }
     }
 
     private enum class ElevatorMode {
@@ -55,8 +52,9 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         get() = Utils.encoderTicksToInches(
             Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
-            firstStagePositionRaw
-        ) * Constants.Lift.ENCODER_REDUCTION
+            firstStagePositionRaw,
+            Constants.Lift.ENCODER_REDUCTION
+        )
 
     public val firstStagePositionErrorRaw: Int
         get() = mMaster.getClosedLoopError(0)
@@ -65,8 +63,9 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         get() = Utils.encoderTicksToInches(
             Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
-            firstStagePositionErrorRaw
-        ) * Constants.Lift.ENCODER_REDUCTION
+            firstStagePositionErrorRaw,
+            Constants.Lift.ENCODER_REDUCTION
+        )
 
     public val firstStageVelocityRaw: Int
         get() = mMaster.getSelectedSensorVelocity(0)
@@ -75,8 +74,9 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         get() = Utils.encoderTicksPer100MsToInchesPerSecond(
             Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
-            firstStageVelocityRaw
-        ) * Constants.Lift.ENCODER_REDUCTION
+            firstStageVelocityRaw,
+            Constants.Lift.ENCODER_REDUCTION
+        )
 
     public val firstStageVelocityErrorRaw: Int
         get() = mMaster.getClosedLoopError(0)
@@ -85,8 +85,9 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         get() = Utils.encoderTicksPer100MsToInchesPerSecond(
             Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
-            firstStageVelocityErrorRaw
-        ) * Constants.Lift.ENCODER_REDUCTION
+            firstStageVelocityErrorRaw,
+            Constants.Lift.ENCODER_REDUCTION
+        )
 
     // carriage numbers
     public val secondStagePositionRaw: Int
@@ -191,7 +192,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
             Constants.Lift.MAX_ENCODER_TICKS.toDouble()
         )
         mElevatorMode = ElevatorMode.MOTION_MAGIC
-        mSetpoint = positionTicks / Constants.Lift.ENCODER_REDUCTION
+        mSetpoint = positionTicks
         mMaster.set(ControlMode.MotionMagic, mSetpoint)
     }
 
@@ -199,7 +200,8 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         val positionTicks = Utils.inchesToEncoderTicks(
             Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
-            positionInches
+            positionInches,
+            Constants.Lift.ENCODER_REDUCTION
         )
         setPositionRaw(positionTicks.toInt())
     }
@@ -217,7 +219,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         mBrakeMode = false
         val speed = Utils.limit(ticksPer100ms.toDouble(), Constants.Lift.MAX_VELOCITY_SETPOINT.toDouble())
         mElevatorMode = ElevatorMode.VELOCITY
-        mSetpoint = speed / Constants.Lift.ENCODER_REDUCTION
+        mSetpoint = speed
         mMaster.set(ControlMode.Velocity, mSetpoint)
     }
 
@@ -225,7 +227,8 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         val speed = Utils.inchesPerSecondToEncoderTicksPer100Ms(
             Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
-            inchesPerSecond
+            inchesPerSecond,
+            Constants.Lift.ENCODER_REDUCTION
         )
         setVelocityRaw(speed.toInt())
     }
