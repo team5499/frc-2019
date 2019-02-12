@@ -3,7 +3,7 @@ package org.team5499.frc2019
 @SuppressWarnings("MagicNumber")
 public object Constants {
 
-    public const val ROBOT_UPDATE_PERIOD = 0.005
+    public const val ROBOT_UPDATE_PERIOD = 0.01 // maybe change back to 0.005
     public const val TALON_UPDATE_PERIOD_MS = 1
     public const val TALON_PIDF_UPDATE_PERIOD_MS = 1
 
@@ -101,17 +101,17 @@ public object Constants {
         public const val SLAVE_TALON_PORT = 5
 
         // pid
-        public const val KP = 2.5
+        public const val KP = 0.11 // worked a 0.09
         public const val KI = 0.0
-        public const val KD = 0.0
+        public const val KD = 0.1
         public const val KF = 0.0
 
-        public const val MOTION_MAGIC_VELOCITY = 1000
-        public const val MOTION_MAGIC_ACCELERATION = 800
+        public const val MOTION_MAGIC_VELOCITY = 11000 // 10500 before
+        public const val MOTION_MAGIC_ACCELERATION = 11000 // 9000 before
 
         // heights (carriage height in inches)
         public const val ROCKET_HOLE_SPACING = 27.5
-        public const val STOW_HEIGHT = 0.3
+        public const val STOW_HEIGHT = 2.0
         public const val HATCH_LOW_HEIGHT = 4.0
         public const val HATCH_MID_HEIGHT = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
         public const val HATCH_HIGH_HEIGHT = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING
@@ -121,13 +121,15 @@ public object Constants {
         public const val BALL_HUMAN_PLAYER_HEIGHT = 20.0
 
         // constants
-        public const val ENCODER_TICKS_PER_ROTATION = 1024
-        public const val MAX_ENCODER_TICKS = 8000
-        public const val MIN_ENCODER_TICKS = 50
-        public const val ZEROING_THRESHOLD = 10 // check this pls
+        public const val ENCODER_REDUCTION = 38.0 / 24.0 // reduction from encoder shaft to output shaft
+        public const val ENCODER_TICKS_PER_ROTATION = 4096 // of the encoder shaft
+        public const val MAX_ENCODER_TICKS = (8100 * 4 * ENCODER_REDUCTION).toInt() // CHANGE THIS
+        public const val MIN_ENCODER_TICKS = (400 * ENCODER_REDUCTION).toInt() // CHANGE THIS
+        public const val ZEROING_THRESHOLD = 5 // ticks per 100/ms
         public const val ZEROING_SPEED = -0.2 // percent output
+        public const val ZEROING_TIMEOUT = 0.5 // seconds
 
-        public const val MAX_VELOCITY_SETPOINT = 1000 // ticks per 100ms
+        public const val MAX_VELOCITY_SETPOINT = 10000 // ticks per 100ms
 
         public const val ACCEPTABLE_VELOCITY_THRESHOLD = 3.0 // inches / s
         public const val ACCEPTABLE_DISTANCE_ERROR = 1.0 // inche
