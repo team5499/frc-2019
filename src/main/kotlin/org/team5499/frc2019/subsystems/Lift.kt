@@ -40,6 +40,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     private val mSlave: LazyTalonSRX
 
     private var mElevatorMode: ElevatorMode
+    private var mFirstLoop: Boolean
 
     private var mZeroed: Boolean
     private var mSetpoint: Double
@@ -142,7 +143,6 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
             configMotionCruiseVelocity(Constants.Lift.MOTION_MAGIC_VELOCITY, 0)
             configMotionAcceleration(Constants.Lift.MOTION_MAGIC_ACCELERATION, 0)
             selectProfileSlot(kElevatorSlot, 0)
-            // configAllowableClosedloopError(kElevatorSlot, 200, 0)
 
             enableCurrentLimit(false)
             configPeakCurrentDuration(0, 0)
@@ -164,6 +164,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         mZeroed = false // CHANGE THIS TO FALSE
         // mEncoderPresent = false
         mSetpoint = 0.0
+        mFirstLoop = true
 
         // set brake
         mBrakeMode = true
@@ -238,30 +239,30 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     }
 
     public override fun update() {
-        // mEncoderPresent = mMaster.getSensorCollection().getPulseWidthRiseToRiseUs() != 0
-        // println("elevator speed: $firstStageVelocityRaw")
-        // println("elevator position: $firstStagePositionRaw")
-        // println("elevator setpoint: ${mMaster.getClosedLoopTarget(0)}")
-
-        println("motor voltage: ${mMaster.getMotorOutputVoltage()}")
-        // println("elevator error: $firstStagePositionErrorRaw")
         if (!mZeroed) {
             mElevatorMode = ElevatorMode.ZERO
             mMaster.configReverseSoftLimitEnable(false)
+            if (mFirstLoop) {
+                super.timer.stop()
+                super.timer.reset()
+                super.timer.start()
+                mFirstLoop = false
+            }
         }
         when (mElevatorMode) {
             ElevatorMode.ZERO -> {
                 // drive downwards until hall effect detects carriage
-                if (Math.abs(firstStageVelocityRaw) < Constants.Lift.ZEROING_THRESHOLD) {
+                if (
+                    super.timer.get() > Constants.Lift.ZEROING_TIMEOUT &&
+                    Math.abs(firstStageVelocityRaw) < Constants.Lift.ZEROING_THRESHOLD
+                ) {
                     mZeroed = true
                     mMaster.set(ControlMode.PercentOutput, 0.0)
                     mSetpoint = 0.0
                     setZero()
                     mElevatorMode = ElevatorMode.OPEN_LOOP
                     mMaster.configReverseSoftLimitEnable(true)
-                    println("Elevator zeroed!  Elevator Position: $firstStagePositionRaw")
                 }
-                // println("going down!")
                 mMaster.set(ControlMode.PercentOutput, Constants.Lift.ZEROING_SPEED)
             }
             ElevatorMode.VELOCITY -> {
