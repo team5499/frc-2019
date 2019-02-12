@@ -121,10 +121,10 @@ public object Constants {
         public const val BALL_HUMAN_PLAYER_HEIGHT = 20.0
 
         // constants
-        public const val ENCODER_REDUCTION = 24.0 / 38.0 // reduction from encoder shaft to output shaft
-        public const val ENCODER_TICKS_PER_ROTATION = 4096
-        public const val MAX_ENCODER_TICKS = (8000 * 4 / ENCODER_REDUCTION).toInt() //
-        public const val MIN_ENCODER_TICKS = (400 / ENCODER_REDUCTION).toInt() //
+        public const val ENCODER_REDUCTION = 38.0 / 24.0 // reduction from encoder shaft to output shaft
+        public const val ENCODER_TICKS_PER_ROTATION = 4096 // of the encoder shaft
+        public const val MAX_ENCODER_TICKS = (8000 * 4 / ENCODER_REDUCTION).toInt() // CHANGE THIS
+        public const val MIN_ENCODER_TICKS = (400 / ENCODER_REDUCTION).toInt() // CHANGE THIS
         public const val ZEROING_THRESHOLD = 10 // ticks per 100/ms
         public const val ZEROING_SPEED = -0.2 // percent output
 
