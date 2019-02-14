@@ -125,11 +125,12 @@ public class Drivetrain(
             return Utils.encoderTicksToInches(
                 Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
                 Constants.Drivetrain.WHEEL_CIR,
-                mLeftMaster.getSelectedSensorPosition(0)
+                mLeftMaster.getSensorCollection().getQuadraturePosition()
             )
         }
         set(inches) {
-            mLeftMaster.setSelectedSensorPosition(0,
+            println("Left distance set to $inches")
+            mLeftMaster.getSensorCollection().setQuadraturePosition(
                 Utils.inchesToEncoderTicks(Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
                 Constants.Drivetrain.WHEEL_CIR,
                 inches), 0)
@@ -144,8 +145,7 @@ public class Drivetrain(
             )
         }
         set(inches) {
-            mRightMaster.setSelectedSensorPosition(
-                0,
+            mRightMaster.getSensorCollection().setQuadraturePosition(
                 Utils.inchesToEncoderTicks(
                     Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
                     Constants.Drivetrain.WHEEL_CIR,
@@ -286,7 +286,7 @@ public class Drivetrain(
             (leftDistance + rightDistance) / 2.0
         )
         val angleTarget = mRightMaster.getSelectedSensorPosition(1) +
-            Utils.degreesToTalonAngle(Constants.Drivetrain.TURN_UNITS_PER_ROTATION, angle - mGyroOffset.degrees)
+            Utils.degreesToTalonAngle(Constants.Drivetrain.TURN_UNITS_PER_ROTATION, angle)
         mRightMaster.set(ControlMode.MotionMagic, angleTarget.toDouble(), DemandType.AuxPID, fixedDistance.toDouble())
     }
 
@@ -475,7 +475,7 @@ public class Drivetrain(
             configRemoteFeedbackFilter(mLeftMaster.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor, 0, 0)
             configRemoteFeedbackFilter(mGyro.getDeviceID(), RemoteSensorSource.Pigeon_Yaw, 1, 0)
             configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0, 0)
-            configSensorTerm(SensorTerm.Sum1, FeedbackDevice.QuadEncoder, 0)
+            configSensorTerm(SensorTerm.Sum1, FeedbackDevice.CTRE_MagEncoder_Relative, 0)
             configSelectedFeedbackSensor(FeedbackDevice.SensorSum, 0, 0)
             configSelectedFeedbackCoefficient(0.5, 0, 0)
             configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, 1, 0)
@@ -535,7 +535,7 @@ public class Drivetrain(
         //     ", right error: ${mRightMaster.getClosedLoopError(0)}"
         // println("heading: $heading degrees, raw gyro: ${mGyro.getFusedHeading()}, gyro offset: ${mGyroOffset}")
         // println("target heading: ${mRightMaster.getClosedLoopTarget(1)} turn error: ${turnError}")
-        println("left error: $leftVelocityError,  right error: $rightVelocityError")
+        // println("left error: $leftVelocityError,  right error: $rightVelocityError")
     }
 
     public override fun stop() {
