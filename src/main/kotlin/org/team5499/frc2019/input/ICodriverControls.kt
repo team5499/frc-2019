@@ -33,6 +33,8 @@ public interface ICodriverControls {
     // hatch mech
     public fun getPickup(): Boolean
 
+    public fun getPickupHeld(): Boolean
+
     public fun getPlace(): Boolean
 
     // ramp (?) maybe this should be on the drivers controller

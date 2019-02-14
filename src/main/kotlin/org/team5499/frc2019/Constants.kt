@@ -1,7 +1,13 @@
 package org.team5499.frc2019
 
+import org.team5499.dashboard.DashboardVar
+
 @SuppressWarnings("MagicNumber")
 public object Constants {
+
+    fun initConstants() {
+        DashboardVar.initClassProps(Constants::class)
+    }
 
     public const val ROBOT_UPDATE_PERIOD = 0.01 // maybe change back to 0.005
     public const val TALON_UPDATE_PERIOD_MS = 1
@@ -111,11 +117,11 @@ public object Constants {
 
         // heights (carriage height in inches)
         public const val ROCKET_HOLE_SPACING = 27.5
-        public const val STOW_HEIGHT = 2.0
-        public const val HATCH_LOW_HEIGHT = 4.0
+        public const val STOW_HEIGHT = 3.5
+        public const val HATCH_LOW_HEIGHT = 11.0
         public const val HATCH_MID_HEIGHT = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
         public const val HATCH_HIGH_HEIGHT = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING
-        public const val BALL_LOW_HEIGHT = 4.0
+        public const val BALL_LOW_HEIGHT = 5.0
         public const val BALL_MID_HEIGHT = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING
         public const val BALL_HIGH_HEIGHT = BALL_MID_HEIGHT + ROCKET_HOLE_SPACING
         public const val BALL_HUMAN_PLAYER_HEIGHT = 20.0
@@ -149,7 +155,17 @@ public object Constants {
         public const val HOLD_SPEED = 0.2
     }
 
-    object Hatch
+    object Hatch {
+        public const val TALON_PORT = 10
+
+        // public const val HATCH_KP = 2.0
+        // public const val HATCH_KI = 0.0
+        // public const val HATCH_KD = 1.0
+
+        public var HATCH_KP by DashboardVar(2.0)
+        public var HATCH_KI by DashboardVar(0.0)
+        public var HATCH_KD by DashboardVar(1.0)
+    }
 
     object Auto {
         public const val LOOKAHEAD_DISTANCE = 12.0

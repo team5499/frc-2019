@@ -3,6 +3,7 @@ package org.team5499.frc2019.controllers
 import org.team5499.monkeyLib.Controller
 import org.team5499.monkeyLib.auto.Routine
 import org.team5499.monkeyLib.auto.Action
+import org.team5499.monkeyLib.math.geometry.Rotation2d
 
 import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.auto.Routines
@@ -28,36 +29,35 @@ public class AutoController(subsystems: SubsystemsManager, routines: Routines) :
 
     public override fun start() {
         // TODO choose routine from dashboard
+        println("auto controller starting")
         reset()
-        // mSubsystems.drivetrain.brakeMode = true
-        // mSubsystems.drivetrain.heading = Rotation2d(currentRoutine.startHeading)
-        // mSubsystems.drivetrain.heading = Rotation2d.fromDegrees(0.0)
-        // currentAction = currentRoutine.getCurrentAction()
-        // currentAction!!.start()
-        @Suppress("MagicNumber")
-        mSubsystems.drivetrain.setVelocity(12.0, 12.0)
+        currentRoutine = mRoutines.tuning
+        mSubsystems.drivetrain.brakeMode = true
+        mSubsystems.drivetrain.heading = Rotation2d(currentRoutine.startHeading)
+        currentAction = currentRoutine.getCurrentAction()
+        currentAction!!.start()
     }
 
     public override fun update() {
-        // if (isFinished) {
-        //     return
-        // }
-        // if (currentRoutine.isLastStep() && currentAction!!.next()) {
-        //     currentAction!!.finish()
-        //     isFinished = true
-        //     return
-        // }
-        // if (currentAction == null) {
-        //     currentAction = currentRoutine.getCurrentAction()
-        //     currentAction!!.start()
-        // } else if (currentAction!!.next()) {
-        //     currentAction!!.finish()
-        //     currentRoutine.advanceRoutine()
-        //     currentAction = currentRoutine.getCurrentAction()
-        //     currentAction!!.start()
-        // } else {
-        //     currentAction!!.update()
-        // }
+        if (isFinished) {
+            return
+        }
+        if (currentRoutine.isLastStep() && currentAction!!.next()) {
+            currentAction!!.finish()
+            isFinished = true
+            return
+        }
+        if (currentAction == null) {
+            currentAction = currentRoutine.getCurrentAction()
+            currentAction!!.start()
+        } else if (currentAction!!.next()) {
+            currentAction!!.finish()
+            currentRoutine.advanceRoutine()
+            currentAction = currentRoutine.getCurrentAction()
+            currentAction!!.start()
+        } else {
+            currentAction!!.update()
+        }
     }
 
     public override fun reset() {

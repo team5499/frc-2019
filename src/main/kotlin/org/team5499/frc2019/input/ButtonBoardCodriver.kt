@@ -51,7 +51,10 @@ public class ButtonBoardCodriver(buttonBoard: Joystick, joystick: Joystick) : IC
     public override fun getPickup() = mButtonBoard.getRawButtonPressed(3 + 1)
 
     @Suppress("MagicNumber")
-    public override fun getPlace() = mButtonBoard.getRawButtonPressed(1 + 1)
+    public override fun getPickupHeld() = mButtonBoard.getRawButton(3 + 1)
+
+    @Suppress("MagicNumber")
+    public override fun getPlace() = mButtonBoard.getRawButtonReleased(1 + 1)
 
     @Suppress("MagicNumber")
     public override fun getDropRamp() = false

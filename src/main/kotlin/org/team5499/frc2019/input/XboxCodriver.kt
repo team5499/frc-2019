@@ -61,6 +61,8 @@ public class XboxCodriver(xbox: XboxController) : ICodriverControls {
 
     public override fun getPickup() = mXbox.getTriggerAxis(Hand.kLeft) > kTriggerThreshold
 
+    public override fun getPickupHeld() = false
+
     public override fun getPlace() = mXbox.getTriggerAxis(Hand.kRight) > kTriggerThreshold
 
     public override fun getDropRamp() = mXbox.getBackButtonPressed()
