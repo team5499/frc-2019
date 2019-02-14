@@ -171,8 +171,8 @@ public object Constants {
 
         public var TOP_STOW_POSITION by DashboardVar(0)
         public var BOTTOM_STOW_POSITION by DashboardVar(775)
-        public var DEPLOY_POSITION by DashboardVar(470)
-        public var HOLD_POSITION by DashboardVar(300)
+        public var DEPLOY_POSITION by DashboardVar(345)
+        public var HOLD_POSITION by DashboardVar(175)
     }
 
     object Auto {
