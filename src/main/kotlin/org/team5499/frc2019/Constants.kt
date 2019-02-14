@@ -165,6 +165,14 @@ public object Constants {
         public var HATCH_KP by DashboardVar(2.0)
         public var HATCH_KI by DashboardVar(0.0)
         public var HATCH_KD by DashboardVar(1.0)
+
+        // positions, all in pot ticks
+        public var POSITION_OFFSET by DashboardVar(125)
+
+        public var TOP_STOW_POSITION by DashboardVar(0)
+        public var BOTTOM_STOW_POSITION by DashboardVar(775)
+        public var DEPLOY_POSITION by DashboardVar(470)
+        public var HOLD_POSITION by DashboardVar(300)
     }
 
     object Auto {
