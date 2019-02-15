@@ -16,6 +16,17 @@
             "ptarget": "HATCH_KP"
           },
           "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "hatchMechOffset",
+          "kwargs": {},
+          "title": "Hatch Position Offset",
+          "type": "IntEditor",
+          "variables": {
+            "target": "POSITION_OFFSET"
+          },
+          "width": "12rem"
         }
       ]
     }

@@ -22,8 +22,6 @@ public class TeleopController(
 
     private val mDriveHelper: DriveHelper
 
-    private var mFirstHatchIntakePress = true
-
     init {
         mSubsystems = subsystems
         mControlBoard = controlBoard
@@ -54,11 +52,9 @@ public class TeleopController(
         val hatchPickup = mControlBoard.codriverControls.getPickup()
         if (hatchPickup.down) {
             mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.DEPLOYED)
-        }
-        if (hatchPickup.released) {
+        } else if (hatchPickup.released) {
             mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.HOLD)
-        }
-        if (mControlBoard.codriverControls.getPlace().pressed) {
+        } else if (mControlBoard.codriverControls.getPlace().pressed) {
             mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.BOTTOM_STOW)
         }
 
@@ -85,14 +81,12 @@ public class TeleopController(
             mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.BOTTOM_STOW)
         } else if (mControlBoard.codriverControls.getStowElevator()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.BOTTOM)
-            // mSubsystems.hatchMech.setPosition(HatchMech.)
+            mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.BOTTOM_STOW)
         } else if (mControlBoard.codriverControls.getBallHumanPlayer()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.BALL_HUMAN_PLAYER)
             mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.BOTTOM_STOW)
         }
     }
 
-    public override fun reset() {
-        mFirstHatchIntakePress = true
-    }
+    public override fun reset() {}
 }

@@ -32,7 +32,8 @@ public class ButtonBoardCodriver(buttonBoard: Joystick, joystick: Joystick) : IC
     public override fun getHatchMid() = mButtonBoard.getRawButtonPressed(11 + 1)
 
     @Suppress("MagicNumber")
-    public override fun getHatchHigh() = mButtonBoard.getRawButtonPressed(8 + 1)
+    // change back to mButtonBoard.getRawButtonPressed(8 + 1) when button is fixed
+    public override fun getHatchHigh() = mJoystick.getTrigger()
 
     @Suppress("MagicNumber")
     public override fun getBallLow() = mButtonBoard.getRawButtonPressed(4 + 1)

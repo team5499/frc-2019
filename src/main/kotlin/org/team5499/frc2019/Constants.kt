@@ -116,9 +116,9 @@ public object Constants {
         public const val MOTION_MAGIC_ACCELERATION = 11000 // 9000 before
 
         // heights (carriage height in inches)
-        public const val ROCKET_HOLE_SPACING = 27.5
+        public const val ROCKET_HOLE_SPACING = 28.00
         public const val STOW_HEIGHT = 3.5
-        public const val HATCH_LOW_HEIGHT = 11.0
+        public const val HATCH_LOW_HEIGHT = 9.6
         public const val HATCH_MID_HEIGHT = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
         public const val HATCH_HIGH_HEIGHT = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING
         public const val BALL_LOW_HEIGHT = 5.0
@@ -167,12 +167,12 @@ public object Constants {
         public var HATCH_KD by DashboardVar(1.0)
 
         // positions, all in pot ticks
-        public var POSITION_OFFSET by DashboardVar(125)
+        public var POSITION_OFFSET by DashboardVar(160)
 
         public var TOP_STOW_POSITION by DashboardVar(0)
         public var BOTTOM_STOW_POSITION by DashboardVar(775)
         public var DEPLOY_POSITION by DashboardVar(345)
-        public var HOLD_POSITION by DashboardVar(175)
+        public var HOLD_POSITION by DashboardVar(130)
     }
 
     object Auto {
