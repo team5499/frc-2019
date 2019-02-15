@@ -26,7 +26,7 @@ public object Constants {
         public const val TURN_MULT = 0.4
 
         // codriver constants
-        public const val MANUAL_CONTROL_DEADBAND = 0.10
+        public const val MANUAL_CONTROL_DEADBAND = 0.07
     }
 
     object Drivetrain {
