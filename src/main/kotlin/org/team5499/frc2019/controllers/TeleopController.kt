@@ -50,15 +50,12 @@ public class TeleopController(
             mSubsystems.intake.hold()
         }
 
-        if (mFirstHatchIntakePress && mControlBoard.codriverControls.getPickup()) {
+        if (mControlBoard.codriverControls.getPickup().down) {
             mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.DEPLOYED)
-            mFirstHatchIntakePress = false
-        } else if (!mFirstHatchIntakePress && mControlBoard.codriverControls.getPickup()) {
+        } else if (mControlBoard.codriverControls.getPickup().released) {
             mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.HOLD)
-            mFirstHatchIntakePress = true
-        } else if (mControlBoard.codriverControls.getPlace()) {
+        } else if (mControlBoard.codriverControls.getPlace().down) {
             mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.BOTTOM_STOW)
-            mFirstHatchIntakePress = true
         }
 
         // val manualElevatorInput = mControlBoard.codriverControls.getManualInput()

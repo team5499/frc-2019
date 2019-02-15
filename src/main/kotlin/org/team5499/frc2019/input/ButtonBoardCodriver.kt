@@ -1,5 +1,7 @@
 package org.team5499.frc2019.input
 
+import org.team5499.monkeyLib.input.ButtonState
+
 import edu.wpi.first.wpilibj.Joystick
 
 @Suppress("TooManyFunctions")
@@ -48,13 +50,18 @@ public class ButtonBoardCodriver(buttonBoard: Joystick, joystick: Joystick) : IC
     public override fun getExaust() = mButtonBoard.getRawButton(0 + 1)
 
     @Suppress("MagicNumber")
-    public override fun getPickup() = mButtonBoard.getRawButtonPressed(3 + 1)
+    public override fun getPickup() = ButtonState(
+        mButtonBoard.getRawButton(3 + 1),
+        mButtonBoard.getRawButtonPressed(3 + 1),
+        mButtonBoard.getRawButtonReleased(3 + 1)
+    )
 
     @Suppress("MagicNumber")
-    public override fun getPickupHeld() = mButtonBoard.getRawButton(3 + 1)
-
-    @Suppress("MagicNumber")
-    public override fun getPlace() = mButtonBoard.getRawButtonReleased(1 + 1)
+    public override fun getPlace() = ButtonState(
+        mButtonBoard.getRawButton(1 + 1),
+        mButtonBoard.getRawButtonPressed(1 + 1),
+        mButtonBoard.getRawButtonReleased(1 + 1)
+    )
 
     @Suppress("MagicNumber")
     public override fun getDropRamp() = false
