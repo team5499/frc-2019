@@ -1,0 +1,23 @@
+{
+  "pages": {
+    "dev": {
+      "navbarOrder": 0,
+      "title": "Development",
+      "widgets": [
+        {
+          "height": "auto",
+          "id": "pidEditor",
+          "kwargs": {},
+          "title": "Hatch PID",
+          "type": "PIDWidget",
+          "variables": {
+            "dtarget": "HATCH_KD",
+            "itarget": "HATCH_KI",
+            "ptarget": "HATCH_KP"
+          },
+          "width": "12rem"
+        }
+      ]
+    }
+  }
+}

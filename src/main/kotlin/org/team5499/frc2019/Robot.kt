@@ -14,6 +14,7 @@ import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.frc2019.subsystems.Lift
 import org.team5499.frc2019.subsystems.Intake
 import org.team5499.frc2019.subsystems.Vision
+import org.team5499.frc2019.subsystems.HatchMech
 import org.team5499.frc2019.controllers.SandstormController
 import org.team5499.frc2019.controllers.TeleopController
 import org.team5499.frc2019.controllers.AutoController
@@ -24,6 +25,8 @@ import org.team5499.frc2019.input.XboxDriver
 import org.team5499.frc2019.input.ButtonBoardCodriver
 import org.team5499.frc2019.auto.Paths
 import org.team5499.frc2019.auto.Routines
+
+import org.team5499.dashboard.Dashboard
 
 import com.ctre.phoenix.sensors.PigeonIMU
 
@@ -56,10 +59,13 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     private val mIntakeTalon: LazyTalonSRX
 
+    private val mHatchMechTalon: LazyTalonSRX
+
     // subsystems
     private val mDrivetrain: Drivetrain
     private val mLift: Lift
     private val mIntake: Intake
+    private val mHatchMech: HatchMech
     private val mVision: Vision
     private val mSubsystemsManager: SubsystemsManager
 
@@ -74,6 +80,10 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mAutoController: AutoController
 
     init {
+        // init dashboard
+        Dashboard.start(this, "dashConfig.json")
+        Constants.initConstants()
+
         // inputs init
         mDriver = XboxController(Constants.Input.DRIVER_PORT)
         mCodriverButtonBoard = Joystick(Constants.Input.CODRIVER_BUTTON_BOARD_PORT)
@@ -101,6 +111,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
         mIntakeTalon = LazyTalonSRX(Constants.Intake.TALON_PORT)
 
+        mHatchMechTalon = LazyTalonSRX(Constants.Hatch.TALON_PORT)
+
         // reset hardware
         mLeftMaster.configFactoryDefault()
         mLeftSlave1.configFactoryDefault()
@@ -118,6 +130,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
         mIntakeTalon.configFactoryDefault()
 
+        mHatchMechTalon.configFactoryDefault()
+
         // subsystem init
         mDrivetrain = Drivetrain(
             mLeftMaster, mLeftSlave1, mLeftSlave2,
@@ -126,8 +140,9 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         )
         mLift = Lift(mLiftMaster, mLiftSlave)
         mIntake = Intake(mIntakeTalon)
+        mHatchMech = HatchMech(mHatchMechTalon)
         mVision = Vision()
-        mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision)
+        mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mHatchMech, mVision)
 
         // path init
         mPathGenerator = PathGenerator(

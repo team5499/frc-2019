@@ -3,6 +3,7 @@ package org.team5499.frc2019.controllers
 import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.input.ControlBoard
 import org.team5499.frc2019.subsystems.Lift.ElevatorHeight
+import org.team5499.frc2019.subsystems.HatchMech
 
 import org.team5499.monkeyLib.Controller
 import org.team5499.monkeyLib.input.DriveHelper
@@ -19,6 +20,8 @@ public class TeleopController(
     private val mSubsystems: SubsystemsManager
 
     private val mDriveHelper: DriveHelper
+
+    private var mFirstHatchIntakePress = true
 
     init {
         mSubsystems = subsystems
@@ -47,28 +50,49 @@ public class TeleopController(
             mSubsystems.intake.hold()
         }
 
+        if (mFirstHatchIntakePress && mControlBoard.codriverControls.getPickup()) {
+            mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.DEPLOYED)
+            mFirstHatchIntakePress = false
+        } else if (!mFirstHatchIntakePress && mControlBoard.codriverControls.getPickup()) {
+            mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.HOLD)
+            mFirstHatchIntakePress = true
+        } else if (mControlBoard.codriverControls.getPlace()) {
+            mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.BOTTOM_STOW)
+            mFirstHatchIntakePress = true
+        }
+
         // val manualElevatorInput = mControlBoard.codriverControls.getManualInput()
         // if (Epsilon.epsilonEquals(manualElevatorInput, Constants.Input.MANUAL_CONTROL_DEADBAND)) {
         //     mSubsystems.lift.setPower(manualElevatorInput)
         // } else
         if (mControlBoard.codriverControls.getHatchLow()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.HATCH_LOW)
+            mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.DEPLOYED)
         } else if (mControlBoard.codriverControls.getHatchMid()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.HATCH_MID)
+            mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.HOLD)
         } else if (mControlBoard.codriverControls.getHatchHigh()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.HATCH_HIGH)
+            mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.HOLD)
         } else if (mControlBoard.codriverControls.getBallLow()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.BALL_LOW)
+            mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.BOTTOM_STOW)
         } else if (mControlBoard.codriverControls.getBallMid()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.BALL_MID)
+            mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.BOTTOM_STOW)
         } else if (mControlBoard.codriverControls.getBallHigh()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.BALL_HIGH)
+            mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.BOTTOM_STOW)
         } else if (mControlBoard.codriverControls.getStowElevator()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.BOTTOM)
+            // mSubsystems.hatchMech.setPosition(HatchMech.)
         } else if (mControlBoard.codriverControls.getBallHumanPlayer()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.BALL_HUMAN_PLAYER)
+            mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.BOTTOM_STOW)
         }
     }
 
-    public override fun reset() {}
+    public override fun reset() {
+        mFirstHatchIntakePress = true
+    }
 }
