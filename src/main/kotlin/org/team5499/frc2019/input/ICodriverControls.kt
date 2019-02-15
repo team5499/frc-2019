@@ -1,5 +1,7 @@
 package org.team5499.frc2019.input
 
+import org.team5499.monkeyLib.input.ButtonState
+
 @Suppress("TooManyFunctions")
 public interface ICodriverControls {
 
@@ -31,9 +33,9 @@ public interface ICodriverControls {
     public fun getExaust(): Boolean
 
     // hatch mech
-    public fun getPickup(): Boolean
+    public fun getPickup(): ButtonState
 
-    public fun getPlace(): Boolean
+    public fun getPlace(): ButtonState
 
     // ramp (?) maybe this should be on the drivers controller
     public fun getDropRamp(): Boolean
