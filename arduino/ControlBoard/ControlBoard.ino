@@ -1,4 +1,4 @@
-#include<Joystick.h>
+#include <Joystick.h>
 
 // parameters
 #define NUM_BUTTONS 12
@@ -53,26 +53,26 @@ void setup() {
   }
 }
 
-void checkButtonStatus(int port) {
+void checkButtonStatus(int buttonNumber, int port) {
   int buttonStatus = !digitalRead(port);
-  if(buttonStatus != lastButtonState[port]) {
-    Joystick.setButton(port, buttonStatus);
-    lastButtonState[port] = buttonStatus;
+  if(buttonStatus != lastButtonState[buttonNumber]) {
+    Joystick.setButton(buttonNumber, buttonStatus);
+    lastButtonState[buttonNumber] = buttonStatus;
   }
 }
 
 void loop() {
-  checkButtonStatus(BALL_INTAKE);
-  checkButtonStatus(BALL_OUTTAKE);
-  checkButtonStatus(HATCH_INTAKE);
-  checkButtonStatus(HATCH_RELEASE);
-  checkButtonStatus(STOW);
-  checkButtonStatus(BALL_LOW);
-  checkButtonStatus(BALL_MID);
-  checkButtonStatus(BALL_HIGH);
-  checkButtonStatus(HATCH_LOW);
-  checkButtonStatus(HATCH_MID);
-  checkButtonStatus(HATCH_HIGH);
-  checkButtonStatus(BALL_HUMAN_PLAYER);
+  checkButtonStatus(0, BALL_INTAKE);
+  checkButtonStatus(1, BALL_OUTTAKE);
+  checkButtonStatus(2, HATCH_INTAKE);
+  checkButtonStatus(3, HATCH_RELEASE);
+  checkButtonStatus(4, STOW);
+  checkButtonStatus(5, BALL_LOW);
+  checkButtonStatus(6, BALL_MID);
+  checkButtonStatus(7, BALL_HIGH);
+  checkButtonStatus(8, HATCH_LOW);
+  checkButtonStatus(9, HATCH_MID);
+  checkButtonStatus(10, HATCH_HIGH);
+  checkButtonStatus(11, BALL_HUMAN_PLAYER);
   delay(10);
 }
