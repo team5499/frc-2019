@@ -164,6 +164,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun robotPeriodic() {
+        println("hatchmech pos: ${mHatchMechTalon.getSelectedSensorPosition(0)}")
     }
 
     override fun disabledInit() {

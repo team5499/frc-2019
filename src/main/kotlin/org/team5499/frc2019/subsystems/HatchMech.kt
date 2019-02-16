@@ -79,7 +79,9 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
         mTalon.set(ControlMode.Position, (mPositionOffset + position.ticks).toDouble())
     }
 
-    public override fun update() {}
+    public override fun update() {
+        println("hatchmech pos: ${mTalon.getSelectedSensorPosition(0)}")
+    }
 
     public override fun stop() {
         mTalon.neutralOutput()
