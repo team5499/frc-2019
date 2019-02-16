@@ -118,18 +118,18 @@ public object Constants {
         // heights (carriage height in inches)
         public const val ROCKET_HOLE_SPACING = 28.00
         public const val STOW_HEIGHT = 3.5
-        public const val HATCH_LOW_HEIGHT = 10.0
+        public const val HATCH_LOW_HEIGHT = 9.0
         public const val HATCH_MID_HEIGHT = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
-        public const val HATCH_HIGH_HEIGHT = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING
+        public const val HATCH_HIGH_HEIGHT = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING + 3.0
         public const val BALL_LOW_HEIGHT = 5.0
-        public const val BALL_MID_HEIGHT = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING
+        public const val BALL_MID_HEIGHT = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING - 1.0
         public const val BALL_HIGH_HEIGHT = BALL_MID_HEIGHT + ROCKET_HOLE_SPACING
         public const val BALL_HUMAN_PLAYER_HEIGHT = 20.0
 
         // constants
         public const val ENCODER_REDUCTION = 38.0 / 24.0 // reduction from encoder shaft to output shaft
         public const val ENCODER_TICKS_PER_ROTATION = 4096 // of the encoder shaft
-        public const val MAX_ENCODER_TICKS = (8200 * 4 * ENCODER_REDUCTION).toInt() // CHANGE THIS, worked on 8100
+        public const val MAX_ENCODER_TICKS = (8300 * 4 * ENCODER_REDUCTION).toInt() // CHANGE THIS, worked on 8100
         public const val MIN_ENCODER_TICKS = (400 * ENCODER_REDUCTION).toInt() // CHANGE THIS
         public const val ZEROING_THRESHOLD = 5 // ticks per 100/ms
         public const val ZEROING_SPEED = -0.2 // percent output
