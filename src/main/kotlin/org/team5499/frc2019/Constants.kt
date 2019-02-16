@@ -129,7 +129,7 @@ public object Constants {
         // constants
         public const val ENCODER_REDUCTION = 38.0 / 24.0 // reduction from encoder shaft to output shaft
         public const val ENCODER_TICKS_PER_ROTATION = 4096 // of the encoder shaft
-        public const val MAX_ENCODER_TICKS = (8150 * 4 * ENCODER_REDUCTION).toInt() // CHANGE THIS, worked on 8100
+        public const val MAX_ENCODER_TICKS = (8200 * 4 * ENCODER_REDUCTION).toInt() // CHANGE THIS, worked on 8100
         public const val MIN_ENCODER_TICKS = (400 * ENCODER_REDUCTION).toInt() // CHANGE THIS
         public const val ZEROING_THRESHOLD = 5 // ticks per 100/ms
         public const val ZEROING_SPEED = -0.2 // percent output

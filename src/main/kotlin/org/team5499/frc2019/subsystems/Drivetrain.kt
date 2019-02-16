@@ -530,14 +530,6 @@ public class Drivetrain(
 
     public override fun update() {
         mPosition.update(leftDistance, rightDistance, heading.degrees)
-        // println("left setpoint: ${mLeftMaster.getClosedLoopTarget(0)}" +
-            // ", left error: ${mLeftMaster.getClosedLoopError(0)}")
-        // println("Left distance $leftDistance, Right distance $rightDistance")
-        // println("right distance: ${mRightMaster.getClosedLoopTarget(0)}" +
-        //     ", right error: ${mRightMaster.getClosedLoopError(0)}"
-        // println("heading: $heading degrees, raw gyro: ${mGyro.getFusedHeading()}, gyro offset: ${mGyroOffset}")
-        // println("target heading: ${mRightMaster.getClosedLoopTarget(1)} turn error: ${turnError}")
-        // println("left error: $leftVelocityError,  right error: $rightVelocityError")
     }
 
     public override fun stop() {
@@ -550,7 +542,6 @@ public class Drivetrain(
     public override fun reset() {
         setPercent(0.0, 0.0)
         stop()
-        println("drivetrain distances: $leftDistance, $rightDistance")
         mLeftMaster.neutralOutput()
         mRightMaster.neutralOutput()
         brakeMode = false
