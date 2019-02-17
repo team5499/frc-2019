@@ -33,7 +33,7 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
             config_kD(0, Constants.Hatch.HATCH_KD, 0)
             config_kF(0, 0.0, 0)
         }
-
+        mTalon.neutralOutput()
         mPositionOffset = Constants.Hatch.POSITION_OFFSET
 
         // Dashboard.addVarListener("HATCH_KP", {
@@ -80,7 +80,7 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
     }
 
     public override fun update() {
-        println("hatchmech pos: ${mTalon.getSelectedSensorPosition(0)}")
+        // println("hatchmech pos: ${mTalon.getSelectedSensorPosition(0)}")
     }
 
     public override fun stop() {
