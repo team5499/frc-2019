@@ -48,7 +48,7 @@ public object Constants {
         public const val PIGEON_UNITS_PER_ROTATION = 8192
 
         // dimensions
-        public const val WHEEL_BASE = 20.0 // inches
+        public const val WHEEL_BASE = 27.0 // inches
         public const val WHEEL_DIAMETER = 6.0 // inches
         public const val WHEEL_RADIUS = WHEEL_DIAMETER / 2.0
         public const val WHEEL_CIR = WHEEL_DIAMETER * Math.PI

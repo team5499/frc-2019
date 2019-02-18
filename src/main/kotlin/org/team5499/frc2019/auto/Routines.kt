@@ -24,17 +24,23 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         this.tuning = createTuning()
     }
 
-    private fun createBaseline(): Routine {
-        return Routine("baseline", Rotation2d.fromDegrees(0),
-            DriveStraightAction(15.0, 50.0, mSubsystems.drivetrain)
-        )
-    }
+    private fun createBaseline() = Routine(
+        "baseline",
+        Rotation2d.fromDegrees(0),
+        DriveStraightAction(15.0, 50.0, mSubsystems.drivetrain)
+    )
 
-    private fun createTuning(): Routine {
-        return Routine("tuning", Rotation2d.fromDegrees(0),
-            TurnAction(15.0, 90.0, mSubsystems.drivetrain)
-        )
-    }
+    private fun createTuning() = Routine(
+        "tuning",
+        Rotation2d.fromDegrees(0),
+        TurnAction(15.0, 90.0, mSubsystems.drivetrain)
+    )
+
+    private fun createTest() = Routine(
+        "test",
+        Rotation2d.fromDegrees(270.0),
+        Path
+    )
 
     public fun resetAll() {
         baseline.reset()

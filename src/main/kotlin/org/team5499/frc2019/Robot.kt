@@ -148,7 +148,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mPathGenerator = PathGenerator(
             Constants.Drivetrain.MAX_VELOCITY,
             Constants.Drivetrain.MAX_ACCELERATION,
-            0.0,
+            10.0,
             0.0
         )
         mPaths = Paths(mPathGenerator)
