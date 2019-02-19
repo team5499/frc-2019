@@ -118,7 +118,7 @@ public object Constants {
         // heights (carriage height in inches)
         public const val ROCKET_HOLE_SPACING = 28.00
         public const val STOW_HEIGHT = 3.5
-        public const val HATCH_LOW_HEIGHT = 9.25
+        public const val HATCH_LOW_HEIGHT = 10.5
         public const val HATCH_MID_HEIGHT = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
         public const val HATCH_HIGH_HEIGHT = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING + 3.0
         public const val BALL_LOW_HEIGHT = 5.0

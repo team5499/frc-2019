@@ -44,6 +44,17 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     private var mZeroed: Boolean
     private var mSetpoint: Double
+    private var mSoftLimitsEnabled: Boolean = false
+        set(value) {
+            if (value == field) return
+            if (value) {
+                mMaster.configForwardSoftLimitEnable(true, 0)
+                mMaster.configReverseSoftLimitEnable(true, 0)
+            } else {
+                mMaster.configForwardSoftLimitEnable(false, 0)
+                mMaster.configReverseSoftLimitEnable(false, 0)
+            }
+        }
 
     // first stage numbers
     public val firstStagePositionRaw: Int
@@ -162,6 +173,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
         mElevatorMode = ElevatorMode.ZERO
         mZeroed = false // CHANGE THIS TO FALSE
+        mSoftLimitsEnabled = false
         // mEncoderPresent = false
         mSetpoint = 0.0
         mFirstLoop = true
@@ -241,7 +253,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     public override fun update() {
         if (!mZeroed) {
             mElevatorMode = ElevatorMode.ZERO
-            mMaster.configReverseSoftLimitEnable(false)
+            mSoftLimitsEnabled = false
             if (mFirstLoop) {
                 super.timer.stop()
                 super.timer.reset()
@@ -261,17 +273,20 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
                     mSetpoint = 0.0
                     setZero()
                     mElevatorMode = ElevatorMode.OPEN_LOOP
-                    mMaster.configReverseSoftLimitEnable(true)
+                    mSoftLimitsEnabled = true
                 }
                 mMaster.set(ControlMode.PercentOutput, Constants.Lift.ZEROING_SPEED)
             }
             ElevatorMode.VELOCITY -> {
+                mSoftLimitsEnabled = true
                 mMaster.set(ControlMode.Velocity, mSetpoint)
             }
             ElevatorMode.OPEN_LOOP -> {
+                mSoftLimitsEnabled = false
                 mMaster.set(ControlMode.PercentOutput, mSetpoint)
             }
             ElevatorMode.MOTION_MAGIC -> {
+                mSoftLimitsEnabled = true
                 mMaster.set(ControlMode.MotionMagic, mSetpoint)
             }
         }
