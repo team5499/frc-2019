@@ -145,10 +145,11 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mHatchMech, mVision)
 
         // path init
+        @Suppress("MagicNumber")
         mPathGenerator = PathGenerator(
             Constants.Drivetrain.MAX_VELOCITY,
             Constants.Drivetrain.MAX_ACCELERATION,
-            10.0,
+            20.0,
             0.0
         )
         mPaths = Paths(mPathGenerator)

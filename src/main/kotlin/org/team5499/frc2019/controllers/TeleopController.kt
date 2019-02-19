@@ -43,7 +43,10 @@ public class TeleopController(
             mControlBoard.driverControls.getTurn(),
             mControlBoard.driverControls.getQuickTurn()
         )
-        mSubsystems.drivetrain.setPercent(driveSignal)
+        mSubsystems.drivetrain.setVelocity(60.0 * driveSignal.left, 60.0 * driveSignal.left)
+        // println("drivesignal: ${driveSignal.left}")
+        println("${mSubsystems.drivetrain.leftVelocityError}")
+        // println("")
 
         if (mControlBoard.codriverControls.getExaust()) {
             mSubsystems.intake.outtake()

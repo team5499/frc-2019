@@ -38,4 +38,8 @@ public class PathAction(
     public override fun next(): Boolean {
         return (super.next() || mPathfollower.doneWithPath(drivetrain.pose))
     }
+
+    public override fun finish() {
+        drivetrain.setVelocity(0.0, 0.0)
+    }
 }
