@@ -6,6 +6,7 @@ import org.team5499.monkeyLib.math.geometry.Rotation2d
 import org.team5499.frc2019.auto.actions.DriveStraightAction
 import org.team5499.frc2019.auto.actions.TurnAction
 import org.team5499.frc2019.subsystems.SubsystemsManager
+import org.team5499.frc2019.auto.actions.PathAction
 
 @SuppressWarnings("MagicNumber")
 public class Routines(paths: Paths, subsystems: SubsystemsManager) {
@@ -15,6 +16,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
 
     public val baseline: Routine
     public val tuning: Routine
+    public val test: Routine
 
     init {
         mPaths = paths
@@ -22,6 +24,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
 
         this.baseline = createBaseline()
         this.tuning = createTuning()
+        this.test = createTest()
     }
 
     private fun createBaseline() = Routine(
@@ -38,8 +41,8 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
 
     private fun createTest() = Routine(
         "test",
-        Rotation2d.fromDegrees(270.0),
-        Path
+        Rotation2d.fromDegrees(0.0),
+        PathAction(15.0, mPaths.testPath, mSubsystems.drivetrain)
     )
 
     public fun resetAll() {
