@@ -17,12 +17,13 @@ import org.team5499.monkeyLib.path.PathFollower
 public class PathAction(
     timeoutSeconds: Double,
     path: Path,
-    val drivetrain: Drivetrain
+    val drivetrain: Drivetrain,
+    val lookaheadDistance: Double = Constants.Auto.LOOKAHEAD_DISTANCE
 ) : Action(timeoutSeconds) {
 
     // The actuall class from MonkeyLib that does all the math for path following
     private val mPathfollower: PathFollower = PathFollower(path,
-                            Constants.Drivetrain.WHEEL_BASE, Constants.Auto.LOOKAHEAD_DISTANCE)
+                            Constants.Drivetrain.WHEEL_BASE, lookaheadDistance)
 
     // Called every tick
     public override fun update() {
