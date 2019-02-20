@@ -10,25 +10,25 @@ public class Paths(generator: PathGenerator) {
 
     private val mGenerator: PathGenerator
 
-    public val testPath: Path
+    public val toLeftRocket: Path
 
     init {
         mGenerator = generator
-        testPath = generateTestPath()
+        toLeftRocket = generatePathToLeftRocket()
     }
 
     @SuppressWarnings("MagicNumber")
-    private object Poses {
-        public val leftStartingPosition = Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0.0))
-        public val testPoint = Pose2d(Vector2(120, 0), Rotation2d.fromDegrees(-45.0))
-        public val testPoint2 = Pose2d(Vector2(120, -120), Rotation2d.fromDegrees(-90.0))
+    public object Poses {
+        public val leftStartingPosition = Pose2d(Vector2(65, 40), Rotation2d.fromDegrees(90.0))
+        public val leftRocketMidpoint = Pose2d(Vector2(100, 120), Rotation2d.fromDegrees(25.0))
+        public val leftRocketPosition = Pose2d(Vector2(200, 133), Rotation2d.fromDegrees(30.0))
     }
 
-    public fun generateTestPath(): Path {
+    public fun generatePathToLeftRocket(): Path {
         val points: Array<Pose2d> = arrayOf(
             Poses.leftStartingPosition,
-            Poses.testPoint,
-            Poses.testPoint2
+            Poses.leftRocketMidpoint,
+            Poses.leftRocketPosition
         )
         return mGenerator.generatePath(false, points)
     }
