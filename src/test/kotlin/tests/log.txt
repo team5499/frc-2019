@@ -1,0 +1,1 @@
+tests.LogTest.logSomething() {POSITION} [INFO]    print the position

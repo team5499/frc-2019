@@ -1,6 +1,6 @@
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.3.0"
-    id "edu.wpi.first.GradleRIO" version "2019.1.1"
+    id "edu.wpi.first.GradleRIO" version "2019.3.1"
 }
 
 def ROBOT_MAIN_CLASS = "org.team5499.frc2019.Main"
@@ -60,6 +60,9 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.3.0"
 
     compile 'org.team5499:monkey-lib:2.1.0'
+
+    compile 'org.tinylog:tinylog-api:2.0.0-M3'
+    compile 'org.tinylog:tinylog-impl:2.0.0-M3'
 
     // wpilib specific
     compile wpi.deps.wpilib()

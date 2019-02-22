@@ -8,6 +8,8 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.FileSystems
 
+import org.tinylog.Logger
+
 @Suppress("MagicNumber")
 class Robot : TimedRobot(0.005) {
 
@@ -35,10 +37,20 @@ class Robot : TimedRobot(0.005) {
         if (event != null) {
             println("event:")
             println("$event")
-            event.pollEvents()
+            var events = event.pollEvents()
+            events.forEach({
+                println(it.kind())
+                if (it.kind() == StandardWatchEventKinds.ENTRY_DELETE) {
+                    System.exit(1)
+                }
+            })
             event.reset()
             println("reset")
         }
+        val startTime = System.nanoTime()
+        Logger.info("test" as Any)
+        val endTime = System.nanoTime()
+        println("${endTime - startTime}")
     }
 
     override fun disabledInit() {
