@@ -40,12 +40,10 @@ class Robot : TimedRobot(0.005) {
             var events = event.pollEvents()
             events.forEach({
                 println(it.kind())
-                if (it.kind() == StandardWatchEventKinds.ENTRY_DELETE) {
-                    System.exit(1)
-                }
             })
             event.reset()
             println("reset")
+            System.exit(1)
         }
         val startTime = System.nanoTime()
         Logger.info("test" as Any)
