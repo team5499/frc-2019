@@ -30,6 +30,8 @@ import org.team5499.dashboard.Dashboard
 
 import com.ctre.phoenix.sensors.PigeonIMU
 
+import org.tinylog.Logger
+
 class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     // inputs
     private val mDriver: XboxController
@@ -162,13 +164,17 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun robotInit() {
+        Logger.warn("Robot initializing" as Any)
     }
 
     override fun robotPeriodic() {
-        // println("hatchmech pos: ${mHatchMechTalon.getSelectedSensorPosition(0)}")
+        Logger.tag("POSITION").trace(mSubsystemsManager.drivetrain.pose.toString() as Any)
+        Logger.tag("LVEL_ERR").trace(mSubsystemsManager.drivetrain.leftVelocityError.toString() as Any)
+        Logger.tag("RVEL_ERR").trace(mSubsystemsManager.drivetrain.rightVelocityError.toString() as Any)
     }
 
     override fun disabledInit() {
+        Logger.warn("Robot disabling" as Any)
         mSubsystemsManager.resetAll()
     }
 
@@ -176,6 +182,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun autonomousInit() {
+        Logger.warn("Robot going autonomous" as Any)
         mSubsystemsManager.resetAll()
         mSandstormController.reset()
         mSandstormController.start()
@@ -187,6 +194,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun teleopInit() {
+        Logger.warn("Robot going teleoperated" as Any)
         // mSubsystemsManager.resetAll()
         mTeleopController.reset()
         mTeleopController.start()
