@@ -9,7 +9,7 @@ public object Constants {
         DashboardVar.initClassProps(Constants::class)
     }
 
-    public const val ROBOT_UPDATE_PERIOD = 0.01 // maybe change back to 0.005
+    public const val ROBOT_UPDATE_PERIOD = 0.02 // maybe change back to 0.005
     public const val TALON_UPDATE_PERIOD_MS = 1
     public const val TALON_PIDF_UPDATE_PERIOD_MS = 1
 
@@ -116,18 +116,18 @@ public object Constants {
         public const val MOTION_MAGIC_ACCELERATION = 11000 // 9000 before
 
         // heights (carriage height in inches)
-        public val ROCKET_HOLE_SPACING = 28.00
+        public val ROCKET_HOLE_SPACING by DashboardVar(27.0)
         public var STOW_HEIGHT by DashboardVar(3.5)
-        public var HATCH_LOW_HEIGHT by DashboardVar(10.5)
+        public var HATCH_LOW_HEIGHT by DashboardVar(8.0)
         public val HATCH_MID_HEIGHT: Double
             get() = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
         public val HATCH_HIGH_HEIGHT
             get() = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING + 3.0
-        public var BALL_LOW_HEIGHT by DashboardVar(5.0)
+        public var BALL_LOW_HEIGHT by DashboardVar(4.5)
         public val BALL_MID_HEIGHT
-            get() = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING + 0.5
+            get() = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING
         public val BALL_HIGH_HEIGHT
-            get() = BALL_MID_HEIGHT + ROCKET_HOLE_SPACING + 0.50
+            get() = BALL_MID_HEIGHT + ROCKET_HOLE_SPACING
         public var BALL_HUMAN_PLAYER_HEIGHT by DashboardVar(20.0)
 
         // constants
@@ -171,7 +171,7 @@ public object Constants {
         public var HATCH_KD by DashboardVar(1.0)
 
         // positions, all in pot ticks
-        public var POSITION_OFFSET by DashboardVar(190)
+        public var POSITION_OFFSET by DashboardVar(40)
 
         public var TOP_STOW_POSITION by DashboardVar(0)
         public var BOTTOM_STOW_POSITION by DashboardVar(770)

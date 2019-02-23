@@ -46,7 +46,7 @@
           "title": "Hatch Low Height",
           "type": "DoubleEditor",
           "variables": {
-            "target": "Constants.Lift.STOW_HEIGHT"
+            "target": "Constants.Lift.HATCH_LOW_HEIGHT"
           },
           "width": "12rem"
         },
@@ -69,6 +69,17 @@
           "type": "DoubleEditor",
           "variables": {
             "target": "Constants.Lift.BALL_HUMAN_PLAYER_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "bHoleSpacing",
+          "kwargs": {},
+          "title": "Rocket Hole Spacing",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.ROCKET_HOLE_SPACING"
           },
           "width": "12rem"
         }
