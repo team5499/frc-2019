@@ -116,15 +116,19 @@ public object Constants {
         public const val MOTION_MAGIC_ACCELERATION = 11000 // 9000 before
 
         // heights (carriage height in inches)
-        public const val ROCKET_HOLE_SPACING = 28.00
-        public const val STOW_HEIGHT = 3.5
-        public const val HATCH_LOW_HEIGHT = 10.5
-        public const val HATCH_MID_HEIGHT = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
-        public const val HATCH_HIGH_HEIGHT = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING + 3.0
-        public const val BALL_LOW_HEIGHT = 5.0
-        public const val BALL_MID_HEIGHT = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING + 0.5
-        public const val BALL_HIGH_HEIGHT = BALL_MID_HEIGHT + ROCKET_HOLE_SPACING + 0.50
-        public const val BALL_HUMAN_PLAYER_HEIGHT = 20.0
+        public val ROCKET_HOLE_SPACING = 28.00
+        public var STOW_HEIGHT by DashboardVar(3.5)
+        public var HATCH_LOW_HEIGHT by DashboardVar(10.5)
+        public val HATCH_MID_HEIGHT: Double
+            get() = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
+        public val HATCH_HIGH_HEIGHT
+            get() = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING + 3.0
+        public var BALL_LOW_HEIGHT by DashboardVar(5.0)
+        public val BALL_MID_HEIGHT
+            get() = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING + 0.5
+        public val BALL_HIGH_HEIGHT
+            get() = BALL_MID_HEIGHT + ROCKET_HOLE_SPACING + 0.50
+        public var BALL_HUMAN_PLAYER_HEIGHT by DashboardVar(20.0)
 
         // constants
         public const val ENCODER_REDUCTION = 38.0 / 24.0 // reduction from encoder shaft to output shaft
