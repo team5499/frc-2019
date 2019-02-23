@@ -46,9 +46,7 @@ class Robot : TimedRobot(0.005) {
             System.exit(1)
         }
         val startTime = System.nanoTime()
-        Logger.info("test" as Any)
-        val endTime = System.nanoTime()
-        println("${endTime - startTime}")
+        Logger.info("test @ $startTime" as Any)
     }
 
     override fun disabledInit() {
