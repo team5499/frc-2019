@@ -76,6 +76,7 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
     }
 
     public fun setPosition(position: HatchMechPosition) {
+        mPositionOffset = Constants.Hatch.POSITION_OFFSET
         mTalon.set(ControlMode.Position, (mPositionOffset + position.ticks).toDouble())
     }
 
