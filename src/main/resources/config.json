@@ -1,0 +1,24 @@
+{
+  "devMode": false,
+  "pages": {
+    "dev": {
+      "navbarOrder": 0,
+      "title": "Development",
+      "widgets": [
+        {
+          "height": "auto",
+          "id": "pidEditor",
+          "kwargs": {},
+          "title": "PID Variable",
+          "type": "PIDWidget",
+          "variables": {
+            "dtarget": "Constants.TEST_KD",
+            "itarget": "Constants.TEST_KI",
+            "ptarget": "Constants.TEST_KP"
+          },
+          "width": "12rem"
+        }
+      ]
+    }
+  }
+}
