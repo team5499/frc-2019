@@ -25,15 +25,15 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         ZERO
     }
 
-    public enum class ElevatorHeight(val carriageHeightInches: Double = 0.45) {
-        BOTTOM(Constants.Lift.STOW_HEIGHT),
-        HATCH_LOW(Constants.Lift.HATCH_LOW_HEIGHT),
-        HATCH_MID(Constants.Lift.HATCH_MID_HEIGHT),
-        HATCH_HIGH(Constants.Lift.HATCH_HIGH_HEIGHT),
-        BALL_LOW(Constants.Lift.BALL_LOW_HEIGHT),
-        BALL_MID(Constants.Lift.BALL_MID_HEIGHT),
-        BALL_HIGH(Constants.Lift.BALL_HIGH_HEIGHT),
-        BALL_HUMAN_PLAYER(Constants.Lift.BALL_HUMAN_PLAYER_HEIGHT)
+    public enum class ElevatorHeight(val carriageHeightInches: () -> Double = { 0.45 }) {
+        BOTTOM({ Constants.Lift.STOW_HEIGHT }),
+        HATCH_LOW({ Constants.Lift.HATCH_LOW_HEIGHT }),
+        HATCH_MID({ Constants.Lift.HATCH_MID_HEIGHT }),
+        HATCH_HIGH({ Constants.Lift.HATCH_HIGH_HEIGHT }),
+        BALL_LOW({ Constants.Lift.BALL_LOW_HEIGHT }),
+        BALL_MID({ Constants.Lift.BALL_MID_HEIGHT }),
+        BALL_HIGH({ Constants.Lift.BALL_HIGH_HEIGHT }),
+        BALL_HUMAN_PLAYER({ Constants.Lift.BALL_HUMAN_PLAYER_HEIGHT })
     }
 
     private val mMaster: LazyTalonSRX
@@ -224,7 +224,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     }
 
     public fun setIntakeHeight(height: ElevatorHeight) {
-        setCarriagePosition(height.carriageHeightInches)
+        setCarriagePosition(height.carriageHeightInches())
     }
 
     public fun setVelocityRaw(ticksPer100ms: Int) {

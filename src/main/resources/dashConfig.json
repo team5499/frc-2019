@@ -11,9 +11,9 @@
           "title": "Hatch PID",
           "type": "PIDWidget",
           "variables": {
-            "dtarget": "HATCH_KD",
-            "itarget": "HATCH_KI",
-            "ptarget": "HATCH_KP"
+            "dtarget": "Constants.Hatch.HATCH_KD",
+            "itarget": "Constants.Hatch.HATCH_KI",
+            "ptarget": "Constants.Hatch.HATCH_KP"
           },
           "width": "12rem"
         },
@@ -24,7 +24,51 @@
           "title": "Hatch Position Offset",
           "type": "IntEditor",
           "variables": {
-            "target": "POSITION_OFFSET"
+            "target": "Constants.Hatch.POSITION_OFFSET"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "stowHeight",
+          "kwargs": {},
+          "title": "Stow Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.STOW_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "hLowHeight",
+          "kwargs": {},
+          "title": "Hatch Low Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.STOW_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "bLowHeight",
+          "kwargs": {},
+          "title": "Ball Low Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.BALL_LOW_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "bHumanHeight",
+          "kwargs": {},
+          "title": "Ball Human Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.BALL_HUMAN_PLAYER_HEIGHT"
           },
           "width": "12rem"
         }
