@@ -65,7 +65,7 @@ public class Paths(generator: PathGenerator) {
             Poses.rightRocketMidpoint,
             Poses.rightRocketPosition
         )
-        return mGenerator.generatePath(false, points, 80.0, 50.0, 10.0, 0.0)
+        return mGenerator.generatePath(false, points, 50.0, 50.0, 10.0, 0.0)
     }
 
     private fun generateRightRocketBackup(): Path {
