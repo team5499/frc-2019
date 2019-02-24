@@ -73,7 +73,9 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         PathAction(15.0, mPaths.rightBackupToStation, mSubsystems.drivetrain),
         HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
         NothingAction(0.75),
-        PathAction(15.0, mPaths.rightRocketBackup2, mSubsystems.drivetrain)
+        PathAction(15.0, mPaths.rightRocketBackup2, mSubsystems.drivetrain),
+        PathAction(15.0, mPaths.rightRocketTinyBoi, mSubsystems.drivetrain),
+        HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech)
     )
 
     private fun createBaseline() = Routine(

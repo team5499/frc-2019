@@ -17,6 +17,7 @@ public class Paths(generator: PathGenerator) {
     public val rightRocketBackup: Path
     public val rightBackupToStation: Path
     public val rightRocketBackup2: Path
+    public val rightRocketTinyBoi: Path
 
     init {
         mGenerator = generator
@@ -26,6 +27,7 @@ public class Paths(generator: PathGenerator) {
         rightRocketBackup = generateRightRocketBackup()
         rightBackupToStation = generateRightBackupToStation()
         rightRocketBackup2 = generateRightBackup2()
+        rightRocketTinyBoi = generateRightTinyBoi()
     }
 
     @SuppressWarnings("MagicNumber")
@@ -44,6 +46,8 @@ public class Paths(generator: PathGenerator) {
 
         public val rightRocketMidpoint2 = Pose2d(Vector2(200, -106), Rotation2d.fromDegrees(180))
         public val rightRocketMidpoint3 = Pose2d(Vector2(287, -114), Rotation2d.fromDegrees(180))
+
+        public val rightRocketBackPosition = Pose2d(Vector2(253, -134), Rotation2d.fromDegrees(210))
     }
 
     private fun generatePathToLeftRocket(): Path {
@@ -61,7 +65,7 @@ public class Paths(generator: PathGenerator) {
             Poses.rightRocketMidpoint,
             Poses.rightRocketPosition
         )
-        return mGenerator.generatePath(false, points, 50.0, 50.0, 10.0, 0.0)
+        return mGenerator.generatePath(false, points, 80.0, 50.0, 10.0, 0.0)
     }
 
     private fun generateRightRocketBackup(): Path {
@@ -87,5 +91,13 @@ public class Paths(generator: PathGenerator) {
             Poses.rightRocketMidpoint3
         )
         return mGenerator.generatePath(true, points, 100.0, 100.0, 20.0, 0.0)
+    }
+
+    private fun generateRightTinyBoi(): Path {
+        val points: Array<Pose2d> = arrayOf(
+            Poses.rightRocketMidpoint3,
+            Poses.rightRocketBackPosition
+        )
+        return mGenerator.generatePath(false, points, 50.0, 50.0, 20.0, 0.0)
     }
 }
