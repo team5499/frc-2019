@@ -532,7 +532,7 @@ public class Drivetrain(
 
     public override fun update() {
         mPosition.update(leftDistance, rightDistance, heading.degrees)
-        println("position: ${mPosition.positionVector}")
+        // println("position: ${mPosition.positionVector}")
     }
 
     public override fun stop() {

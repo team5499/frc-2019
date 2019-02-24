@@ -16,8 +16,7 @@ public class LiftAction(
     val lift: Lift
 ) : Action(0.0) {
 
-    public constructor(height: ElevatorHeight, lift: Lift):
-        this(height.carriageHeightInches, lift)
+    public constructor(height: ElevatorHeight, lift: Lift): this(height.carriageHeightInches(), lift)
 
     public override fun start() {
         lift.setCarriagePosition(inches)

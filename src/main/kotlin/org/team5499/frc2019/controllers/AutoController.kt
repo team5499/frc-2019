@@ -31,7 +31,7 @@ public class AutoController(subsystems: SubsystemsManager, routines: Routines) :
         // TODO choose routine from dashboard
         println("auto controller starting")
         reset()
-        currentRoutine = mRoutines.rocketLeft
+        currentRoutine = mRoutines.rocketRight
         mSubsystems.drivetrain.brakeMode = true
         mSubsystems.drivetrain.heading = Rotation2d(currentRoutine.startPose.rotation)
         mSubsystems.drivetrain.setPosition(currentRoutine.startPose.translation)
