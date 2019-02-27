@@ -6,6 +6,16 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel
 import edu.wpi.first.wpilibj.RobotController
 
 object Logging {
+
+    enum class LogState {
+        PDP,
+        PDP_PORTS,
+        DRIVERSTATION,
+        PDP_CHANNELS
+    }
+
+    var logState = LogState.PDP
+
     fun logStartupData() {
     }
 
@@ -20,28 +30,29 @@ object Logging {
     }
 
     fun logIterativeData(pdp: PowerDistributionPanel) {
-        val start = System.nanoTime()
-        Logger.tag("DS_ATTACHED").trace(DriverStation.getInstance().isDSAttached())
-        Logger.tag("FMS").trace(DriverStation.getInstance().isFMSAttached())
-        val afterFms = System.nanoTime()
-
-        Logger.tag("BATTERY").trace(pdp.voltage)
-        Logger.tag("POWER").trace(pdp.totalPower)
-        Logger.tag("CURRENT").trace(pdp.totalCurrent)
-        val afterPdp = System.nanoTime()
-
-        logPdpChannels(pdp)
-        val afterPdpChannels = System.nanoTime()
-
-        Logger.tag("CAN_USAGE").trace(RobotController.getCANStatus().percentBusUtilization)
-        Logger.tag("BROWNED_OUT").trace(RobotController.isBrownedOut())
-        Logger.tag("SYS_ACTIVE").trace(RobotController.isSysActive())
-        val afterRobotController = System.nanoTime()
-
-        println("ds: ${afterFms - start}")
-        println("pdp: ${afterPdp - afterFms}")
-        println("pdp channels: ${afterPdpChannels - afterPdp}")
-        println("robot: ${afterRobotController - afterPdpChannels}")
+        logState = when (logState) {
+            LogState.DRIVERSTATION -> {
+                Logger.tag("DS_ATTACHED").trace(DriverStation.getInstance().isDSAttached())
+                Logger.tag("FMS").trace(DriverStation.getInstance().isFMSAttached())
+                LogState.PDP
+            }
+            LogState.PDP -> {
+                Logger.tag("BATTERY").trace(pdp.voltage)
+                Logger.tag("POWER").trace(pdp.totalPower)
+                Logger.tag("CURRENT").trace(pdp.totalCurrent)
+                LogState.PDP_PORTS
+            }
+            LogState.PDP_PORTS -> {
+                logPdpChannels(pdp)
+                LogState.PDP_CHANNELS
+            }
+            LogState.PDP_CHANNELS -> {
+                Logger.tag("CAN_USAGE").trace(RobotController.getCANStatus().percentBusUtilization)
+                Logger.tag("BROWNED_OUT").trace(RobotController.isBrownedOut())
+                Logger.tag("SYS_ACTIVE").trace(RobotController.isSysActive())
+                LogState.DRIVERSTATION
+            }
+        }
     }
 
     @Suppress("MagicNumber")
