@@ -38,10 +38,10 @@ object Logging {
         Logger.tag("SYS_ACTIVE").trace(RobotController.isSysActive())
         val afterRobotController = System.nanoTime()
 
-        println("ds: ${Utils.nanoToSec(afterFms - start)}")
-        println("pdp: ${Utils.nanoToSec(afterPdp - afterFms)}")
-        println("pdp channels: ${Utils.nanoToSec(afterPdpChannels - afterPdp)}")
-        println("robot: ${Utils.nanoToSec(afterRobotController - afterPdpChannels)}")
+        println("ds: ${afterFms - start}")
+        println("pdp: ${afterPdp - afterFms}")
+        println("pdp channels: ${afterPdpChannels - afterPdp}")
+        println("robot: ${afterRobotController - afterPdpChannels}")
     }
 
     @Suppress("MagicNumber")
