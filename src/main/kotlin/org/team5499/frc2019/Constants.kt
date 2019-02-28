@@ -162,15 +162,10 @@ public object Constants {
     object Hatch {
         public const val TALON_PORT = 10
 
-        // public const val HATCH_KP = 2.0
-        // public const val HATCH_KI = 0.0
-        // public const val HATCH_KD = 1.0
-
         public var HATCH_KP by DashboardVar(2.0)
         public var HATCH_KI by DashboardVar(0.0)
         public var HATCH_KD by DashboardVar(1.0)
 
-        // positions, all in pot ticks
         public var POSITION_OFFSET by DashboardVar(40)
 
         public var TOP_STOW_POSITION by DashboardVar(0)

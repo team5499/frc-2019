@@ -33,7 +33,8 @@ public class AutoController(subsystems: SubsystemsManager, routines: Routines) :
         reset()
         currentRoutine = mRoutines.tuning
         mSubsystems.drivetrain.brakeMode = true
-        mSubsystems.drivetrain.heading = Rotation2d(currentRoutine.startHeading)
+        mSubsystems.drivetrain.heading = Rotation2d(currentRoutine.startPose.rotation)
+        mSubsystems.drivetrain.setPosition(currentRoutine.startPose.translation)
         currentAction = currentRoutine.getCurrentAction()
         currentAction!!.start()
     }
