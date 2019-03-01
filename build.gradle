@@ -60,7 +60,7 @@ dependencies {
     // We need to add the Kotlin stdlib in order to use most Kotlin language features.
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.3.0"
 
-    compile 'org.team5499:monkey-lib:2.7.4'
+    compile 'org.team5499:monkey-lib:2.7.5'
     compile 'org.team5499:forest:0.6.0'
 
     compile 'org.tinylog:tinylog-api:2.0.0-M3'

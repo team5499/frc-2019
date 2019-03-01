@@ -24,6 +24,7 @@ public object Constants {
         // driver constants
         public const val JOYSTICK_DEADBAND = 0.07
         public const val TURN_MULT = 0.4
+        public const val SLOW_MULT = 0.5
         public const val DRIVER_STOW_TIMEOUT = 2.0 // seconds
 
         // codriver constants

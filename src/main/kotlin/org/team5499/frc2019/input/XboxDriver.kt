@@ -21,7 +21,8 @@ public class XboxDriver(xbox: XboxController) : IDriverControls {
 
     public override fun getQuickTurn() = mXbox.getBumper(Hand.kRight)
 
-    public override fun getCreep() = mXbox.getBumper(Hand.kLeft)
+    @Suppress("MagicNumber")
+    public override fun getCreep() = mXbox.getTriggerAxis(Hand.kRight) > 0.3
 
     public override fun getExitAuto() = mXbox.getAButtonPressed()
 

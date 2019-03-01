@@ -44,7 +44,8 @@ public class TeleopController(
         val driveSignal = mDriveHelper.calculateOutput(
             -mControlBoard.driverControls.getThrottle(),
             mControlBoard.driverControls.getTurn(),
-            mControlBoard.driverControls.getQuickTurn()
+            mControlBoard.driverControls.getQuickTurn(),
+            mControlBoard.driverControls.getCreep()
         )
         mSubsystems.drivetrain.setPercent(driveSignal)
 
@@ -58,9 +59,9 @@ public class TeleopController(
 
         if (super.timer.get() > Constants.Input.DRIVER_STOW_TIMEOUT) {
             mLockElevator = false
-        } else if (mControlBoard.driverControls.getStow()) {
             super.timer.stop()
             super.timer.reset()
+        } else if (mControlBoard.driverControls.getStow()) {
             super.timer.start()
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.BOTTOM)
             mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.BOTTOM_STOW)
