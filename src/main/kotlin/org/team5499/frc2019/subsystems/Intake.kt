@@ -7,10 +7,10 @@ import org.team5499.monkeyLib.util.CircularDoubleBuffer
 import org.team5499.monkeyLib.util.time.ITimer
 import org.team5499.monkeyLib.util.time.WPITimer
 
+import org.team5499.frc2019.Constants
+
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
-
-import org.team5499.frc2019.Constants
 
 public class Intake(talon: LazyTalonSRX, timer: ITimer = WPITimer()) : Subsystem() {
 
