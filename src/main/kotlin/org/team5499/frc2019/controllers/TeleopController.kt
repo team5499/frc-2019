@@ -23,17 +23,20 @@ public class TeleopController(
     private val mDriveHelper: DriveHelper
 
     private var mLockHatchMech: Boolean
+    private var mLockElevator: Boolean
 
     init {
         mSubsystems = subsystems
         mControlBoard = controlBoard
         mDriveHelper = driveHelper
         mLockHatchMech = false
+        mLockElevator = false
     }
 
     public override fun start() {
         mSubsystems.drivetrain.brakeMode = false
         mLockHatchMech = false
+        mLockElevator = false
     }
 
     @Suppress("ComplexMethod")
@@ -41,7 +44,8 @@ public class TeleopController(
         val driveSignal = mDriveHelper.calculateOutput(
             -mControlBoard.driverControls.getThrottle(),
             mControlBoard.driverControls.getTurn(),
-            mControlBoard.driverControls.getQuickTurn()
+            mControlBoard.driverControls.getQuickTurn(),
+            mControlBoard.driverControls.getCreep()
         )
         mSubsystems.drivetrain.setPercent(driveSignal.left, driveSignal.right)
 
@@ -51,6 +55,18 @@ public class TeleopController(
             mSubsystems.intake.intake()
         } else {
             mSubsystems.intake.hold()
+        }
+
+        if (super.timer.get() > Constants.Input.DRIVER_STOW_TIMEOUT) {
+            mLockElevator = false
+            super.timer.stop()
+            super.timer.reset()
+        } else if (mControlBoard.driverControls.getStow()) {
+            super.timer.start()
+            mSubsystems.lift.setIntakeHeight(ElevatorHeight.BOTTOM)
+            mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.BOTTOM_STOW)
+            mLockElevator = true
+            mLockHatchMech = true
         }
 
         if (!mLockHatchMech) {
@@ -65,7 +81,9 @@ public class TeleopController(
         }
 
         val manualElevatorInput = mControlBoard.codriverControls.getManualInput()
-        if (Math.abs(manualElevatorInput) > Constants.Input.MANUAL_CONTROL_DEADBAND) {
+        if (mLockElevator) {
+            // do nothing
+        } else if (Math.abs(manualElevatorInput) > Constants.Input.MANUAL_CONTROL_DEADBAND) {
             mSubsystems.lift.setPower(manualElevatorInput)
             mLockHatchMech = false
         } else if (mControlBoard.codriverControls.getHatchLow()) {

@@ -111,6 +111,8 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
 
     public fun resetAll() {
         baseline.reset()
+        tuning.reset()
+        test.reset()
         rocketLeft.reset()
         rocketRight.reset()
     }
