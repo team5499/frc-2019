@@ -24,6 +24,8 @@ public object Constants {
         // driver constants
         public const val JOYSTICK_DEADBAND = 0.05
         public const val TURN_MULT = 0.4
+        public const val SLOW_MULT = 0.5
+        public const val DRIVER_STOW_TIMEOUT = 2.0 // seconds
 
         // codriver constants
         public const val MANUAL_CONTROL_DEADBAND = 0.07
@@ -166,11 +168,12 @@ public object Constants {
         public var HATCH_KI by DashboardVar(0.0)
         public var HATCH_KD by DashboardVar(1.0)
 
-        public var POSITION_OFFSET by DashboardVar(40)
+        // positions, all in pot ticks
+        public var POSITION_OFFSET by DashboardVar(10)
 
         public var TOP_STOW_POSITION by DashboardVar(0)
         public var BOTTOM_STOW_POSITION by DashboardVar(770)
-        public var DEPLOY_POSITION by DashboardVar(370)
+        public var DEPLOY_POSITION by DashboardVar(385)
         public var HOLD_POSITION by DashboardVar(130)
     }
 

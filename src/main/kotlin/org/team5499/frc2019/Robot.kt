@@ -95,7 +95,11 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mCodriverControls = ButtonBoardCodriver(mCodriverButtonBoard, mCodriverJoystick)
         mControlBoard = ControlBoard(mDriverControls, mCodriverControls)
 
-        mSpaceDriveHelper = SpaceDriveHelper(Constants.Input.JOYSTICK_DEADBAND, Constants.Input.TURN_MULT)
+        mSpaceDriveHelper = SpaceDriveHelper(
+            Constants.Input.JOYSTICK_DEADBAND,
+            Constants.Input.TURN_MULT,
+            Constants.Input.SLOW_MULT
+        )
 
         // hardware init
         mLeftMaster = LazyTalonSRX(Constants.Drivetrain.LEFT_MASTER_TALON_PORT)
@@ -178,6 +182,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun disabledPeriodic() {
+        println(mHatchMechTalon.getSelectedSensorPosition(0))
     }
 
     override fun autonomousInit() {
