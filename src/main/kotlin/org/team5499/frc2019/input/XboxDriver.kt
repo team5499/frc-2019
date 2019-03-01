@@ -24,4 +24,6 @@ public class XboxDriver(xbox: XboxController) : IDriverControls {
     public override fun getCreep() = mXbox.getBumper(Hand.kLeft)
 
     public override fun getExitAuto() = mXbox.getAButtonPressed()
+
+    public override fun getStow() = mXbox.getAButtonPressed()
 }

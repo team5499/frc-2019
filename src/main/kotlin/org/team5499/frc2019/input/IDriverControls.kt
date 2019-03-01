@@ -18,4 +18,6 @@ public interface IDriverControls {
     public fun getCreep(): Boolean
 
     public fun getExitAuto(): Boolean
+
+    public fun getStow(): Boolean
 }
