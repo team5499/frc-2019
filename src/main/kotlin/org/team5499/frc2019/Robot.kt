@@ -174,6 +174,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         Logger.tag("POSITION").trace(mSubsystemsManager.drivetrain.pose.toString() as Any)
         Logger.tag("LVEL_ERR").trace(mSubsystemsManager.drivetrain.leftVelocityError.toString() as Any)
         Logger.tag("RVEL_ERR").trace(mSubsystemsManager.drivetrain.rightVelocityError.toString() as Any)
+        Dashboard.update()
     }
 
     override fun disabledInit() {
@@ -182,7 +183,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun disabledPeriodic() {
-        println(mHatchMechTalon.getSelectedSensorPosition(0))
+        // println(mHatchMechTalon.getSelectedSensorPosition(0))
     }
 
     override fun autonomousInit() {
