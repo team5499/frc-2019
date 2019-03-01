@@ -18,7 +18,6 @@ import org.team5499.frc2019.auto.actions.LiftAction
 import org.team5499.frc2019.auto.actions.HatchMechAction
 import org.team5499.frc2019.auto.actions.WaitForElevatorZeroAction
 
-import java.util.Map
 import java.util.HashMap
 
 @SuppressWarnings("MagicNumber")
@@ -26,7 +25,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
 
     private val mPaths: Paths
     private val mSubsystems: SubsystemsManager
-    private val mRoutineMap: Map
+    private val mRoutineMap: HashMap<String, Routine>
 
     public val baseline: Routine
     public val tuning: Routine
@@ -107,7 +106,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private fun createTest() = Routine(
         "test",
         Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0.0)),
-        DriveStraightAction(12.0, mSubsystems.drivetrain)
+        DriveStraightAction(10.0, 12.0, mSubsystems.drivetrain)
     )
 
     public fun resetAll() {
