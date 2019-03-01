@@ -173,11 +173,11 @@ public object Constants {
         public var HATCH_KD by DashboardVar(1.0)
 
         // positions, all in pot ticks
-        public var POSITION_OFFSET by DashboardVar(40)
+        public var POSITION_OFFSET by DashboardVar(10)
 
         public var TOP_STOW_POSITION by DashboardVar(0)
         public var BOTTOM_STOW_POSITION by DashboardVar(770)
-        public var DEPLOY_POSITION by DashboardVar(370)
+        public var DEPLOY_POSITION by DashboardVar(385)
         public var HOLD_POSITION by DashboardVar(130)
     }
 

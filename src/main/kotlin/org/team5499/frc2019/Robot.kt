@@ -182,6 +182,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun disabledPeriodic() {
+        println(mHatchMechTalon.getSelectedSensorPosition(0))
     }
 
     override fun autonomousInit() {
