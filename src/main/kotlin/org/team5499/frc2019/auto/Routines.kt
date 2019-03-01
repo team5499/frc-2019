@@ -18,27 +18,42 @@ import org.team5499.frc2019.auto.actions.LiftAction
 import org.team5499.frc2019.auto.actions.HatchMechAction
 import org.team5499.frc2019.auto.actions.WaitForElevatorZeroAction
 
+import java.util.Map
+import java.util.HashMap
+
 @SuppressWarnings("MagicNumber")
 public class Routines(paths: Paths, subsystems: SubsystemsManager) {
 
     private val mPaths: Paths
     private val mSubsystems: SubsystemsManager
+    private val mRoutineMap: Map
 
     public val baseline: Routine
     public val tuning: Routine
-    // public val test: Routine
+    public val test: Routine
     public val rocketLeft: Routine
     public val rocketRight: Routine
 
     init {
         mPaths = paths
         mSubsystems = subsystems
+        mRoutineMap = HashMap<String, Routine>()
 
         this.baseline = createBaseline()
         this.tuning = createTuning()
-        // this.test = createTest()
+        this.test = createTest()
         this.rocketLeft = createRocketLeft()
         this.rocketRight = createRocketRight()
+
+        mRoutineMap.put(baseline.name, baseline)
+        mRoutineMap.put(tuning.name, tuning)
+        mRoutineMap.put(test.name, test)
+        mRoutineMap.put(rocketLeft.name, rocketLeft)
+        mRoutineMap.put(rocketRight.name, rocketRight)
+    }
+
+    public fun getRoutineWithName(name: String): Routine? {
+        return mRoutineMap.get(name)
     }
 
     private fun createRocketLeft() = Routine(
@@ -89,10 +104,11 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         TurnAction(15.0, 90.0, mSubsystems.drivetrain)
     )
 
-    // private fun createTest() = Routine(
-    //     "test",
-    //     Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0.0)),
-    //     )
+    private fun createTest() = Routine(
+        "test",
+        Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0.0)),
+        DriveStraightAction(12.0, mSubsystems.drivetrain)
+    )
 
     public fun resetAll() {
         baseline.reset()
