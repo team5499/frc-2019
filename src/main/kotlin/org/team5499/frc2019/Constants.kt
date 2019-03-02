@@ -10,7 +10,7 @@ public object Constants {
     }
 
     public const val ROBOT_UPDATE_PERIOD = 0.02 // maybe change back to 0.005
-    public const val TALON_UPDATE_PERIOD_MS = 1
+    public const val TALON_UPDATE_PERIOD_MS = 10
     public const val TALON_PIDF_UPDATE_PERIOD_MS = 1
 
     public const val EPSILON = 1E-5
