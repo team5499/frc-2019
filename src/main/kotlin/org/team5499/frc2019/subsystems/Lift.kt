@@ -155,6 +155,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
             configMotionCruiseVelocity(Constants.Lift.MOTION_MAGIC_VELOCITY, 0)
             configMotionAcceleration(Constants.Lift.MOTION_MAGIC_ACCELERATION, 0)
             selectProfileSlot(kElevatorSlot, 0)
+            configAllowableClosedloopError(0, 0, 0)
 
             enableCurrentLimit(false)
             configPeakCurrentDuration(0, 0)

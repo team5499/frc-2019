@@ -127,7 +127,7 @@ public object Constants {
             get() = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING + 3.0
         public var BALL_LOW_HEIGHT by DashboardVar(4.5)
         public val BALL_MID_HEIGHT
-            get() = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING
+            get() = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING + 1.0
         public val BALL_HIGH_HEIGHT
             get() = BALL_MID_HEIGHT + ROCKET_HOLE_SPACING
         public var BALL_HUMAN_PLAYER_HEIGHT by DashboardVar(20.0)
