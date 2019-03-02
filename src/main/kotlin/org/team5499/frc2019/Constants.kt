@@ -120,7 +120,7 @@ public object Constants {
         // heights (carriage height in inches)
         public val ROCKET_HOLE_SPACING by DashboardVar(27.0)
         public var STOW_HEIGHT by DashboardVar(3.5)
-        public var HATCH_LOW_HEIGHT by DashboardVar(8.0)
+        public var HATCH_LOW_HEIGHT by DashboardVar(10.5)
         public val HATCH_MID_HEIGHT: Double
             get() = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
         public val HATCH_HIGH_HEIGHT

@@ -35,44 +35,6 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
         }
         mTalon.neutralOutput()
         mPositionOffset = Constants.Hatch.POSITION_OFFSET
-
-        // Dashboard.addVarListener("HATCH_KP", {
-        //     _: String, _: Any? ->
-        //     mTalon.config_kP(0, Dashboard.getDouble("HATCH_KP"), 0)
-        // })
-        // Dashboard.addVarListener("HATCH_KI", {
-        //     _: String, _: Any? ->
-        //     mTalon.config_kP(0, Dashboard.getDouble("HATCH_KI"), 0)
-        // })
-        // Dashboard.addVarListener("HATCH_KD", {
-        //     _: String, _: Any? ->
-        //     mTalon.config_kP(0, Dashboard.getDouble("HATCH_KD"), 0)
-        // })
-
-        // Dashboard.addVarListener("TOP_STOW_POSITION", {
-        //     _: String, _: Any? ->
-        //     HatchMechPosition.TOP_STOW.ticks = Dashboard.getInt("TOP_STOW_POSITION")
-        // })
-
-        // Dashboard.addVarListener("BOTTOM_STOW_POSITION", {
-        //     _: String, _: Any? ->
-        //     HatchMechPosition.BOTTOM_STOW.ticks = Dashboard.getInt("BOTTOM_STOW_POSITION")
-        // })
-
-        // Dashboard.addVarListener("HOLD_POSITION", {
-        //     _: String, _: Any? ->
-        //     HatchMechPosition.HOLD.ticks = Dashboard.getInt("HOLD_POSITION")
-        // })
-
-        // Dashboard.addVarListener("DEPLOY_POSITION", {
-        //     _: String, _: Any? ->
-        //     HatchMechPosition.DEPLOYED.ticks = Dashboard.getInt("DEPLOY_POSITION")
-        // })
-
-        // Dashboard.addVarListener("POSITION_OFFSET", {
-        //     _: String, _: Any? ->
-        //     mPositionOffset = Dashboard.getInt("POSITION_OFFSET")
-        // })
     }
 
     public fun setPosition(ticks: Int) {

@@ -38,11 +38,11 @@ public class Paths(generator: PathGenerator) {
 
         public val rightStartingPosition = Pose2d(Vector2(65, -40), Rotation2d.fromDegrees(-90.0))
         public val rightRocketMidpoint = Pose2d(Vector2(100, -120), Rotation2d.fromDegrees(-25.0))
-        public val rightRocketPosition = Pose2d(Vector2(205, -135), Rotation2d.fromDegrees(-30.0)) // 203, -133 worked
+        public val rightRocketPosition = Pose2d(Vector2(205, -133), Rotation2d.fromDegrees(-30.0)) // 203, -133 worked
 
         public val rightRocketBackupPosition = Pose2d(Vector2(140, -80), Rotation2d.fromDegrees(-90))
 
-        public val rightStationPosition = Pose2d(Vector2(20.0, -134.0), Rotation2d.fromDegrees(180)) // wored at -133
+        public val rightStationPosition = Pose2d(Vector2(32.0, -134.0), Rotation2d.fromDegrees(180)) // wored at -133
 
         public val rightRocketMidpoint2 = Pose2d(Vector2(200, -106), Rotation2d.fromDegrees(180))
         public val rightRocketMidpoint3 = Pose2d(Vector2(287, -114), Rotation2d.fromDegrees(180))
@@ -65,7 +65,7 @@ public class Paths(generator: PathGenerator) {
             Poses.rightRocketMidpoint,
             Poses.rightRocketPosition
         )
-        return mGenerator.generatePath(false, points, 50.0, 50.0, 10.0, 0.0)
+        return mGenerator.generatePath(false, points, 60.0, 50.0, 10.0, 0.0)
     }
 
     private fun generateRightRocketBackup(): Path {
