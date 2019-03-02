@@ -84,6 +84,30 @@
           "width": "12rem"
         }
       ]
+    },
+    "drive": {
+      "navbarOrder": 1,
+      "title": "Drive",
+      "widgets": [
+        {
+          "height": "600px",
+          "id": "cameraFeed",
+          "kwargs": {
+            "imgSize": {
+              "x": 320,
+              "y": 240
+            },
+            "imgStart": {
+              "x": 320,
+              "y": 0
+            },
+            "src": "http://limelight.local:5800/"
+          },
+          "title": "Live Video Feed",
+          "type": "CameraWidget",
+          "width": "800px"
+        }
+      ]
     }
   }
 }
