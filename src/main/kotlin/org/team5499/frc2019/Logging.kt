@@ -16,14 +16,13 @@ object Logging {
     public val LOGGING_TYPE = LoggingType.ITERATIVE
 
     fun update(subsystems: SubsystemsManager, pdp: PowerDistributionPanel) {
-        when(LOGGING_TYPE) {
+        when (LOGGING_TYPE) {
             ITERATIVE -> iterate(subsystems, pdp)
             DUMP -> dump(subsystems, pdp)
         }
     }
 
     private fun iterate(subsystems: SubsystemsManager, pdp: PowerDistributionPanel) {
-
     }
 
     private fun dump(subsystems: SubsystemsManager, pdp: PowerDistributionPanel) {
@@ -76,6 +75,5 @@ object Logging {
     }
 
     private fun logDrivetrain(subsystems: SubsystemsManager) {
-
     }
 }
