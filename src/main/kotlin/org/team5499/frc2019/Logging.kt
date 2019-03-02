@@ -7,22 +7,41 @@ import edu.wpi.first.wpilibj.RobotController
 
 import org.team5499.frc2019.subsystems.SubsystemsManager
 
+@SuppressWarnings("MagicNumber")
 object Logging {
     enum class LoggingType {
         ITERATIVE, // iterate through each different set of data(faster)
         DUMP // dump all the data each update loop
     }
 
-    public val LOGGING_TYPE = LoggingType.ITERATIVE
+    enum class LoggingState {
+        PDP,
+        PDP_CHANNELS,
+        ROBOT_CONTROLLER,
+        DRIVER_STATION,
+        DRIVETRAIN
+    }
+
+    @Suppress("ObjectPropertyNaming")
+    private val LOGGING_TYPE = LoggingType.DUMP
+    @Suppress("ObjectPropertyNaming")
+    private var LOGGING_STATE = LoggingState.PDP
 
     fun update(subsystems: SubsystemsManager, pdp: PowerDistributionPanel) {
         when (LOGGING_TYPE) {
-            ITERATIVE -> iterate(subsystems, pdp)
-            DUMP -> dump(subsystems, pdp)
+            LoggingType.ITERATIVE -> iterate(subsystems, pdp)
+            LoggingType.DUMP -> dump(subsystems, pdp)
         }
     }
 
     private fun iterate(subsystems: SubsystemsManager, pdp: PowerDistributionPanel) {
+        LOGGING_STATE = when (LOGGING_STATE) {
+            LoggingState.PDP -> { logPDP(pdp); LoggingState.PDP_CHANNELS }
+            LoggingState.PDP_CHANNELS -> { logPDPChannels(pdp); LoggingState.ROBOT_CONTROLLER }
+            LoggingState.ROBOT_CONTROLLER -> { logRobotController(); LoggingState.DRIVER_STATION }
+            LoggingState.DRIVER_STATION -> { logDriverStation(); LoggingState.DRIVETRAIN }
+            LoggingState.DRIVETRAIN -> { logDrivetrain(subsystems); LoggingState.PDP }
+        }
     }
 
     private fun dump(subsystems: SubsystemsManager, pdp: PowerDistributionPanel) {
@@ -68,12 +87,20 @@ object Logging {
         Logger.tag("ALLIANCE").trace(DriverStation.getInstance().alliance)
         Logger.tag("DS_ATTACHED").trace(DriverStation.getInstance().isDSAttached())
         Logger.tag("ENABLED").trace(DriverStation.getInstance().isEnabled())
-        Logger.tag("EVENT_NAME").trace(DriverStation.getInstance().eventName)
+        Logger.tag("EVENT_NAME").trace(DriverStation.getInstance().eventName as Any)
         Logger.tag("FMS_ATTACHED").trace(DriverStation.getInstance().isFMSAttached())
-        Logger.tag("GAME_MESSAGE").trace(DriverStation.getInstance().gameSpecificMessage)
+        Logger.tag("GAME_MESSAGE").trace(DriverStation.getInstance().gameSpecificMessage as Any)
         Logger.tag("DRIVER_LOCATION").trace(DriverStation.getInstance().location)
+        Logger.tag("MATCH_NUMBER").trace(DriverStation.getInstance().matchNumber)
+        Logger.tag("MATCH_TIME").trace(DriverStation.getInstance().matchTime)
+        Logger.tag("MATCH_TYPE").trace(DriverStation.getInstance().matchType)
     }
 
     private fun logDrivetrain(subsystems: SubsystemsManager) {
+        Logger.tag("POSITION").trace(subsystems.drivetrain.pose.toString() as Any)
+        Logger.tag("LVEL").trace(subsystems.drivetrain.leftVelocity.toString() as Any)
+        Logger.tag("RVEL").trace(subsystems.drivetrain.rightVelocity.toString() as Any)
+        Logger.tag("LVEL_ERR").trace(subsystems.drivetrain.leftVelocityError.toString() as Any)
+        Logger.tag("RVEL_ERR").trace(subsystems.drivetrain.leftVelocityError.toString() as Any)
     }
 }
