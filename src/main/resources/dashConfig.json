@@ -19,6 +19,19 @@
         },
         {
           "height": "auto",
+          "id": "liftPidElevator",
+          "kwargs": {},
+          "title": "Lift PID",
+          "type": "PIDWidget",
+          "variables": {
+            "dtarget": "Constants.Lift.KD",
+            "itarget": "Constants.Lift.KI",
+            "ptarget": "Constants.Lift.KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
           "id": "hatchMechOffset",
           "kwargs": {},
           "title": "Hatch Position Offset",
@@ -52,12 +65,56 @@
         },
         {
           "height": "auto",
+          "id": "hMidHeight",
+          "kwargs": {},
+          "title": "Hatch Mid Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.HATCH_MID_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "hHighHeight",
+          "kwargs": {},
+          "title": "Hatch High Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.HATCH_HIGH_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
           "id": "bLowHeight",
           "kwargs": {},
           "title": "Ball Low Height",
           "type": "DoubleEditor",
           "variables": {
             "target": "Constants.Lift.BALL_LOW_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "bMigHeight",
+          "kwargs": {},
+          "title": "Ball Mid Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.BALL_MID_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "bHighHeight",
+          "kwargs": {},
+          "title": "Ball High Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.BALL_HIGH_HEIGHT"
           },
           "width": "12rem"
         },
@@ -82,6 +139,30 @@
             "target": "Constants.Lift.ROCKET_HOLE_SPACING"
           },
           "width": "12rem"
+        }
+      ]
+    },
+    "drive": {
+      "navbarOrder": 1,
+      "title": "Drive",
+      "widgets": [
+        {
+          "height": "600px",
+          "id": "cameraFeed",
+          "kwargs": {
+            "imgSize": {
+              "x": 320,
+              "y": 240
+            },
+            "imgStart": {
+              "x": 320,
+              "y": 0
+            },
+            "src": "http://limelight.local:5800/"
+          },
+          "title": "Live Video Feed",
+          "type": "CameraWidget",
+          "width": "800px"
         }
       ]
     }

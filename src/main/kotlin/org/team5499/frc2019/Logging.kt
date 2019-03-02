@@ -23,7 +23,7 @@ object Logging {
     }
 
     @Suppress("ObjectPropertyNaming")
-    private val LOGGING_TYPE = LoggingType.DUMP
+    private val LOGGING_TYPE = LoggingType.ITERATIVE
     @Suppress("ObjectPropertyNaming")
     private var LOGGING_STATE = LoggingState.PDP
 

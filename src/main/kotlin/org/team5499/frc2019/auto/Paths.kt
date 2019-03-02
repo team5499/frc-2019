@@ -32,8 +32,8 @@ public class Paths(generator: PathGenerator) {
     @SuppressWarnings("MagicNumber")
     public object Poses {
         // rocket
-        public val leftStartingPosition = Pose2d(Vector2(65, -40), Rotation2d.fromDegrees(90.0))
-        public val rightStartingPosition = Pose2d(Vector2(65, 40), Rotation2d.fromDegrees(-90))
+        public val leftStartingPosition = Pose2d(Vector2(65, 40), Rotation2d.fromDegrees(90.0))
+        public val rightStartingPosition = Pose2d(Vector2(65, -40), Rotation2d.fromDegrees(-90))
 
         public val leftRocketMidpoint = Pose2d(Vector2(100, -120), Rotation2d.fromDegrees(-25.0))
         public val leftRocketPosition = Pose2d(Vector2(205, -133), Rotation2d.fromDegrees(-30.0)) // 203, -133 worked

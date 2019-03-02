@@ -6,6 +6,8 @@ import org.team5499.monkeyLib.util.Utils
 
 import org.team5499.frc2019.Constants
 
+import org.team5499.dashboard.Dashboard
+
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
@@ -185,6 +187,19 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
         // set speed
         mMaster.set(ControlMode.PercentOutput, 0.0)
+
+        Dashboard.addInlineListener("Constants.Lift.KP") {
+            key: String, value: Any? ->
+            mMaster.config_kP(0, value as Double, 0)
+        }
+        Dashboard.addInlineListener("Constants.Lift.KI") {
+            key: String, value: Any? ->
+            mMaster.config_kI(0, value as Double, 0)
+        }
+        Dashboard.addInlineListener("Constants.Lift.KD") {
+            key: String, value: Any? ->
+            mMaster.config_kD(0, value as Double, 0)
+        }
     }
 
     private fun setZero() {

@@ -178,6 +178,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     override fun robotPeriodic() {
         Logging.update(mSubsystemsManager, mPdp)
+        Dashboard.update()
         println(mLift.firstStagePositionErrorInches)
     }
 
@@ -187,7 +188,6 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun disabledPeriodic() {
-        // println(mHatchMechTalon.getSelectedSensorPosition(0))
     }
 
     override fun autonomousInit() {

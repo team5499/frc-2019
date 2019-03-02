@@ -109,10 +109,10 @@ public object Constants {
         public const val SLAVE_TALON_PORT = 5
 
         // pid
-        public const val KP = 0.11 // worked a 0.09
-        public const val KI = 0.0
-        public const val KD = 0.1
-        public const val KF = 0.0
+        public var KP by DashboardVar(0.7) // worked a 0.09
+        public var KI by DashboardVar(0.0)
+        public var KD by DashboardVar(0.0)
+        public var KF by DashboardVar(0.0)
 
         public const val MOTION_MAGIC_VELOCITY = 11000 // 10500 before
         public const val MOTION_MAGIC_ACCELERATION = 11000 // 9000 before
@@ -120,16 +120,14 @@ public object Constants {
         // heights (carriage height in inches)
         public val ROCKET_HOLE_SPACING by DashboardVar(27.0)
         public var STOW_HEIGHT by DashboardVar(3.5)
-        public var HATCH_LOW_HEIGHT by DashboardVar(10.5)
-        public val HATCH_MID_HEIGHT: Double
-            get() = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
-        public val HATCH_HIGH_HEIGHT
-            get() = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING + 3.0
+
+        public var HATCH_LOW_HEIGHT by DashboardVar(8.5)
+        public val HATCH_MID_HEIGHT by DashboardVar(34.5)
+        public val HATCH_HIGH_HEIGHT by DashboardVar(59.0)
+
         public var BALL_LOW_HEIGHT by DashboardVar(4.5)
-        public val BALL_MID_HEIGHT
-            get() = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING + 1.0
-        public val BALL_HIGH_HEIGHT
-            get() = BALL_MID_HEIGHT + ROCKET_HOLE_SPACING
+        public val BALL_MID_HEIGHT by DashboardVar(32.0)
+        public val BALL_HIGH_HEIGHT by DashboardVar(58.0)
         public var BALL_HUMAN_PLAYER_HEIGHT by DashboardVar(20.0)
 
         // constants
@@ -168,16 +166,16 @@ public object Constants {
         // public const val HATCH_KI = 0.0
         // public const val HATCH_KD = 1.0
 
-        public var HATCH_KP by DashboardVar(2.0)
+        public var HATCH_KP by DashboardVar(3.5)
         public var HATCH_KI by DashboardVar(0.0)
-        public var HATCH_KD by DashboardVar(1.0)
+        public var HATCH_KD by DashboardVar(0.5)
 
         // positions, all in pot ticks
         public var POSITION_OFFSET by DashboardVar(10)
 
         public var TOP_STOW_POSITION by DashboardVar(0)
         public var BOTTOM_STOW_POSITION by DashboardVar(770)
-        public var DEPLOY_POSITION by DashboardVar(385)
+        public var DEPLOY_POSITION by DashboardVar(360)
         public var HOLD_POSITION by DashboardVar(130)
     }
 
