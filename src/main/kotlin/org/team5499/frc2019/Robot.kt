@@ -3,6 +3,7 @@ package org.team5499.frc2019
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj.XboxController
 import edu.wpi.first.wpilibj.Joystick
+import edu.wpi.first.wpilibj.PowerDistributionPanel
 
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
 import org.team5499.monkeyLib.hardware.LazyVictorSPX
@@ -63,6 +64,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     private val mHatchMechTalon: LazyTalonSRX
 
+    private val mPdp: PowerDistributionPanel
+
     // subsystems
     private val mDrivetrain: Drivetrain
     private val mLift: Lift
@@ -119,6 +122,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
         mHatchMechTalon = LazyTalonSRX(Constants.Hatch.TALON_PORT)
 
+        mPdp = PowerDistributionPanel()
+
         // reset hardware
         mLeftMaster.configFactoryDefault()
         mLeftSlave1.configFactoryDefault()
@@ -171,9 +176,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun robotPeriodic() {
-        Logger.tag("POSITION").trace(mSubsystemsManager.drivetrain.pose.toString() as Any)
-        Logger.tag("LVEL_ERR").trace(mSubsystemsManager.drivetrain.leftVelocityError.toString() as Any)
-        Logger.tag("RVEL_ERR").trace(mSubsystemsManager.drivetrain.rightVelocityError.toString() as Any)
+        Logging.update(mSubsystemsManager, mPdp)
     }
 
     override fun disabledInit() {
