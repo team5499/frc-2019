@@ -17,6 +17,7 @@ import org.team5499.frc2019.auto.actions.PathAction
 import org.team5499.frc2019.auto.actions.LiftAction
 import org.team5499.frc2019.auto.actions.HatchMechAction
 import org.team5499.frc2019.auto.actions.WaitForElevatorZeroAction
+import org.team5499.frc2019.auto.actions.CrossedXBoundaryAction
 
 import java.util.HashMap
 
@@ -78,17 +79,28 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
             SerialAction(
                 WaitForElevatorZeroAction(mSubsystems.lift),
                 LiftAction(ElevatorHeight.HATCH_LOW, mSubsystems.lift),
-                HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech)
+                HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
+                CrossedXBoundaryAction(90.0, false, mSubsystems.drivetrain),
+                LiftAction(ElevatorHeight.BALL_MID, mSubsystems.lift)
             )
         ),
         HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech),
-        NothingAction(0.75),
-        PathAction(15.0, mPaths.rightRocketBackup, mSubsystems.drivetrain),
+        NothingAction(0.3),
+        ParallelAction(
+            PathAction(15.0, mPaths.rightRocketBackup, mSubsystems.drivetrain),
+            SerialAction(
+                NothingAction(0.5),
+                LiftAction(ElevatorHeight.HATCH_LOW, mSubsystems.lift)
+            )
+        ),
         PathAction(15.0, mPaths.rightBackupToStation, mSubsystems.drivetrain),
         HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
-        NothingAction(0.75),
+        NothingAction(0.3),
         PathAction(15.0, mPaths.rightRocketBackup2, mSubsystems.drivetrain),
-        PathAction(15.0, mPaths.rightRocketTinyBoi, mSubsystems.drivetrain),
+        ParallelAction(
+            PathAction(15.0, mPaths.rightRocketTinyBoi, mSubsystems.drivetrain),
+            LiftAction(ElevatorHeight.HATCH_MID, mSubsystems.lift)
+        ),
         HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech)
     )
 

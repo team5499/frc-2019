@@ -65,7 +65,7 @@ public class Paths(generator: PathGenerator) {
             Poses.rightRocketMidpoint,
             Poses.rightRocketPosition
         )
-        return mGenerator.generatePath(false, points, 60.0, 50.0, 10.0, 0.0)
+        return mGenerator.generatePath(false, points, 50.0, 50.0, 5.0, 0.0)
     }
 
     private fun generateRightRocketBackup(): Path {
@@ -73,7 +73,7 @@ public class Paths(generator: PathGenerator) {
             Poses.rightRocketPosition,
             Poses.rightRocketBackupPosition
         )
-        return mGenerator.generatePath(true, points, 50.0, 50.0, 10.0, 0.0)
+        return mGenerator.generatePath(true, points, 50.0, 50.0, 20.0, 0.0)
     }
 
     private fun generateRightBackupToStation(): Path {
@@ -81,7 +81,7 @@ public class Paths(generator: PathGenerator) {
             Poses.rightRocketBackupPosition,
             Poses.rightStationPosition
         )
-        return mGenerator.generatePath(false, points, 50.0, 50.0, 10.0, 0.0)
+        return mGenerator.generatePath(false, points, 50.0, 50.0, 20.0, 0.0)
     }
 
     private fun generateRightBackup2(): Path {
@@ -90,7 +90,7 @@ public class Paths(generator: PathGenerator) {
             Poses.rightRocketMidpoint2,
             Poses.rightRocketMidpoint3
         )
-        return mGenerator.generatePath(true, points, 100.0, 100.0, 20.0, 0.0)
+        return mGenerator.generatePath(true, points, 120.0, 100.0, 25.0, 0.0)
     }
 
     private fun generateRightTinyBoi(): Path {
@@ -98,6 +98,6 @@ public class Paths(generator: PathGenerator) {
             Poses.rightRocketMidpoint3,
             Poses.rightRocketBackPosition
         )
-        return mGenerator.generatePath(false, points, 50.0, 50.0, 20.0, 0.0)
+        return mGenerator.generatePath(false, points, 50.0, 50.0, 25.0, 0.0)
     }
 }
