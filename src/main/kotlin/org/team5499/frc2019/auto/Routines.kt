@@ -101,7 +101,8 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
             PathAction(15.0, mPaths.rightRocketTinyBoi, mSubsystems.drivetrain),
             LiftAction(ElevatorHeight.HATCH_MID, mSubsystems.lift)
         ),
-        HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech)
+        HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech),
+        DriveStraightAction(5.0, -6.0, mSubsystems.drivetrain)
     )
 
     private fun createBaseline() = Routine(
