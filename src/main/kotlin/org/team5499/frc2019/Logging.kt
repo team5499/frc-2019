@@ -5,9 +5,11 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.RobotController
 
+import org.team5499.frc2019.input.ControlBoard
+
 import org.team5499.frc2019.subsystems.SubsystemsManager
 
-@SuppressWarnings("MagicNumber")
+@SuppressWarnings("MagicNumber", "TooManyFunctions")
 object Logging {
     enum class LoggingType {
         ITERATIVE, // iterate through each different set of data(faster)
@@ -32,6 +34,10 @@ object Logging {
             LoggingType.ITERATIVE -> iterate(subsystems, pdp)
             LoggingType.DUMP -> dump(subsystems, pdp)
         }
+        alwaysLog(subsystems, pdp)
+    }
+
+    fun alwaysLog(subsystems: SubsystemsManager, pdp: PowerDistributionPanel) {
     }
 
     private fun iterate(subsystems: SubsystemsManager, pdp: PowerDistributionPanel) {
@@ -102,5 +108,23 @@ object Logging {
         Logger.tag("RVEL").trace(subsystems.drivetrain.rightVelocity.toString() as Any)
         Logger.tag("LVEL_ERR").trace(subsystems.drivetrain.leftVelocityError.toString() as Any)
         Logger.tag("RVEL_ERR").trace(subsystems.drivetrain.leftVelocityError.toString() as Any)
+    }
+
+    private fun logDriver(controlBoard: ControlBoard) {
+        Logger.tag("THROTTLE").trace(controlBoard.driverControls.getThrottle())
+        Logger.tag("TURN").trace(controlBoard.driverControls.getThrottle())
+        Logger.tag("LEFT_THROTTLE").trace(controlBoard.driverControls.getLeft())
+        Logger.tag("RIGHT_THROTTLE").trace(controlBoard.driverControls.getRight())
+        Logger.tag("QUICK_TURN").trace(controlBoard.driverControls.getQuickTurn())
+        Logger.tag("CREEP").trace(controlBoard.driverControls.getCreep())
+        Logger.tag("STOW").trace(controlBoard.driverControls.getStow())
+    }
+
+    private fun logCodriver(controlBoard: ControlBoard) {
+        Logger.tag("INTAKE").trace(controlBoard.codriverControls.getIntake())
+        Logger.tag("EXHAUST").trace(controlBoard.codriverControls.getExhaust())
+        Logger.tag("PICKUP").trace(controlBoard.codriverControls.getPickup().toString())
+        Logger.tag("PLACE").trace(controlBoard.codriverControls.getPlace().toString())
+        Logger.tag("LIFT_MANUAL").trace(controlBoard.codriverControls.getManualInput())
     }
 }
