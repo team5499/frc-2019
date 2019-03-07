@@ -39,4 +39,10 @@ public interface ICodriverControls {
 
     // ramp (?) maybe this should be on the drivers controller
     public fun getDropRamp(): Boolean
+
+    // get the current codriver state
+    public fun getState(): String {
+        @Suppress("MaxLineLength")
+        return "${getManualInput()} : ${getStowElevator()} : ${getHatchLow()} : ${getHatchMid()} : ${getHatchHigh()} : ${getBallLow()} : ${getBallMid()} : ${getBallHigh()} : ${getBallHumanPlayer()} : ${getIntake()} : ${getExaust()} : ${getPickup()} : ${getPlace()} : ${getDropRamp()}"
+    }
 }

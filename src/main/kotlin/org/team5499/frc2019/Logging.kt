@@ -111,20 +111,10 @@ object Logging {
     }
 
     private fun logDriver(controlBoard: ControlBoard) {
-        Logger.tag("THROTTLE").trace(controlBoard.driverControls.getThrottle())
-        Logger.tag("TURN").trace(controlBoard.driverControls.getThrottle())
-        Logger.tag("LEFT_THROTTLE").trace(controlBoard.driverControls.getLeft())
-        Logger.tag("RIGHT_THROTTLE").trace(controlBoard.driverControls.getRight())
-        Logger.tag("QUICK_TURN").trace(controlBoard.driverControls.getQuickTurn())
-        Logger.tag("CREEP").trace(controlBoard.driverControls.getCreep())
-        Logger.tag("STOW").trace(controlBoard.driverControls.getStow())
+        Logger.tag("DRIVER_STATE").trace(controlBoard.driverControls.getState() as Any)
     }
 
     private fun logCodriver(controlBoard: ControlBoard) {
-        Logger.tag("INTAKE").trace(controlBoard.codriverControls.getIntake())
-        Logger.tag("EXHAUST").trace(controlBoard.codriverControls.getExhaust())
-        Logger.tag("PICKUP").trace(controlBoard.codriverControls.getPickup().toString())
-        Logger.tag("PLACE").trace(controlBoard.codriverControls.getPlace().toString())
-        Logger.tag("LIFT_MANUAL").trace(controlBoard.codriverControls.getManualInput())
+        Logger.tag("CODRIVER_STATE").trace(controlBoard.codriverControls.getState() as Any)
     }
 }
