@@ -21,7 +21,9 @@ object Logging {
         PDP_CHANNELS,
         ROBOT_CONTROLLER,
         DRIVER_STATION,
-        DRIVETRAIN
+        DRIVETRAIN,
+        DRIVER,
+        CODRIVER
     }
 
     @Suppress("ObjectPropertyNaming")
@@ -29,33 +31,37 @@ object Logging {
     @Suppress("ObjectPropertyNaming")
     private var LOGGING_STATE = LoggingState.PDP
 
-    fun update(subsystems: SubsystemsManager, pdp: PowerDistributionPanel) {
+    fun update(subsystems: SubsystemsManager, pdp: PowerDistributionPanel, controlBoard: ControlBoard) {
         when (LOGGING_TYPE) {
-            LoggingType.ITERATIVE -> iterate(subsystems, pdp)
-            LoggingType.DUMP -> dump(subsystems, pdp)
+            LoggingType.ITERATIVE -> iterate(subsystems, pdp, controlBoard)
+            LoggingType.DUMP -> dump(subsystems, pdp, controlBoard)
         }
         alwaysLog(subsystems, pdp)
     }
 
-    fun alwaysLog(subsystems: SubsystemsManager, pdp: PowerDistributionPanel) {
+    fun alwaysLog(subsystems: SubsystemsManager, pdp: PowerDistributionPanel, controlBoard: ControlBoard) {
     }
 
-    private fun iterate(subsystems: SubsystemsManager, pdp: PowerDistributionPanel) {
+    private fun iterate(subsystems: SubsystemsManager, pdp: PowerDistributionPanel, controlBoard: ControlBoard) {
         LOGGING_STATE = when (LOGGING_STATE) {
             LoggingState.PDP -> { logPDP(pdp); LoggingState.PDP_CHANNELS }
             LoggingState.PDP_CHANNELS -> { logPDPChannels(pdp); LoggingState.ROBOT_CONTROLLER }
             LoggingState.ROBOT_CONTROLLER -> { logRobotController(); LoggingState.DRIVER_STATION }
             LoggingState.DRIVER_STATION -> { logDriverStation(); LoggingState.DRIVETRAIN }
-            LoggingState.DRIVETRAIN -> { logDrivetrain(subsystems); LoggingState.PDP }
+            LoggingState.DRIVETRAIN -> { logDrivetrain(subsystems); LoggingState.DRIVER }
+            LoggingState.DRIVER -> { logDriver(controlBoard); LoggingState.CODRIVER }
+            LoggingState.CODRIVER -> { logCodriver(controlBoard); LoggingState.PDP }
         }
     }
 
-    private fun dump(subsystems: SubsystemsManager, pdp: PowerDistributionPanel) {
+    private fun dump(subsystems: SubsystemsManager, pdp: PowerDistributionPanel, controlBoard: ControlBoard) {
         logPDP(pdp)
         logPDPChannels(pdp)
         logRobotController()
         logDriverStation()
         logDrivetrain(subsystems)
+        logDriver(controlBoard)
+        logCodriver(controlBoard)
     }
 
     private fun logPDP(pdp: PowerDistributionPanel) {

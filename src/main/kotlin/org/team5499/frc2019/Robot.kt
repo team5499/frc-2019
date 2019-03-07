@@ -176,7 +176,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun robotPeriodic() {
-        Logging.update(mSubsystemsManager, mPdp)
+        Logging.update(mSubsystemsManager, mPdp, mControlBoard)
     }
 
     override fun disabledInit() {
