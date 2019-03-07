@@ -7,14 +7,36 @@
       "widgets": [
         {
           "height": "auto",
-          "id": "pidEditor",
+          "id": "liftPid",
           "kwargs": {},
-          "title": "PID Variable",
+          "title": "Lift PID",
           "type": "PIDWidget",
           "variables": {
-            "dtarget": "Constants.TEST_KD",
-            "itarget": "Constants.TEST_KI",
-            "ptarget": "Constants.TEST_KP"
+            "dtarget": "Constants.Lift.KD",
+            "itarget": "Constants.Lift.KI",
+            "ptarget": "Constants.Lift.KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "lowHeight",
+          "kwargs": {},
+          "title": "Low Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.LOW_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "autoChooser",
+          "kwargs": {},
+          "title": "Auto Chooser",
+          "type": "StringChooser",
+          "variables": {
+            "target": "Constants.AUTO_MODE"
           },
           "width": "12rem"
         }
