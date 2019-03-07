@@ -36,7 +36,7 @@ object Logging {
             LoggingType.ITERATIVE -> iterate(subsystems, pdp, controlBoard)
             LoggingType.DUMP -> dump(subsystems, pdp, controlBoard)
         }
-        alwaysLog(subsystems, pdp)
+        alwaysLog(subsystems, pdp, controlBoard)
     }
 
     fun alwaysLog(subsystems: SubsystemsManager, pdp: PowerDistributionPanel, controlBoard: ControlBoard) {
