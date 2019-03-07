@@ -65,5 +65,5 @@ public class ButtonBoardCodriver(buttonBoard: Joystick, joystick: Joystick) : IC
     )
 
     @Suppress("MagicNumber")
-    public override fun getDropRamp() = false
+    public override fun getManualEnable() = mJoystick.getTrigger()
 }

@@ -71,5 +71,5 @@ public class XboxCodriver(xbox: XboxController) : ICodriverControls {
         false, false
     )
 
-    public override fun getDropRamp() = mXbox.getBackButtonPressed()
+    public override fun getManualEnable() = mXbox.getBackButtonPressed()
 }
