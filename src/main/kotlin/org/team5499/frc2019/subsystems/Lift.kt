@@ -11,6 +11,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.InvertType
 
+import org.team5499.dashboard.Dashboard
+
 @SuppressWarnings("MagicNumber", "TooManyFunctions")
 public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsystem() {
 
@@ -183,6 +185,60 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
         // set speed
         mMaster.set(ControlMode.PercentOutput, 0.0)
+
+        setCallbacks()
+    }
+
+    private fun setCallbacks() {
+        Dashboard.addInlineListener("Constants.Lift.KP") {
+            _: String, value: Double? ->
+            if (value != null) {
+                mMaster.config_kP(0, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Lift.KI") {
+            _: String, value: Double? ->
+            if (value != null) {
+                mMaster.config_kI(0, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Lift.KD") {
+            _: String, value: Double? ->
+            if (value != null) {
+                mMaster.config_kD(0, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Lift.KF") {
+            _: String, value: Double? ->
+            if (value != null) {
+                mMaster.config_kF(0, value, 0)
+            }
+        }
+
+        Dashboard.addInlineListener("Constants.Lift.MOTION_MAGIC_VELOCITY") {
+            _: String, value: Int? ->
+            if (value != null) {
+                mMaster.configMotionCruiseVelocity(value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Lift.MOTION_MAGIC_ACCELERATION") {
+            _: String, value: Int? ->
+            if (value != null) {
+                mMaster.configMotionAcceleration(value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Lift.MAX_ENCODER_TICKS") {
+            _: String, value: Int? ->
+            if (value != null) {
+                mMaster.configForwardSoftLimitThreshold(value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Lift.MIN_ENCODER_TICKS") {
+            _: String, value: Int? ->
+            if (value != null) {
+                mMaster.configReverseSoftLimitThreshold(value, 0)
+            }
+        }
     }
 
     private fun setZero() {

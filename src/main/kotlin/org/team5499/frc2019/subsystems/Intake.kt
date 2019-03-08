@@ -21,10 +21,10 @@ public class Intake(talon: LazyTalonSRX, timer: ITimer = WPITimer()) : Subsystem
         public const val kAccelerationThreshold = 10.0 // rads / s^2
     }
 
-    public enum class IntakeMode(val percent: Double) {
-        INTAKE(Constants.Intake.INTAKE_SPEED),
-        HOLD(Constants.Intake.HOLD_SPEED),
-        OUTTAKE(Constants.Intake.OUTTAKE_SPEED)
+    public enum class IntakeMode(val percent: () -> Double) {
+        INTAKE({ Constants.Intake.INTAKE_SPEED }),
+        HOLD({ Constants.Intake.HOLD_SPEED }),
+        OUTTAKE({ Constants.Intake.OUTTAKE_SPEED })
     }
 
     private val mTalon: LazyTalonSRX
@@ -95,7 +95,7 @@ public class Intake(talon: LazyTalonSRX, timer: ITimer = WPITimer()) : Subsystem
             IntakeMode.OUTTAKE -> {}
             IntakeMode.HOLD -> {}
         }
-        mTalon.set(ControlMode.PercentOutput, mMode.percent)
+        mTalon.set(ControlMode.PercentOutput, mMode.percent())
     }
 
     public override fun stop() {
