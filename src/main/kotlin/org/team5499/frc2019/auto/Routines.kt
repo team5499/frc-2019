@@ -26,7 +26,8 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
 
     private val mPaths: Paths
     private val mSubsystems: SubsystemsManager
-    private val mRoutineMap: HashMap<String, Routine>
+
+    public val routineMap: HashMap<String, Routine>
 
     public val baseline: Routine
     public val tuning: Routine
@@ -38,7 +39,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     init {
         mPaths = paths
         mSubsystems = subsystems
-        mRoutineMap = HashMap<String, Routine>()
+        routineMap = HashMap<String, Routine>()
 
         this.baseline = createBaseline()
         this.tuning = createTuning()
@@ -47,15 +48,19 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         this.rocketRight = createRocketRight()
         this.cargoShipThenRocketRight = createCargoShipThenRocketRight()
 
-        mRoutineMap.put(baseline.name, baseline)
-        mRoutineMap.put(tuning.name, tuning)
-        mRoutineMap.put(test.name, test)
-        mRoutineMap.put(rocketLeft.name, rocketLeft)
-        mRoutineMap.put(rocketRight.name, rocketRight)
+        routineMap.put(baseline.name, baseline)
+        routineMap.put(tuning.name, tuning)
+        routineMap.put(test.name, test)
+        routineMap.put(rocketLeft.name, rocketLeft)
+        routineMap.put(rocketRight.name, rocketRight)
     }
 
     public fun getRoutineWithName(name: String): Routine? {
-        return mRoutineMap.get(name)
+        if (routineMap.containsKey(name)) {
+            return routineMap.get(name)
+        } else {
+            return null
+        }
     }
 
     private fun createRocketLeft() = Routine(

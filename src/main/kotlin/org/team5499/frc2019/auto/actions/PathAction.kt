@@ -7,8 +7,6 @@ import org.team5499.monkeyLib.auto.Action
 import org.team5499.monkeyLib.path.Path
 import org.team5499.monkeyLib.path.PathFollower
 
-import org.team5499.dashboard.Dashboard
-
 /**
  * An action that will follow the given path.
  *
@@ -28,12 +26,12 @@ public class PathAction(
                             Constants.Drivetrain.WHEEL_BASE, lookaheadDistance)
 
     init {
-        Dashboard.addInlineListener("Constants.Auto.LOOKAHEAD_DISTANCE") {
-            _: String, value: Double? ->
-            if (value != null) {
-                mPathfollower.lookaheadDistance = value
-            }
-        }
+        // Dashboard.addInlineListener("Constants.Auto.LOOKAHEAD_DISTANCE") {
+        //     _: String, value: Double? ->
+        //     if (value != null) {
+        //         mPathfollower.lookaheadDistance = value
+        //     }
+        // }
     }
 
     // Called every tick
