@@ -83,6 +83,8 @@ public class TeleopController(
         val manualElevatorInput = mControlBoard.codriverControls.getManualInput()
         if (mLockElevator) {
             // do nothing
+        } else if (mControlBoard.codriverControls.getManualZero()) {
+            mSubsystems.lift.zeroed = false
         } else if (mControlBoard.codriverControls.getManualEnable() &&
             Math.abs(manualElevatorInput) > Constants.Input.MANUAL_CONTROL_DEADBAND) {
             mSubsystems.lift.setPower(manualElevatorInput)

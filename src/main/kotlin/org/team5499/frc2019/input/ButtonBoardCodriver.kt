@@ -66,4 +66,7 @@ public class ButtonBoardCodriver(buttonBoard: Joystick, joystick: Joystick) : IC
 
     @Suppress("MagicNumber")
     public override fun getManualEnable() = mJoystick.getTrigger()
+
+    @Suppress("MagicNumber")
+    public override fun getManualZero() = mJoystick.getRawButtonPressed(11)
 }

@@ -183,6 +183,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     override fun disabledInit() {
         Logger.warn("Robot disabling" as Any)
+        mLift.zeroed = false
         mSubsystemsManager.resetAll()
     }
 

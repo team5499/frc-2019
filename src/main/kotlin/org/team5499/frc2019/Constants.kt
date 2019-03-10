@@ -121,13 +121,13 @@ public object Constants {
         public val ROCKET_HOLE_SPACING by DashboardVar(27.0)
         public var STOW_HEIGHT by DashboardVar(3.5)
 
-        public var HATCH_LOW_HEIGHT by DashboardVar(8.5)
-        public val HATCH_MID_HEIGHT by DashboardVar(34.0)
-        public val HATCH_HIGH_HEIGHT by DashboardVar(59.0)
+        public var HATCH_LOW_HEIGHT by DashboardVar(7.0)
+        public val HATCH_MID_HEIGHT by DashboardVar(33.0)
+        public val HATCH_HIGH_HEIGHT by DashboardVar(58.0)
 
-        public var BALL_LOW_HEIGHT by DashboardVar(4.5) // 4.5
-        public val BALL_MID_HEIGHT by DashboardVar(32.0) // 32
-        public val BALL_HIGH_HEIGHT by DashboardVar(58.0) // 58
+        public var BALL_LOW_HEIGHT by DashboardVar(3.5) // 4.5
+        public val BALL_MID_HEIGHT by DashboardVar(31.0) // 32
+        public val BALL_HIGH_HEIGHT by DashboardVar(57.0) // 58
         public var BALL_HUMAN_PLAYER_HEIGHT by DashboardVar(20.0)
 
         // constants
@@ -137,7 +137,7 @@ public object Constants {
         public const val MIN_ENCODER_TICKS = (400 * ENCODER_REDUCTION).toInt() // CHANGE THIS
         public const val ZEROING_THRESHOLD = 5 // ticks per 100/ms
         public const val ZEROING_SPEED = -0.2 // percent output
-        public const val ZEROING_TIMEOUT = 0.5 // seconds
+        public const val ZEROING_TIMEOUT = 0.75 // seconds
 
         public const val MAX_VELOCITY_SETPOINT = 10000 // ticks per 100ms
 
@@ -154,7 +154,7 @@ public object Constants {
         public const val TALON_PORT = 9
 
         public const val INTAKE_SPEED = 1.0
-        public const val OUTTAKE_SPEED = -1.0 // -.45
+        public const val OUTTAKE_SPEED = -0.85 // -.45
         public const val IDLE_SPEED = 0.0
         public const val HOLD_SPEED = 0.2
     }
@@ -171,12 +171,12 @@ public object Constants {
         public var KD by DashboardVar(0.5)
 
         // positions, all in pot ticks
-        public var POSITION_OFFSET by DashboardVar(10)
+        public var POSITION_OFFSET by DashboardVar(20)
 
         public var TOP_STOW_POSITION by DashboardVar(0)
         public var BOTTOM_STOW_POSITION by DashboardVar(770)
         public var DEPLOY_POSITION by DashboardVar(360)
-        public var HOLD_POSITION by DashboardVar(160)
+        public var HOLD_POSITION by DashboardVar(190)
     }
 
     object Auto {
