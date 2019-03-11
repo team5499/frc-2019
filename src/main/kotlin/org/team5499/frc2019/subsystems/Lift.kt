@@ -44,7 +44,19 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     private var mElevatorMode: ElevatorMode
     private var mFirstLoop: Boolean
 
-    private var mZeroed: Boolean
+    public var zeroed: Boolean = false
+        set(value) {
+            when (value) {
+                true -> {
+                    println("Elevator Zeroed!")
+                }
+                false -> {
+                    mFirstLoop = true
+                }
+            }
+            field = value
+        }
+
     private var mSetpoint: Double
     private var mSoftLimitsEnabled: Boolean = false
         set(value) {
@@ -156,6 +168,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
             configMotionCruiseVelocity(Constants.Lift.MOTION_MAGIC_VELOCITY, 0)
             configMotionAcceleration(Constants.Lift.MOTION_MAGIC_ACCELERATION, 0)
             selectProfileSlot(kElevatorSlot, 0)
+            configAllowableClosedloopError(0, 0, 0)
 
             enableCurrentLimit(false)
             configPeakCurrentDuration(0, 0)
@@ -174,7 +187,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         }
 
         mElevatorMode = ElevatorMode.ZERO
-        mZeroed = false // CHANGE THIS TO FALSE
+        zeroed = false // CHANGE THIS TO FALSE
         mSoftLimitsEnabled = false
         // mEncoderPresent = false
         mSetpoint = 0.0
@@ -253,7 +266,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     }
 
     public fun setPositionRaw(ticks: Int) {
-        if (!mZeroed) return
+        if (!zeroed) return
         mBrakeMode = true
         val positionTicks = Utils.limit(
             ticks.toDouble(),
@@ -284,7 +297,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     }
 
     public fun setVelocityRaw(ticksPer100ms: Int) {
-        if (!mZeroed) return
+        if (!zeroed) return
         mBrakeMode = false
         val speed = Utils.limit(ticksPer100ms.toDouble(), Constants.Lift.MAX_VELOCITY_SETPOINT.toDouble())
         mElevatorMode = ElevatorMode.VELOCITY
@@ -307,7 +320,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     }
 
     public override fun update() {
-        if (!mZeroed) {
+        if (!zeroed) {
             mElevatorMode = ElevatorMode.ZERO
             mSoftLimitsEnabled = false
             if (mFirstLoop) {
@@ -324,7 +337,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
                     super.timer.get() > Constants.Lift.ZEROING_TIMEOUT &&
                     Math.abs(firstStageVelocityRaw) < Constants.Lift.ZEROING_THRESHOLD
                 ) {
-                    mZeroed = true
+                    zeroed = true
                     mMaster.set(ControlMode.PercentOutput, 0.0)
                     mSetpoint = 0.0
                     setZero()

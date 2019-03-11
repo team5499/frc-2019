@@ -19,6 +19,19 @@
         },
         {
           "height": "auto",
+          "id": "liftPidElevator",
+          "kwargs": {},
+          "title": "Lift PID",
+          "type": "PIDWidget",
+          "variables": {
+            "dtarget": "Constants.Lift.KD",
+            "itarget": "Constants.Lift.KI",
+            "ptarget": "Constants.Lift.KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
           "id": "hatchMechOffset",
           "kwargs": {},
           "title": "Hatch Position Offset",
@@ -52,12 +65,56 @@
         },
         {
           "height": "auto",
+          "id": "hMidHeight",
+          "kwargs": {},
+          "title": "Hatch Mid Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.HATCH_MID_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "hHighHeight",
+          "kwargs": {},
+          "title": "Hatch High Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.HATCH_HIGH_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
           "id": "bLowHeight",
           "kwargs": {},
           "title": "Ball Low Height",
           "type": "DoubleEditor",
           "variables": {
             "target": "Constants.Lift.BALL_LOW_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "bMigHeight",
+          "kwargs": {},
+          "title": "Ball Mid Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.BALL_MID_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "bHighHeight",
+          "kwargs": {},
+          "title": "Ball High Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.BALL_HIGH_HEIGHT"
           },
           "width": "12rem"
         },
@@ -89,6 +146,17 @@
       "navbarOrder": 0,
       "title": "Drive",
       "widgets": [
+        {
+          "height": "auto",
+          "id": "dropdownSelector",
+          "kwargs": {},
+          "title": "Auto Mode",
+          "type": "StringChooser",
+          "variables": {
+            "target": "AUTO_MODE"
+          },
+          "width": "12rem"
+        },
         {
           "height": "600px",
           "id": "cameraFeed",

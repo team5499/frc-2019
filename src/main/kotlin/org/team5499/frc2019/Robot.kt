@@ -156,6 +156,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mHatchMech, mVision)
 
         // path init
+        @Suppress("MagicNumber")
         mPathGenerator = PathGenerator(
             { Constants.Drivetrain.MAX_VELOCITY },
             { Constants.Drivetrain.MAX_ACCELERATION },
@@ -182,6 +183,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     override fun disabledInit() {
         Logger.warn("Robot disabling" as Any)
+        mLift.zeroed = false
         mSubsystemsManager.resetAll()
     }
 

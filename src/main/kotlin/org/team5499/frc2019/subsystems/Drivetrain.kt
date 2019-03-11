@@ -124,7 +124,7 @@ public class Drivetrain(
 
     public var leftDistance: Double
         get() {
-            return Utils.encoderTicksToInches(
+            return -Utils.encoderTicksToInches(
                 Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
                 Constants.Drivetrain.WHEEL_CIR,
                 mLeftMaster.sensorCollection.quadraturePosition
@@ -155,7 +155,7 @@ public class Drivetrain(
         }
 
     public val leftVelocity: Double
-        get() = Utils.encoderTicksPer100MsToInchesPerSecond(
+        get() = -Utils.encoderTicksPer100MsToInchesPerSecond(
             Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
             Constants.Drivetrain.WHEEL_CIR,
             mLeftMaster.sensorCollection.quadratureVelocity
@@ -453,7 +453,8 @@ public class Drivetrain(
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
             configPeakOutputForward(+1.0, 0)
             configPeakOutputReverse(-1.0, 0)
-            setSensorPhase(false)
+            setSensorPhase(true)
+            println("COnfig pid constants")
             config_kP(0, Constants.Drivetrain.VEL_KP, 0)
             config_kI(0, Constants.Drivetrain.VEL_KI, 0)
             config_kD(0, Constants.Drivetrain.VEL_KD, 0)
@@ -475,6 +476,7 @@ public class Drivetrain(
         }
 
         mRightMaster.apply {
+            setInverted(true)
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
             configRemoteFeedbackFilter(0x00, RemoteSensorSource.Off, 0, 0)
             configRemoteFeedbackFilter(0x00, RemoteSensorSource.Off, 1, 0)
@@ -648,6 +650,7 @@ public class Drivetrain(
 
     public override fun update() {
         mPosition.update(leftDistance, rightDistance, heading.degrees)
+        // println("position: ${mPosition.positionVector}")
     }
 
     public override fun stop() {

@@ -33,7 +33,7 @@ public class ControlBoard(
             codriverControls.getExaust() ||
             codriverControls.getPickup().down ||
             codriverControls.getPlace().down ||
-            codriverControls.getDropRamp()
+            codriverControls.getManualEnable()
         )
     }
 

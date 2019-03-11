@@ -7,8 +7,6 @@ import org.team5499.monkeyLib.auto.Action
 import org.team5499.monkeyLib.path.Path
 import org.team5499.monkeyLib.path.PathFollower
 
-import org.team5499.dashboard.Dashboard
-
 /**
  * An action that will follow the given path.
  *
@@ -19,20 +17,21 @@ import org.team5499.dashboard.Dashboard
 public class PathAction(
     timeoutSeconds: Double,
     path: Path,
-    val drivetrain: Drivetrain
+    val drivetrain: Drivetrain,
+    val lookaheadDistance: Double = Constants.Auto.LOOKAHEAD_DISTANCE
 ) : Action(timeoutSeconds) {
 
     // The actuall class from MonkeyLib that does all the math for path following
     private val mPathfollower: PathFollower = PathFollower(path,
-                            Constants.Drivetrain.WHEEL_BASE, Constants.Auto.LOOKAHEAD_DISTANCE)
+                            Constants.Drivetrain.WHEEL_BASE, lookaheadDistance)
 
     init {
-        Dashboard.addInlineListener("Constants.Auto.LOOKAHEAD_DISTANCE") {
-            _: String, value: Double? ->
-            if (value != null) {
-                mPathfollower.lookaheadDistance = value
-            }
-        }
+        // Dashboard.addInlineListener("Constants.Auto.LOOKAHEAD_DISTANCE") {
+        //     _: String, value: Double? ->
+        //     if (value != null) {
+        //         mPathfollower.lookaheadDistance = value
+        //     }
+        // }
     }
 
     // Called every tick
@@ -48,5 +47,9 @@ public class PathAction(
     // Returns true if we are ready to move on to the next action
     public override fun next(): Boolean {
         return (super.next() || mPathfollower.doneWithPath(drivetrain.pose))
+    }
+
+    public override fun finish() {
+        drivetrain.setVelocity(0.0, 0.0)
     }
 }
