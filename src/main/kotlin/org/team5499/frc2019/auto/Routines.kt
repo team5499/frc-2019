@@ -18,6 +18,7 @@ import org.team5499.frc2019.auto.actions.LiftAction
 import org.team5499.frc2019.auto.actions.HatchMechAction
 import org.team5499.frc2019.auto.actions.WaitForElevatorZeroAction
 import org.team5499.frc2019.auto.actions.CrossedXBoundaryAction
+import org.team5499.frc2019.auto.actions.VisionGoalAction
 
 import java.util.HashMap
 
@@ -135,14 +136,14 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
 
     private fun createTuning() = Routine(
         "tuning",
-        Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0)),
+        Pose2d(),
         TurnAction(15.0, 90.0, mSubsystems.drivetrain)
     )
 
     private fun createTest() = Routine(
         "test",
-        Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0.0)),
-        DriveStraightAction(10.0, 12.0, mSubsystems.drivetrain)
+        Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0)),
+        VisionGoalAction(20.0, mSubsystems.vision, mSubsystems.drivetrain)
     )
 
     public fun resetAll() {
