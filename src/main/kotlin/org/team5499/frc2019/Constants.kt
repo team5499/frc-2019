@@ -123,7 +123,7 @@ public object Constants {
 
         public var HATCH_LOW_HEIGHT by DashboardVar(7.0)
         public val HATCH_MID_HEIGHT by DashboardVar(33.0)
-        public val HATCH_HIGH_HEIGHT by DashboardVar(58.0)
+        public val HATCH_HIGH_HEIGHT by DashboardVar(59.5)
 
         public var BALL_LOW_HEIGHT by DashboardVar(3.5) // 4.5
         public val BALL_MID_HEIGHT by DashboardVar(31.0) // 32

@@ -24,6 +24,7 @@ public class TeleopController(
 
     private var mLockHatchMech: Boolean
     private var mLockElevator: Boolean
+    private var mLastLoopManualUsed: Boolean
 
     init {
         mSubsystems = subsystems
@@ -31,6 +32,7 @@ public class TeleopController(
         mDriveHelper = driveHelper
         mLockHatchMech = false
         mLockElevator = false
+        mLastLoopManualUsed = false
     }
 
     public override fun start() {
@@ -89,6 +91,10 @@ public class TeleopController(
             Math.abs(manualElevatorInput) > Constants.Input.MANUAL_CONTROL_DEADBAND) {
             mSubsystems.lift.setPower(manualElevatorInput)
             mLockHatchMech = false
+            mLastLoopManualUsed = true
+        } else if (mLastLoopManualUsed) {
+            mSubsystems.lift.setPower(0.0)
+            mLastLoopManualUsed = false
         } else if (mControlBoard.codriverControls.getHatchLow()) {
             mSubsystems.lift.setIntakeHeight(ElevatorHeight.HATCH_LOW)
             mLockHatchMech = false
