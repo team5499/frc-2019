@@ -34,6 +34,10 @@ public class PathAction(
         // }
     }
 
+    public override fun start() {
+        mPathfollower.reset()
+    }
+
     // Called every tick
     public override fun update() {
 

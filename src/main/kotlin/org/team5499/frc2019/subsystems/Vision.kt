@@ -8,18 +8,20 @@ public class Vision : Subsystem() {
 
     public enum class LEDState(val value: Int) { PIPELINE(0), OFF(1), BLINK(2), ON(3) }
 
-    public enum class VisionMode(val value: Int) { DRIVER(0), VISION(1) }
+    public enum class VisionMode(val value: Int) { DRIVER(9), VISION(0) } // pipeline
 
-    public var ledState: LEDState = LEDState.OFF
+    public var ledState: LEDState = LEDState.PIPELINE
         set(value) {
             if (value == field) return
             NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(value.value)
+            field = value
         }
 
     public var visionMode: VisionMode = VisionMode.VISION
         set(value) {
             if (value == field) return
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(value.value)
+            NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(value.value)
+            field = value
         }
 
     public var hasValidTarget: Boolean
