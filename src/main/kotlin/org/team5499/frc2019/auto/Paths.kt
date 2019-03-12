@@ -21,7 +21,7 @@ public class Paths(generator: PathGenerator) {
 
     public val rightHabToFrontCargo: Path
     // public val rightCargoBackup: Path
-  
+
     public val tuning: Path
 
     init {
@@ -37,7 +37,7 @@ public class Paths(generator: PathGenerator) {
 
         rightHabToFrontCargo = generateRightHabToFrontCargo()
         // rightCargobackup = generateRightCargoBackup()
-      
+
         tuning = generateTuning()
     }
 
@@ -74,7 +74,7 @@ public class Paths(generator: PathGenerator) {
         public val rightCargoShipFront = Pose2d(Vector2(203, -10), Rotation2d.fromDegrees(0.0))
 
         // public val rightCargoBackup1 = Pose2d(Vector2())
-      
+
         public val zero = Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0))
         public val tuning = Pose2d(Vector2(25, 15), Rotation2d.fromDegrees(45))
     }
@@ -145,7 +145,7 @@ public class Paths(generator: PathGenerator) {
         )
         return mGenerator.generatePath(true, points, 80.0, 50.0, 20.0, 0.0)
     }
-  
+
     private fun generateTuning(): Path {
         val points: Array<Pose2d> = arrayOf(
             Poses.zero,

@@ -55,7 +55,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
             }
             field = value
         }
-  
+
     private var mSetpoint: Double
     private var mSoftLimitsEnabled: Boolean = false
         set(value) {
