@@ -49,7 +49,7 @@ public class Paths(generator: PathGenerator) {
         public val rightRocketMidpoint3 = Pose2d(Vector2(287, -114), Rotation2d.fromDegrees(180))
 
         public val zero = Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0))
-        public val tuning = Pose2d(Vector2(20, 0), Rotation2d.fromDegrees(0))
+        public val tuning = Pose2d(Vector2(25, 15), Rotation2d.fromDegrees(45))
     }
 
     private fun generatePathToLeftRocket(): Path {
