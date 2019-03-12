@@ -3,6 +3,8 @@ package org.team5499.frc2019
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj.PowerDistributionPanel
 
+import org.tinylog.Logger
+
 @Suppress("MagicNumber")
 class Robot : TimedRobot(0.005) {
     val pdp: PowerDistributionPanel
@@ -17,6 +19,7 @@ class Robot : TimedRobot(0.005) {
 
     override fun robotPeriodic() {
         Logging.logIterativeData(pdp)
+        Logger.info("test")
     }
 
     override fun disabledInit() {
