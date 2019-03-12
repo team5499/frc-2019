@@ -47,7 +47,7 @@ public class TeleopController(
             mControlBoard.driverControls.getQuickTurn(),
             mControlBoard.driverControls.getCreep()
         )
-        mSubsystems.drivetrain.setPercent(driveSignal)
+        mSubsystems.drivetrain.setPercent(driveSignal.left, driveSignal.right)
 
         if (mControlBoard.codriverControls.getExaust()) {
             mSubsystems.intake.outtake()

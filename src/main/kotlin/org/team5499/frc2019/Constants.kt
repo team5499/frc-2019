@@ -62,23 +62,23 @@ public object Constants {
         public const val PIGEON_UNITS_PER_ROTATION = 8192
 
         // dimensions
-        public const val WHEEL_BASE = 20.0 // inches
+        public const val WHEEL_BASE = 27.0 // inches
         public const val WHEEL_DIAMETER = 6.0 // inches
         public const val WHEEL_RADIUS = WHEEL_DIAMETER / 2.0
         public const val WHEEL_CIR = WHEEL_DIAMETER * Math.PI
 
         // pid thresholds
         public var MAX_VELOCITY by DashboardVar(100.0) // inches per second
-        public var MAX_ACCELERATION by DashboardVar(100.0) // inches per second^2
+        public var MAX_ACCELERATION by DashboardVar(50.0) // inches per second^2
         public var ACCEPTABLE_VELOCITY_THRESHOLD by DashboardVar(3.0) // inches / s
         public var ACCEPTABLE_TURN_ERROR by DashboardVar(3.0) // degrees (?)
         public var ACCEPTABLE_DISTANCE_ERROR by DashboardVar(2.0) // inches
 
         // pid constants
-        public var VEL_KP by DashboardVar(0.5)
+        public var VEL_KP by DashboardVar(1.3)
         public var VEL_KI by DashboardVar(0.0)
-        public var VEL_KD by DashboardVar(0.0)
-        public var VEL_KF by DashboardVar(0.15)
+        public var VEL_KD by DashboardVar(0.6)
+        public var VEL_KF by DashboardVar(0.6)
         public var VEL_IZONE by DashboardVar(10)
         public var VEL_MAX_OUTPUT by DashboardVar(1.0)
 
@@ -206,6 +206,6 @@ public object Constants {
         fun initProps() {
             println("init Auto")
         }
-        public var LOOKAHEAD_DISTANCE by DashboardVar(12.0)
+        public var LOOKAHEAD_DISTANCE by DashboardVar(18.0)
     }
 }
