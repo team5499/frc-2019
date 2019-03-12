@@ -6,13 +6,7 @@ import org.team5499.dashboard.DashboardVar
 public object Constants {
 
     fun initConstants() {
-        println("init Constants")
-        Input.initProps()
-        Drivetrain.initProps()
-        Lift.initProps()
-        Intake.initProps()
-        Hatch.initProps()
-        Auto.initProps()
+        DashboardVar.initClassProps(Constants::class)
     }
 
     public const val ROBOT_UPDATE_PERIOD = 0.02 // maybe change back to 0.005
@@ -22,28 +16,22 @@ public object Constants {
     public const val EPSILON = 1E-5
 
     object Input {
-        fun initProps() {
-            println("init Input")
-        }
         // ports
         public const val DRIVER_PORT = 0
         public const val CODRIVER_BUTTON_BOARD_PORT = 1
         public const val CODRIVER_JOYSTICK_PORT = 2
 
         // driver constants
-        public var JOYSTICK_DEADBAND by DashboardVar(0.07)
-        public var TURN_MULT by DashboardVar(0.4)
-        public var SLOW_MULT by DashboardVar(0.5)
-        public var DRIVER_STOW_TIMEOUT by DashboardVar(2.0) // seconds
+        public const val JOYSTICK_DEADBAND = 0.07
+        public const val TURN_MULT = 0.4
+        public const val SLOW_MULT = 0.5
+        public const val DRIVER_STOW_TIMEOUT = 2.0 // seconds
 
         // codriver constants
-        public var MANUAL_CONTROL_DEADBAND by DashboardVar(0.07)
+        public const val MANUAL_CONTROL_DEADBAND = 0.07
     }
 
     object Drivetrain {
-        fun initProps() {
-            println("init Drivetrain")
-        }
         // talon port
         public const val LEFT_MASTER_TALON_PORT = 6
         public const val LEFT_SLAVE1_TALON_PORT = 7
@@ -116,50 +104,45 @@ public object Constants {
     }
 
     object Lift {
-        fun initProps() {
-            println("init Lift")
-        }
         // ports
         public const val MASTER_TALON_PORT = 4
         public const val SLAVE_TALON_PORT = 5
 
         // pid
-        public var KP by DashboardVar(0.11) // worked a 0.09
+        public var KP by DashboardVar(0.7) // worked a 0.09
         public var KI by DashboardVar(0.0)
-        public var KD by DashboardVar(0.1)
+        public var KD by DashboardVar(0.0)
         public var KF by DashboardVar(0.0)
 
-        public var MOTION_MAGIC_VELOCITY by DashboardVar(11000) // 10500 before
-        public var MOTION_MAGIC_ACCELERATION by DashboardVar(11000) // 9000 before
+        public const val MOTION_MAGIC_VELOCITY = 11000 // 10500 before
+        public const val MOTION_MAGIC_ACCELERATION = 11000 // 9000 before
 
         // heights (carriage height in inches)
         public val ROCKET_HOLE_SPACING by DashboardVar(27.0)
         public var STOW_HEIGHT by DashboardVar(3.5)
-        public var HATCH_LOW_HEIGHT by DashboardVar(8.0)
-        public val HATCH_MID_HEIGHT: Double
-            get() = HATCH_LOW_HEIGHT + ROCKET_HOLE_SPACING
-        public val HATCH_HIGH_HEIGHT
-            get() = HATCH_MID_HEIGHT + ROCKET_HOLE_SPACING + 3.0
-        public var BALL_LOW_HEIGHT by DashboardVar(4.5)
-        public val BALL_MID_HEIGHT
-            get() = BALL_LOW_HEIGHT + ROCKET_HOLE_SPACING
-        public val BALL_HIGH_HEIGHT
-            get() = BALL_MID_HEIGHT + ROCKET_HOLE_SPACING
+
+        public var HATCH_LOW_HEIGHT by DashboardVar(7.0)
+        public val HATCH_MID_HEIGHT by DashboardVar(33.0)
+        public val HATCH_HIGH_HEIGHT by DashboardVar(59.5)
+
+        public var BALL_LOW_HEIGHT by DashboardVar(3.5) // 4.5
+        public val BALL_MID_HEIGHT by DashboardVar(31.0) // 32
+        public val BALL_HIGH_HEIGHT by DashboardVar(57.0) // 58
         public var BALL_HUMAN_PLAYER_HEIGHT by DashboardVar(20.0)
 
         // constants
         public const val ENCODER_REDUCTION = 38.0 / 24.0 // reduction from encoder shaft to output shaft
         public const val ENCODER_TICKS_PER_ROTATION = 4096 // of the encoder shaft
-        public var MAX_ENCODER_TICKS by DashboardVar((8400 * 4 * ENCODER_REDUCTION).toInt()) // CHANGE THIS, 8100
-        public var MIN_ENCODER_TICKS by DashboardVar((400 * ENCODER_REDUCTION).toInt()) // CHANGE THIS
-        public var ZEROING_THRESHOLD by DashboardVar(5) // ticks per 100/ms
-        public var ZEROING_SPEED by DashboardVar(-0.2) // percent output
-        public var ZEROING_TIMEOUT by DashboardVar(0.5) // seconds
+        public const val MAX_ENCODER_TICKS = (8400 * 4 * ENCODER_REDUCTION).toInt() // CHANGE THIS, worked on 8100
+        public const val MIN_ENCODER_TICKS = (400 * ENCODER_REDUCTION).toInt() // CHANGE THIS
+        public const val ZEROING_THRESHOLD = 5 // ticks per 100/ms
+        public const val ZEROING_SPEED = -0.2 // percent output
+        public const val ZEROING_TIMEOUT = 0.75 // seconds
 
-        public var MAX_VELOCITY_SETPOINT by DashboardVar(10000) // ticks per 100ms
+        public const val MAX_VELOCITY_SETPOINT = 10000 // ticks per 100ms
 
-        public var ACCEPTABLE_VELOCITY_THRESHOLD by DashboardVar(3.0) // inches / s
-        public var ACCEPTABLE_DISTANCE_ERROR by DashboardVar(1.0) // inche
+        public const val ACCEPTABLE_VELOCITY_THRESHOLD = 3.0 // inches / s
+        public const val ACCEPTABLE_DISTANCE_ERROR = 1.0 // inche
 
         // dimension
         public const val SPROCKET_DIAMETER = 1.23 // inches
@@ -168,38 +151,32 @@ public object Constants {
     }
 
     object Intake {
-        fun initProps() {
-            println("init Intake")
-        }
         public const val TALON_PORT = 9
 
-        public var INTAKE_SPEED by DashboardVar(0.6)
-        public var OUTTAKE_SPEED by DashboardVar(-0.45)
-        public var IDLE_SPEED by DashboardVar(0.0)
-        public var HOLD_SPEED by DashboardVar(0.2)
+        public const val INTAKE_SPEED = 1.0
+        public const val OUTTAKE_SPEED = -0.85 // -.45
+        public const val IDLE_SPEED = 0.0
+        public const val HOLD_SPEED = 0.2
     }
 
     object Hatch {
-        fun initProps() {
-            println("init Hatch")
-        }
         public const val TALON_PORT = 10
 
         // public const val HATCH_KP = 2.0
         // public const val HATCH_KI = 0.0
         // public const val HATCH_KD = 1.0
 
-        public var KP by DashboardVar(2.0)
+        public var KP by DashboardVar(3.5)
         public var KI by DashboardVar(0.0)
-        public var KD by DashboardVar(1.0)
+        public var KD by DashboardVar(0.5)
 
         // positions, all in pot ticks
-        public var POSITION_OFFSET by DashboardVar(10)
+        public var POSITION_OFFSET by DashboardVar(20)
 
         public var TOP_STOW_POSITION by DashboardVar(0)
         public var BOTTOM_STOW_POSITION by DashboardVar(770)
-        public var DEPLOY_POSITION by DashboardVar(385)
-        public var HOLD_POSITION by DashboardVar(130)
+        public var DEPLOY_POSITION by DashboardVar(360)
+        public var HOLD_POSITION by DashboardVar(190)
     }
 
     object Auto {

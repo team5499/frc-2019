@@ -11,7 +11,7 @@ public class HatchMechAction(val ticks: Int, val hatchMech: HatchMech) : Action(
         this(position.ticks(), hatchMech)
 
     public override fun start() {
-        hatchMech.setPosition(ticks)
+        hatchMech.setPositionRaw(ticks)
     }
 
     public override fun next() = true

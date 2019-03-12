@@ -43,9 +43,19 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     private var mElevatorMode: ElevatorMode
     private var mFirstLoop: Boolean
-
-    public var zeroed: Boolean
-        private set
+    public var zeroed: Boolean = false
+        set(value) {
+            when (value) {
+                true -> {
+                    println("Elevator Zeroed!")
+                }
+                false -> {
+                    mFirstLoop = true
+                }
+            }
+            field = value
+        }
+  
     private var mSetpoint: Double
     private var mSoftLimitsEnabled: Boolean = false
         set(value) {
@@ -157,6 +167,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
             configMotionCruiseVelocity(Constants.Lift.MOTION_MAGIC_VELOCITY, 0)
             configMotionAcceleration(Constants.Lift.MOTION_MAGIC_ACCELERATION, 0)
             selectProfileSlot(kElevatorSlot, 0)
+            configAllowableClosedloopError(0, 0, 0)
 
             enableCurrentLimit(false)
             configPeakCurrentDuration(0, 0)
