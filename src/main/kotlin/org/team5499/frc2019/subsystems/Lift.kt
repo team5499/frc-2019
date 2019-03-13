@@ -43,7 +43,6 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
 
     private var mElevatorMode: ElevatorMode
     private var mFirstLoop: Boolean
-
     public var zeroed: Boolean = false
         set(value) {
             when (value) {

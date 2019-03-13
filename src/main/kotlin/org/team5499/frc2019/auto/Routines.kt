@@ -12,7 +12,6 @@ import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.subsystems.Lift.LiftHeight
 import org.team5499.frc2019.subsystems.HatchMech.HatchMechPosition
 import org.team5499.frc2019.auto.actions.DriveStraightAction
-import org.team5499.frc2019.auto.actions.TurnAction
 import org.team5499.frc2019.auto.actions.PathAction
 import org.team5499.frc2019.auto.actions.LiftAction
 import org.team5499.frc2019.auto.actions.HatchMechAction
@@ -125,7 +124,6 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         ),
         HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech),
         NothingAction(0.25)
-
     )
 
     private fun createBaseline() = Routine(
@@ -136,7 +134,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private fun createTuning() = Routine(
         "tuning",
         Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0)),
-        TurnAction(15.0, 90.0, mSubsystems.drivetrain)
+        PathAction(15.0, mPaths.tuning, mSubsystems.drivetrain)
     )
 
     private fun createTest() = Routine(
