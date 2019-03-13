@@ -49,6 +49,8 @@ public class Vision : Subsystem() {
         get() {
             return NetworkTableInstance.getDefault().getTable("limelight") .getEntry("ta").getDouble(0.0)
         }
+
+    // http://docs.limelightvision.io/en/latest/cs_estimating_distance.html
     public val distanceToHatchTarget: Double
         get() {
             return (Constants.Vision.HATCH_TARGET_HEIGHT - Constants.Vision.CAMERA_HEIGHT) /
