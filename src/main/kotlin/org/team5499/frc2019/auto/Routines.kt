@@ -31,9 +31,11 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     public val baseline: Routine
     public val tuning: Routine
     public val test: Routine
+
     public val rocketLeft: Routine
     public val rocketRight: Routine
     public val cargoShipThenRocketRight: Routine
+    public val cargoShipThenRocketLeft: Routine
 
     init {
         mPaths = paths
@@ -46,12 +48,15 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         this.rocketLeft = createRocketLeft()
         this.rocketRight = createRocketRight()
         this.cargoShipThenRocketRight = createCargoShipThenRocketRight()
+        this.cargoShipThenRocketLeft = createCargoShipThenRocketLeft()
 
         routineMap.put(baseline.name, baseline)
         routineMap.put(tuning.name, tuning)
         routineMap.put(test.name, test)
         routineMap.put(rocketLeft.name, rocketLeft)
         routineMap.put(rocketRight.name, rocketRight)
+        routineMap.put(cargoShipThenRocketLeft.name, cargoShipThenRocketLeft)
+        routineMap.put(cargoShipThenRocketRight.name, cargoShipThenRocketRight)
     }
 
     public fun getRoutineWithName(name: String): Routine? {
@@ -63,7 +68,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     }
 
     private fun createRocketLeft() = Routine(
-        "left_rocket",
+        "Left Rocket",
         Paths.Poses.leftStartingPosition.mirror(),
         ParallelAction(
             SerialAction(
@@ -78,7 +83,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     )
 
     private fun createRocketRight() = Routine(
-        "right_rocket",
+        "Right Rocket",
         Paths.Poses.rightStartingPosition,
         ParallelAction(
             PathAction(15.0, mPaths.fromHabToRightRocket, mSubsystems.drivetrain),
@@ -112,7 +117,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     )
 
     private fun createCargoShipThenRocketRight() = Routine(
-        "cargoship_then_rocket_right",
+        "Cargoship Then Rocket Right",
         Paths.Poses.rightCargoShipToRocketStartingPosition,
         ParallelAction(
             PathAction(15.0, mPaths.rightHabToFrontCargo, mSubsystems.drivetrain),
@@ -126,19 +131,28 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         NothingAction(0.25)
     )
 
+    private fun createCargoShipThenRocketLeft() = Routine(
+        "Cargoship Then Rocket Left",
+        Paths.Poses.leftCargoShipToRocketStartingPosition,
+        NothingAction(0.0)
+        // ParallelAction(
+        //     PathAction(15.0, mPaths.)
+        // )
+    )
+
     private fun createBaseline() = Routine(
-        "baseline",
-        DriveStraightAction(15.0, 50.0, mSubsystems.drivetrain)
+        "Baseline",
+        DriveStraightAction(15.0, 90.0, mSubsystems.drivetrain)
     )
 
     private fun createTuning() = Routine(
-        "tuning",
+        "Tuning",
         Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0)),
         PathAction(15.0, mPaths.tuning, mSubsystems.drivetrain)
     )
 
     private fun createTest() = Routine(
-        "test",
+        "Test",
         Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0.0)),
         DriveStraightAction(10.0, 12.0, mSubsystems.drivetrain)
     )
@@ -149,5 +163,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         test.reset()
         rocketLeft.reset()
         rocketRight.reset()
+        cargoShipThenRocketLeft.reset()
+        cargoShipThenRocketRight.reset()
     }
 }

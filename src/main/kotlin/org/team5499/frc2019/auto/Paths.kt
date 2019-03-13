@@ -5,6 +5,7 @@ import org.team5499.monkeyLib.path.Path
 import org.team5499.monkeyLib.math.geometry.Pose2d
 import org.team5499.monkeyLib.math.geometry.Rotation2d
 import org.team5499.monkeyLib.math.geometry.Vector2
+import org.team5499.monkeyLib.path.PathSet
 
 @SuppressWarnings("MagicNumber")
 public class Paths(generator: PathGenerator) {
@@ -19,6 +20,15 @@ public class Paths(generator: PathGenerator) {
     public val rightRocketBackup2: Path
     public val rightRocketTinyBoi: Path
 
+    // path sets
+    public val rightRocketSet: PathSet
+
+    public val leftRocketSet: PathSet
+
+    public val rightCargoToRocketSet: PathSet
+
+    public val leftCargoToRocketSet: PathSet
+
     public val rightHabToFrontCargo: Path
     // public val rightCargoBackup: Path
 
@@ -26,6 +36,12 @@ public class Paths(generator: PathGenerator) {
 
     init {
         mGenerator = generator
+
+        rightRocketSet = PathSet()
+        leftRocketSet = PathSet()
+        rightCargoToRocketSet = PathSet()
+        leftCargoToRocketSet = PathSet()
+
         fromHabToLeftRocket = generatePathToLeftRocket()
 
         fromHabToRightRocket = generatePathToRightRocket()
