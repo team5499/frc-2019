@@ -162,10 +162,6 @@ public object Constants {
     object Hatch {
         public const val TALON_PORT = 10
 
-        // public const val HATCH_KP = 2.0
-        // public const val HATCH_KI = 0.0
-        // public const val HATCH_KD = 1.0
-
         public var KP by DashboardVar(3.5)
         public var KI by DashboardVar(0.0)
         public var KD by DashboardVar(0.5)
@@ -179,7 +175,27 @@ public object Constants {
         public var HOLD_POSITION by DashboardVar(190)
     }
 
-    object Vision
+    object Vision {
+        public var CAMERA_HEIGHT by DashboardVar(24.0)
+        public var CAMERA_VERTICAL_ANGLE by DashboardVar(0.0)
+        public var HATCH_TARGET_HEIGHT by DashboardVar(20.0)
+        public var BALL_TARGET_HEIGHT by DashboardVar(28.0)
+
+        public var TARGET_DISTANCE by DashboardVar(3.0) // inches
+
+        public var ACCEPTABLE_ANGLE_ERROR by DashboardVar(3.0) // degrees(?)
+        public var ACCEPTABLE_DISTANCE_ERROR by DashboardVar(2.0) // inches (?)
+
+        public var ANGLE_KP by DashboardVar(1.0)
+        public var ANGLE_KI by DashboardVar(0.0)
+        public var ANGLE_KD by DashboardVar(0.0)
+        public var ANGLE_KF by DashboardVar(0.0)
+
+        public var DISTANCE_KP by DashboardVar(1.0)
+        public var DISTANCE_KI by DashboardVar(0.0)
+        public var DISTANCE_KD by DashboardVar(0.0)
+        public var DISTANCE_KF by DashboardVar(0.0)
+    }
 
     object Auto {
         fun initProps() {

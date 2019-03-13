@@ -18,6 +18,7 @@ import org.team5499.frc2019.auto.actions.HatchMechAction
 import org.team5499.frc2019.auto.actions.WaitForLiftZeroAction
 import org.team5499.frc2019.auto.actions.CrossedXBoundaryAction
 import org.team5499.frc2019.auto.actions.VisionGoalAction
+import org.team5499.frc2019.auto.actions.VisionGoalAction.VisionGoal
 
 import java.util.HashMap
 
@@ -144,7 +145,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         WaitForLiftZeroAction(mSubsystems.lift),
         LiftAction(LiftHeight.HATCH_LOW, mSubsystems.lift),
         HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
-        VisionGoalAction(20.0, mSubsystems.vision, mSubsystems.drivetrain),
+        VisionGoalAction(20.0, VisionGoal.HATCH_TARGET, mSubsystems.vision, mSubsystems.drivetrain),
         HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech)
     )
 

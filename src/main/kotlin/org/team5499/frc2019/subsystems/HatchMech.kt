@@ -57,7 +57,7 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
         Dashboard.addInlineListener("Constants.Hatch.POSITION_OFFSET") {
             _: String, value: Int? ->
             if (value != null) {
-                mPositionOffset = value!!
+                mPositionOffset = value
             }
         }
     }
