@@ -179,6 +179,8 @@ public object Constants {
         public var HOLD_POSITION by DashboardVar(190)
     }
 
+    object Vision
+
     object Auto {
         public const val LOOKAHEAD_DISTANCE = 18.0
     }

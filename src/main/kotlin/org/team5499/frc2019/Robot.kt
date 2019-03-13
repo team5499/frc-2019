@@ -220,5 +220,4 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mTeleopController.update()
         mSubsystemsManager.updateAll()
     }
-    
 }

@@ -4,7 +4,16 @@ import org.team5499.monkeyLib.Subsystem
 
 import edu.wpi.first.networktables.NetworkTableInstance
 
+import kotlin.math.tan
+
 public class Vision : Subsystem() {
+
+    companion object {
+        private const val kCameraHeight = 24.0 // inches
+        private const val kCameraVerticalAngle = 0.0 // degrees
+        private const val kHatchTargetHeight = 20.0 // inches
+        private const val kBallTargetHeight = 28.0 // inches
+    }
 
     public enum class LEDState(val value: Int) { PIPELINE(0), OFF(1), BLINK(2), ON(3) }
 
@@ -12,63 +21,54 @@ public class Vision : Subsystem() {
 
     public var ledState: LEDState = LEDState.OFF
         set(value) {
-            if (value == field) return
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(value.value)
+            NetworkTableInstance.getDefault().getTable("limelight") .getEntry("ledMode").setNumber(value.value)
             field = value
         }
-
     public var visionMode: VisionMode = VisionMode.VISION
         set(value) {
-            if (value == field) return
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(value.value)
+            NetworkTableInstance.getDefault().getTable("limelight") .getEntry("pipeline").setNumber(value.value)
             field = value
         }
-
-    public var hasValidTarget: Boolean
-        private set
-    public var targetXOffset: Double
-        private set
-    public var targetYOffset: Double
-        private set
-    public var targetSkew: Double
-        private set
-    public var targetArea: Double
-        private set
+    public val hasValidTarget: Boolean
+        get() {
+            return if (NetworkTableInstance.getDefault().getTable("limelight") .getEntry("tv").getDouble(0.0) == 1.0) true
+                else false
+        }
+    public val targetXOffset: Double
+        get() {
+            return NetworkTableInstance.getDefault().getTable("limelight") .getEntry("tx").getDouble(0.0)
+        }
+    public val targetYOffset: Double
+        get() {
+            return NetworkTableInstance.getDefault().getTable("limelight") .getEntry("ty").getDouble(0.0)
+        }
+    public val targetSkew: Double
+        get() {
+            return NetworkTableInstance.getDefault().getTable("limelight") .getEntry("ts").getDouble(0.0)
+        }
+    public val targetArea: Double
+        get() {
+            return NetworkTableInstance.getDefault().getTable("limelight") .getEntry("ta").getDouble(0.0)
+        }
+    public val distanceToHatchTarget: Double
+        get() {
+            return (kHatchTargetHeight - kCameraHeight) / tan(kCameraVerticalAngle + targetYOffset)
+        }
+    public val distanceToBallTarget: Double
+        get() {
+            return (kBallTargetHeight - kCameraHeight) / tan(kCameraVerticalAngle + targetYOffset)
+        }
 
     init {
-        hasValidTarget = false
-        targetXOffset = 0.0
-        targetYOffset = 0.0
-        targetSkew = 0.0
-        targetArea = 0.0
-
-        val instance = NetworkTableInstance.getDefault().getTable("limelight")
-        instance.getEntry("camMode").setNumber(0)
-        instance.getEntry("stream").setNumber(0)
-        instance.getEntry("ledMode").setNumber(0)
+        NetworkTableInstance.getDefault().getTable("limelight") .getEntry("camMode").setNumber(0)
+        NetworkTableInstance.getDefault().getTable("limelight") .getEntry("stream").setNumber(0)
+        NetworkTableInstance.getDefault().getTable("limelight") .getEntry("ledMode").setNumber(0)
     }
 
-    public override fun update() {
-        val instance = NetworkTableInstance.getDefault().getTable("limelight")
-
-        // get parameters
-        targetXOffset = instance.getEntry("tx").getDouble(0.0)
-        targetYOffset = instance.getEntry("ty").getDouble(0.0)
-        targetSkew = instance.getEntry("ts").getDouble(0.0)
-        targetArea = instance.getEntry("ta").getDouble(0.0)
-        hasValidTarget = if (instance.getEntry("tv").getDouble(0.0) == 1.0) true else false
-
-    }
+    public override fun update() {}
 
     public override fun stop() {}
 
     public override fun reset() {
-        ledState = LEDState.OFF
-        visionMode = VisionMode.VISION
-        hasValidTarget = false
-        targetXOffset = 0.0
-        targetYOffset = 0.0
-        targetSkew = 0.0
-        targetArea = 0.0
     }
 }
