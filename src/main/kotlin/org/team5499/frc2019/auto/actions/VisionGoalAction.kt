@@ -39,7 +39,11 @@ public class VisionGoalAction(
     }
 
     public override fun start() {
+
         // reset pid for dashboard
+        mAnglePID.reset()
+        mDistancePID.reset()
+
         mAnglePID.kP = Constants.Vision.ANGLE_KP
         mAnglePID.kI = Constants.Vision.ANGLE_KI
         mAnglePID.kD = Constants.Vision.ANGLE_KD
