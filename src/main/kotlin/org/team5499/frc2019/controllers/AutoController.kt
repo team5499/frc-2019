@@ -8,10 +8,14 @@ import org.team5499.monkeyLib.math.geometry.Rotation2d
 import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.auto.Routines
 
+import org.team5499.dashboard.StringChooser
+
 public class AutoController(subsystems: SubsystemsManager, routines: Routines) : Controller() {
 
     private val mSubsystems: SubsystemsManager
     private val mRoutines: Routines
+
+    private val mAutoSelector: StringChooser
 
     private var currentRoutine: Routine
     private var currentAction: Action?
@@ -25,13 +29,23 @@ public class AutoController(subsystems: SubsystemsManager, routines: Routines) :
         isFinished = false
         currentRoutine = mRoutines.baseline
         currentAction = null
+        val tempArray = Array<String>(mRoutines.routineMap.size, { "" })
+        var i = 0
+        for ((key, value) in mRoutines.routineMap) {
+            tempArray.set(i, key)
+            i++
+        }
+
+        @Suppress("SpreadOperator")
+        mAutoSelector = StringChooser("AUTO_MODE", "baseline", *tempArray)
     }
 
     public override fun start() {
         // TODO choose routine from dashboard
         println("auto controller starting")
         reset()
-        currentRoutine = mRoutines.tuning
+        val routine = mRoutines.getRoutineWithName(mAutoSelector.selected)
+        currentRoutine = if (routine == null) mRoutines.baseline else routine
         mSubsystems.drivetrain.brakeMode = true
         mSubsystems.drivetrain.heading = Rotation2d(currentRoutine.startPose.rotation)
         mSubsystems.drivetrain.setPosition(currentRoutine.startPose.translation)

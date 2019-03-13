@@ -38,7 +38,9 @@ public interface ICodriverControls {
     public fun getPlace(): ButtonState
 
     // ramp (?) maybe this should be on the drivers controller
-    public fun getDropRamp(): Boolean
+    public fun getManualEnable(): Boolean
+
+    public fun getManualZero(): Boolean
 
     // get the current codriver state
     public fun getState(): String {

@@ -99,9 +99,9 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mControlBoard = ControlBoard(mDriverControls, mCodriverControls)
 
         mSpaceDriveHelper = SpaceDriveHelper(
-            Constants.Input.JOYSTICK_DEADBAND,
-            Constants.Input.TURN_MULT,
-            Constants.Input.SLOW_MULT
+            { Constants.Input.JOYSTICK_DEADBAND },
+            { Constants.Input.TURN_MULT },
+            { Constants.Input.SLOW_MULT }
         )
 
         // hardware init
@@ -156,11 +156,12 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mHatchMech, mVision)
 
         // path init
+        @Suppress("MagicNumber")
         mPathGenerator = PathGenerator(
-            Constants.Drivetrain.MAX_VELOCITY,
-            Constants.Drivetrain.MAX_ACCELERATION,
-            0.0,
-            0.0
+            { Constants.Drivetrain.MAX_VELOCITY },
+            { Constants.Drivetrain.MAX_ACCELERATION },
+            { 20.0 },
+            { 0.0 }
         )
         mPaths = Paths(mPathGenerator)
         mRoutines = Routines(mPaths, mSubsystemsManager)
@@ -177,10 +178,12 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     override fun robotPeriodic() {
         Logging.update(mSubsystemsManager, mPdp, mControlBoard)
+        Dashboard.update()
     }
 
     override fun disabledInit() {
         Logger.warn("Robot disabling" as Any)
+        mLift.zeroed = false
         mSubsystemsManager.resetAll()
     }
 

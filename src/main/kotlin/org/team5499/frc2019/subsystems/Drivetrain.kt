@@ -25,6 +25,8 @@ import org.team5499.monkeyLib.math.geometry.Pose2d
 import org.team5499.monkeyLib.util.Utils
 import org.team5499.monkeyLib.input.DriveSignal
 
+import org.team5499.dashboard.Dashboard
+
 @Suppress("LargeClass", "TooManyFunctions")
 public class Drivetrain(
     leftMaster: LazyTalonSRX,
@@ -122,7 +124,7 @@ public class Drivetrain(
 
     public var leftDistance: Double
         get() {
-            return Utils.encoderTicksToInches(
+            return -Utils.encoderTicksToInches(
                 Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
                 Constants.Drivetrain.WHEEL_CIR,
                 mLeftMaster.sensorCollection.quadraturePosition
@@ -153,7 +155,7 @@ public class Drivetrain(
         }
 
     public val leftVelocity: Double
-        get() = Utils.encoderTicksPer100MsToInchesPerSecond(
+        get() = -Utils.encoderTicksPer100MsToInchesPerSecond(
             Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
             Constants.Drivetrain.WHEEL_CIR,
             mLeftMaster.sensorCollection.quadratureVelocity
@@ -251,6 +253,122 @@ public class Drivetrain(
         }
 
         mGyro = gyro
+
+        setCallbacks()
+    }
+
+    @Suppress("ComplexMethod")
+    private fun setCallbacks() {
+        /* set callbacks */
+        // velocity PIDF
+        Dashboard.addInlineListener("Constants.Drivetrain.VEL_KP") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.VELOCITY) {
+                mLeftMaster.config_kP(0, value, 0)
+                mRightMaster.config_kP(0, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Drivetrain.VEL_KI") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.VELOCITY) {
+                mLeftMaster.config_kI(0, value, 0)
+                mRightMaster.config_kI(0, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Drivetrain.VEL_KD") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.VELOCITY) {
+                mLeftMaster.config_kD(0, value, 0)
+                mRightMaster.config_kD(0, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Drivetrain.VEL_KF") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.VELOCITY) {
+                mLeftMaster.config_kF(0, value, 0)
+                mRightMaster.config_kF(0, value, 0)
+            }
+        }
+
+        // position PID
+        Dashboard.addInlineListener("Constants.Drivetrain.POS_KP") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.POSITION) {
+                mRightMaster.config_kP(0, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Drivetrain.POS_KI") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.POSITION) {
+                mRightMaster.config_kI(0, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Drivetrain.POS_KD") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.POSITION) {
+                mRightMaster.config_kD(0, value, 0)
+            }
+        }
+
+        // angle PID
+        Dashboard.addInlineListener("Constants.Drivetrain.ANGLE_KP") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.POSITION) {
+                mRightMaster.config_kP(1, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Drivetrain.ANGLE_KI") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.POSITION) {
+                mRightMaster.config_kI(1, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Drivetrain.ANGLE_KD") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.POSITION) {
+                mRightMaster.config_kD(1, value, 0)
+            }
+        }
+
+        // turn PID
+        Dashboard.addInlineListener("Constants.Drivetrain.TURN_KP") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.TURN) {
+                mRightMaster.config_kP(0, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Drivetrain.TURN_KI") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.TURN) {
+                mRightMaster.config_kI(0, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Drivetrain.TURN_KD") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.TURN) {
+                mRightMaster.config_kD(0, value, 0)
+            }
+        }
+
+        // fixed PID
+        Dashboard.addInlineListener("Constants.Drivetrain.FIXED_KP") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.TURN) {
+                mRightMaster.config_kP(1, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Drivetrain.FIXED_KI") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.TURN) {
+                mRightMaster.config_kI(1, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Drivetrain.FIXED_KD") {
+            _: String, value: Double? ->
+            if (value != null && mDriveMode == DriveMode.TURN) {
+                mRightMaster.config_kD(1, value, 0)
+            }
+        }
     }
 
     public fun setPercent(signal: DriveSignal) {
@@ -335,7 +453,8 @@ public class Drivetrain(
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
             configPeakOutputForward(+1.0, 0)
             configPeakOutputReverse(-1.0, 0)
-            setSensorPhase(false)
+            setSensorPhase(true)
+            println("COnfig pid constants")
             config_kP(0, Constants.Drivetrain.VEL_KP, 0)
             config_kI(0, Constants.Drivetrain.VEL_KI, 0)
             config_kD(0, Constants.Drivetrain.VEL_KD, 0)
@@ -357,6 +476,7 @@ public class Drivetrain(
         }
 
         mRightMaster.apply {
+            setInverted(true)
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
             configRemoteFeedbackFilter(0x00, RemoteSensorSource.Off, 0, 0)
             configRemoteFeedbackFilter(0x00, RemoteSensorSource.Off, 1, 0)
@@ -441,7 +561,7 @@ public class Drivetrain(
                 Utils.inchesPerSecondToEncoderTicksPer100Ms(
                     Constants.Drivetrain.ENCODER_TICKS_PER_ROTATION,
                     Constants.Drivetrain.WHEEL_CIR,
-                    Constants.Drivetrain.MAX_ACCELERATION
+                    Constants.Drivetrain.ACCEPTABLE_VELOCITY_THRESHOLD
                 ).toInt()
             )
 
@@ -530,6 +650,7 @@ public class Drivetrain(
 
     public override fun update() {
         mPosition.update(leftDistance, rightDistance, heading.degrees)
+        // println("position: ${mPosition.positionVector}")
     }
 
     public override fun stop() {

@@ -1,7 +1,7 @@
 {
   "pages": {
     "dev": {
-      "navbarOrder": 0,
+      "navbarOrder": 2,
       "title": "Development",
       "widgets": [
         {
@@ -11,9 +11,22 @@
           "title": "Hatch PID",
           "type": "PIDWidget",
           "variables": {
-            "dtarget": "Constants.Hatch.HATCH_KD",
-            "itarget": "Constants.Hatch.HATCH_KI",
-            "ptarget": "Constants.Hatch.HATCH_KP"
+            "dtarget": "Constants.Hatch.KD",
+            "itarget": "Constants.Hatch.KI",
+            "ptarget": "Constants.Hatch.KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "liftPidElevator",
+          "kwargs": {},
+          "title": "Lift PID",
+          "type": "PIDWidget",
+          "variables": {
+            "dtarget": "Constants.Lift.KD",
+            "itarget": "Constants.Lift.KI",
+            "ptarget": "Constants.Lift.KP"
           },
           "width": "12rem"
         },
@@ -25,6 +38,375 @@
           "type": "IntEditor",
           "variables": {
             "target": "Constants.Hatch.POSITION_OFFSET"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "stowHeight",
+          "kwargs": {},
+          "title": "Stow Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.STOW_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "hLowHeight",
+          "kwargs": {},
+          "title": "Hatch Low Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.HATCH_LOW_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "hMidHeight",
+          "kwargs": {},
+          "title": "Hatch Mid Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.HATCH_MID_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "hHighHeight",
+          "kwargs": {},
+          "title": "Hatch High Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.HATCH_HIGH_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "bLowHeight",
+          "kwargs": {},
+          "title": "Ball Low Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.BALL_LOW_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "bMigHeight",
+          "kwargs": {},
+          "title": "Ball Mid Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.BALL_MID_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "bHighHeight",
+          "kwargs": {},
+          "title": "Ball High Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.BALL_HIGH_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "bHumanHeight",
+          "kwargs": {},
+          "title": "Ball Human Height",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.BALL_HUMAN_PLAYER_HEIGHT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "bHoleSpacing",
+          "kwargs": {},
+          "title": "Rocket Hole Spacing",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.ROCKET_HOLE_SPACING"
+          },
+          "width": "12rem"
+        }
+      ]
+    },
+    "drive": {
+      "navbarOrder": 0,
+      "title": "Drive",
+      "widgets": [
+        {
+          "height": "auto",
+          "id": "dropdownSelector",
+          "kwargs": {},
+          "title": "Auto Mode",
+          "type": "StringChooser",
+          "variables": {
+            "target": "AUTO_MODE"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "600px",
+          "id": "cameraFeed",
+          "kwargs": {
+            "imgSize": {
+              "x": 320,
+              "y": 240
+            },
+            "imgStart": {
+              "x": 320,
+              "y": 0
+            },
+            "src": "http://limelight.local:5800/"
+          },
+          "title": "Live Video Feed",
+          "type": "CameraWidget",
+          "width": "800px"
+        }
+      ]
+    },
+    "tuning": {
+      "navbarOrder": 1,
+      "title": "Tuning",
+      "widgets": [
+        {
+          "height": "auto",
+          "id": "hatchPidEditor",
+          "kwargs": {},
+          "title": "Hatch PID",
+          "type": "PIDWidget",
+          "variables": {
+            "dtarget": "Constants.Hatch.KD",
+            "itarget": "Constants.Hatch.KI",
+            "ptarget": "Constants.Hatch.KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "joystickDeadband",
+          "kwargs": {},
+          "title": "Joystick Deadband",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Input.JOYSTICK_DEADBAND"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "turnMult",
+          "kwargs": {},
+          "title": "Turn Multiplier",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Input.TURN_MULT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "slowMult",
+          "kwargs": {},
+          "title": "Slow Multiplier",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Input.SLOW_MULT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "driverStowTimeout",
+          "kwargs": {},
+          "title": "Stow Timeout",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Input.DRIVER_STOW_TIMEOUT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "manualControlDeadband",
+          "kwargs": {},
+          "title": "Manual Deadband",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Input.MANUAL_CONTROL_DEADBAND"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "dMaxVelocity",
+          "kwargs": {},
+          "title": "Max Drive Velocity",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Drivetrain.MAX_VELOCITY"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "dMaxAcceleration",
+          "kwargs": {},
+          "title": "Max Drive Acceleration",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Drivetrain.MAX_ACCELERATION"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "dVelErrThreshold",
+          "kwargs": {},
+          "title": "Velocity Error Threshold",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Drivetrain.ACCEPTABLE_VELOCITY_THRESHOLD"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "dTurnErrThreshold",
+          "kwargs": {},
+          "title": "Turn Error Threshold",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Drivetrain.ACCEPTABLE_TURN_ERROR"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "dDistErrThreshold",
+          "kwargs": {},
+          "title": "Distance Error Threshold",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Drivetrain.ACCEPTABLE_DISTANCE_ERROR"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "dVelPidf",
+          "kwargs": {},
+          "title": "Velocity PIDF",
+          "type": "PIDFWidget",
+          "variables": {
+            "dtarget": "Constants.Drivetrain.VEL_KD",
+            "ftarget": "Constants.Drivetrain.VEL_KF",
+            "itarget": "Constants.Drivetrain.VEL_KI",
+            "ptarget": "Constants.Drivetrain.VEL_KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "dPosePidf",
+          "kwargs": {},
+          "title": "Position PIDF",
+          "type": "PIDFWidget",
+          "variables": {
+            "dtarget": "Constants.Drivetrain.POS_KD",
+            "ftarget": "Constants.Drivetrain.POS_KF",
+            "itarget": "Constants.Drivetrain.POS_KI",
+            "ptarget": "Constants.Drivetrain.POS_KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "dAnglePidf",
+          "kwargs": {},
+          "title": "Angle PIDF",
+          "type": "PIDFWidget",
+          "variables": {
+            "dtarget": "Constants.Drivetrain.ANGLE_KD",
+            "ftarget": "Constants.Drivetrain.ANGLE_KF",
+            "itarget": "Constants.Drivetrain.ANGLE_KI",
+            "ptarget": "Constants.Drivetrain.ANGLE_KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "dTurnPidf",
+          "kwargs": {},
+          "title": "Turn PIDF",
+          "type": "PIDFWidget",
+          "variables": {
+            "dtarget": "Constants.Drivetrain.TURN_KD",
+            "ftarget": "Constants.Drivetrain.TURN_KF",
+            "itarget": "Constants.Drivetrain.TURN_KI",
+            "ptarget": "Constants.Drivetrain.TURN_KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "dFixedPidf",
+          "kwargs": {},
+          "title": "Fixed PIDF",
+          "type": "PIDFWidget",
+          "variables": {
+            "dtarget": "Constants.Drivetrain.FIXED_KD",
+            "ftarget": "Constants.Drivetrain.FIXED_KF",
+            "itarget": "Constants.Drivetrain.FIXED_KI",
+            "ptarget": "Constants.Drivetrain.FIXED_KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "liftPidf",
+          "kwargs": {},
+          "title": "Lift PIDF",
+          "type": "PIDFWidget",
+          "variables": {
+            "dtarget": "Constants.Lift.KD",
+            "ftarget": "Constants.Lift.KF",
+            "itarget": "Constants.Lift.KI",
+            "ptarget": "Constants.Lift.KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "liftVelocity",
+          "kwargs": {},
+          "title": "Lift Velocity",
+          "type": "IntEditor",
+          "variables": {
+            "target": "Constants.Lift.MOTION_MAGIC_VELOCITY"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "liftAcceleration",
+          "kwargs": {},
+          "title": "Lift Acceleration",
+          "type": "IntEditor",
+          "variables": {
+            "target": "Constants.Lift.MOTION_MAGIC_ACCELERATION"
           },
           "width": "12rem"
         },
@@ -82,30 +464,217 @@
             "target": "Constants.Lift.ROCKET_HOLE_SPACING"
           },
           "width": "12rem"
-        }
-      ]
-    },
-    "drive": {
-      "navbarOrder": 1,
-      "title": "Drive",
-      "widgets": [
+        },
         {
-          "height": "600px",
-          "id": "cameraFeed",
-          "kwargs": {
-            "imgSize": {
-              "x": 320,
-              "y": 240
-            },
-            "imgStart": {
-              "x": 320,
-              "y": 0
-            },
-            "src": "http://limelight.local:5800/"
+          "height": "auto",
+          "id": "liftMaxHeight",
+          "kwargs": {},
+          "title": "Max Lift Height",
+          "type": "IntEditor",
+          "variables": {
+            "target": "Constants.Lift.MAX_ENCODER_TICKS"
           },
-          "title": "Live Video Feed",
-          "type": "CameraWidget",
-          "width": "800px"
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "liftMinHeight",
+          "kwargs": {},
+          "title": "Min Lift Height",
+          "type": "IntEditor",
+          "variables": {
+            "target": "Constants.Lift.MIN_ENCODER_TICKS"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "liftZeroThreshold",
+          "kwargs": {},
+          "title": "Lift Zeroing Threshold",
+          "type": "IntEditor",
+          "variables": {
+            "target": "Constants.Lift.ZEROING_THRESHOLD"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "liftZeroSpeed",
+          "kwargs": {},
+          "title": "Lift Zeroing Speed",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.ZEROING_SPEED"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "liftZeroTimeout",
+          "kwargs": {},
+          "title": "Lift Zeroing Timeout",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.ZEROING_TIMEOUT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "liftMaxVelocity",
+          "kwargs": {},
+          "title": "Max Lift Velocity",
+          "type": "IntEditor",
+          "variables": {
+            "target": "Constants.Lift.MAX_VELOCITY_SETPOINT"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "liftVelThreshold",
+          "kwargs": {},
+          "title": "Lift Velocity Threshold",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.ACCEPTABLE_VELOCITY_THRESHOLD"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "liftDistThreshold",
+          "kwargs": {},
+          "title": "Lift Distance Threshold",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Lift.ACCEPTABLE_DISTANCE_ERROR"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "intakeSpeed",
+          "kwargs": {},
+          "title": "Intake Speed",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Intake.INTAKE_SPEED"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "outtakeSpeed",
+          "kwargs": {},
+          "title": "Outtake Speed",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Intake.OUTTAKE_SPEED"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "idleSpeed",
+          "kwargs": {},
+          "title": "Idle Speed",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Intake.IDLE_SPEED"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "holdSpeed",
+          "kwargs": {},
+          "title": "Hold Speed",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Intake.HOLD_SPEED"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "hatchPid",
+          "kwargs": {},
+          "title": "Hatch PID",
+          "type": "PIDWidget",
+          "variables": {
+            "dtarget": "Constants.Hatch.KD",
+            "itarget": "Constants.Hatch.KI",
+            "ptarget": "Constants.Hatch.KP"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "hatchMechOffset",
+          "kwargs": {},
+          "title": "Hatch Position Offset",
+          "type": "IntEditor",
+          "variables": {
+            "target": "Constants.Hatch.POSITION_OFFSET"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "hatchTop",
+          "kwargs": {},
+          "title": "Hatch Top",
+          "type": "IntEditor",
+          "variables": {
+            "target": "Constants.Hatch.TOP_STOW_POSITION"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "hatchBottom",
+          "kwargs": {},
+          "title": "Hatch Bottom",
+          "type": "IntEditor",
+          "variables": {
+            "target": "Constants.Hatch.BOTTOM_STOW_POSITION"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "hatchDeploy",
+          "kwargs": {},
+          "title": "Hatch Deploy",
+          "type": "IntEditor",
+          "variables": {
+            "target": "Constants.Hatch.DEPLOY_POSITION"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "hatchHold",
+          "kwargs": {},
+          "title": "Hatch Hold",
+          "type": "IntEditor",
+          "variables": {
+            "target": "Constants.Hatch.HOLD_POSITION"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "lookaheadDistance",
+          "kwargs": {},
+          "title": "Lookahead Distance",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Auto.LOOKAHEAD_DISTANCE"
+          },
+          "width": "12rem"
         }
       ]
     }
