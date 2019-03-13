@@ -27,7 +27,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         ZERO
     }
 
-    public enum class ElevatorHeight(val carriageHeightInches: () -> Double = { 0.45 }) {
+    public enum class LiftHeight(val carriageHeightInches: () -> Double = { 0.45 }) {
         BOTTOM({ Constants.Lift.STOW_HEIGHT }),
         HATCH_LOW({ Constants.Lift.HATCH_LOW_HEIGHT }),
         HATCH_MID({ Constants.Lift.HATCH_MID_HEIGHT }),
@@ -292,7 +292,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         setPosition(0.5 * positionInches)
     }
 
-    public fun setIntakeHeight(height: ElevatorHeight) {
+    public fun setIntakeHeight(height: LiftHeight) {
         setCarriagePosition(height.carriageHeightInches())
     }
 

@@ -9,14 +9,14 @@ import org.team5499.monkeyLib.math.geometry.Vector2
 import org.team5499.monkeyLib.math.geometry.Pose2d
 
 import org.team5499.frc2019.subsystems.SubsystemsManager
-import org.team5499.frc2019.subsystems.Lift.ElevatorHeight
+import org.team5499.frc2019.subsystems.Lift.LiftHeight
 import org.team5499.frc2019.subsystems.HatchMech.HatchMechPosition
 import org.team5499.frc2019.auto.actions.DriveStraightAction
 import org.team5499.frc2019.auto.actions.TurnAction
 import org.team5499.frc2019.auto.actions.PathAction
 import org.team5499.frc2019.auto.actions.LiftAction
 import org.team5499.frc2019.auto.actions.HatchMechAction
-import org.team5499.frc2019.auto.actions.WaitForElevatorZeroAction
+import org.team5499.frc2019.auto.actions.WaitForLiftZeroAction
 import org.team5499.frc2019.auto.actions.CrossedXBoundaryAction
 
 import java.util.HashMap
@@ -71,8 +71,8 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
                 PathAction(15.0, mPaths.fromHabToLeftRocket, mSubsystems.drivetrain)
             ),
             SerialAction(
-                WaitForElevatorZeroAction(mSubsystems.lift),
-                LiftAction(ElevatorHeight.HATCH_LOW, mSubsystems.lift),
+                WaitForLiftZeroAction(mSubsystems.lift),
+                LiftAction(LiftHeight.HATCH_LOW, mSubsystems.lift),
                 HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech)
             )
         )
@@ -84,11 +84,11 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         ParallelAction(
             PathAction(15.0, mPaths.fromHabToRightRocket, mSubsystems.drivetrain),
             SerialAction(
-                WaitForElevatorZeroAction(mSubsystems.lift),
-                LiftAction(ElevatorHeight.HATCH_LOW, mSubsystems.lift),
+                WaitForLiftZeroAction(mSubsystems.lift),
+                LiftAction(LiftHeight.HATCH_LOW, mSubsystems.lift),
                 HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
                 CrossedXBoundaryAction(90.0, false, mSubsystems.drivetrain),
-                LiftAction(ElevatorHeight.BALL_MID, mSubsystems.lift)
+                LiftAction(LiftHeight.BALL_MID, mSubsystems.lift)
             )
         ),
         HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech),
@@ -97,7 +97,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
             PathAction(15.0, mPaths.rightRocketBackup, mSubsystems.drivetrain),
             SerialAction(
                 NothingAction(0.5),
-                LiftAction(ElevatorHeight.HATCH_LOW, mSubsystems.lift)
+                LiftAction(LiftHeight.HATCH_LOW, mSubsystems.lift)
             )
         ),
         PathAction(15.0, mPaths.rightBackupToStation, mSubsystems.drivetrain),
@@ -106,7 +106,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         PathAction(15.0, mPaths.rightRocketBackup2, mSubsystems.drivetrain),
         ParallelAction(
             PathAction(15.0, mPaths.rightRocketTinyBoi, mSubsystems.drivetrain),
-            LiftAction(ElevatorHeight.HATCH_MID, mSubsystems.lift)
+            LiftAction(LiftHeight.HATCH_MID, mSubsystems.lift)
         ),
         HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech),
         DriveStraightAction(5.0, -6.0, mSubsystems.drivetrain)
@@ -118,8 +118,8 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         ParallelAction(
             PathAction(15.0, mPaths.rightHabToFrontCargo, mSubsystems.drivetrain),
             SerialAction(
-                WaitForElevatorZeroAction(mSubsystems.lift),
-                LiftAction(ElevatorHeight.HATCH_LOW, mSubsystems.lift),
+                WaitForLiftZeroAction(mSubsystems.lift),
+                LiftAction(LiftHeight.HATCH_LOW, mSubsystems.lift),
                 HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech)
             )
         ),
