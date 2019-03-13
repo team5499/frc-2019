@@ -22,6 +22,8 @@ public class Paths(generator: PathGenerator) {
     public val rightHabToFrontCargo: Path
     // public val rightCargoBackup: Path
 
+    public val tuning: Path
+
     init {
         mGenerator = generator
         fromHabToLeftRocket = generatePathToLeftRocket()
@@ -30,10 +32,13 @@ public class Paths(generator: PathGenerator) {
         rightRocketBackup = generateRightRocketBackup()
         rightBackupToStation = generateRightBackupToStation()
         rightRocketBackup2 = generateRightBackup2()
+
         rightRocketTinyBoi = generateRightTinyBoi()
 
         rightHabToFrontCargo = generateRightHabToFrontCargo()
         // rightCargobackup = generateRightCargoBackup()
+
+        tuning = generateTuning()
     }
 
     @SuppressWarnings("MagicNumber")
@@ -69,6 +74,9 @@ public class Paths(generator: PathGenerator) {
         public val rightCargoShipFront = Pose2d(Vector2(203, -10), Rotation2d.fromDegrees(0.0))
 
         // public val rightCargoBackup1 = Pose2d(Vector2())
+
+        public val zero = Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0))
+        public val tuning = Pose2d(Vector2(25, 15), Rotation2d.fromDegrees(45))
     }
 
     private fun generatePathToLeftRocket(): Path {
@@ -136,5 +144,13 @@ public class Paths(generator: PathGenerator) {
             Poses.rightCargoShipFront
         )
         return mGenerator.generatePath(true, points, 80.0, 50.0, 20.0, 0.0)
+    }
+
+    private fun generateTuning(): Path {
+        val points: Array<Pose2d> = arrayOf(
+            Poses.zero,
+            Poses.tuning
+        )
+        return mGenerator.generatePath(false, points, 100.0, 100.0, 5.0, 0.0)
     }
 }
