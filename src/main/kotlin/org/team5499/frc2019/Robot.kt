@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj.XboxController
 import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.PowerDistributionPanel
+import edu.wpi.first.wpilibj.Timer
 
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
 import org.team5499.monkeyLib.hardware.LazyVictorSPX
@@ -83,6 +84,9 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mSandstormController: SandstormController
     private val mTeleopController: TeleopController
     private val mAutoController: AutoController
+
+    private var totalLogs: Double = 0.0
+    private var totalLogTime: Double = 0.0
 
     init {
         // init dashboard
@@ -177,7 +181,12 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun robotPeriodic() {
-        Logging.update(mSubsystemsManager, mPdp, mControlBoard)
+        val beforeLog = Timer.getFPGATimestamp()
+        Logging.update(mSubsystemsManager, mPdp, mControlBoard, mLeftMaster, mLeftSlave1, mLeftSlave2, mRightMaster, mRightSlave1, mRightSlave2)
+        val afterLog = Timer.getFPGATimestamp()
+        totalLogTime += (afterLog - beforeLog)
+        totalLogs += 1.0
+        println(totalLogTime / totalLogs)
         Dashboard.update()
     }
 

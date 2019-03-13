@@ -45,6 +45,6 @@ public interface ICodriverControls {
     // get the current codriver state
     public fun getState(): String {
         @Suppress("MaxLineLength")
-        return "${getManualInput()} : ${getStowElevator()} : ${getHatchLow()} : ${getHatchMid()} : ${getHatchHigh()} : ${getBallLow()} : ${getBallMid()} : ${getBallHigh()} : ${getBallHumanPlayer()} : ${getIntake()} : ${getExaust()} : ${getPickup()} : ${getPlace()} : ${getDropRamp()}"
+        return "${getManualInput()} : ${getStowElevator()} : ${getHatchLow()} : ${getHatchMid()} : ${getHatchHigh()} : ${getBallLow()} : ${getBallMid()} : ${getBallHigh()} : ${getBallHumanPlayer()} : ${getIntake()} : ${getExaust()} : ${getPickup()} : ${getPlace()}"
     }
 }

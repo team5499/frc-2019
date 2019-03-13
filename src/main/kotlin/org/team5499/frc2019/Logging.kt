@@ -5,11 +5,16 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.RobotController
 
+import org.team5499.monkeyLib.hardware.LazyTalonSRX
+import org.team5499.monkeyLib.hardware.LazyVictorSPX
+
 import org.team5499.frc2019.input.ControlBoard
 
 import org.team5499.frc2019.subsystems.SubsystemsManager
 
-@SuppressWarnings("MagicNumber", "TooManyFunctions")
+import java.util.concurrent.LinkedBlockingDeque
+
+@SuppressWarnings("MagicNumber", "TooManyFunctions", "MaxLineLength")
 object Logging {
     enum class LoggingType {
         ITERATIVE, // iterate through each different set of data(faster)
@@ -27,14 +32,32 @@ object Logging {
     }
 
     @Suppress("ObjectPropertyNaming")
-    private val LOGGING_TYPE = LoggingType.ITERATIVE
+    private val LOGGING_TYPE = LoggingType.DUMP
     @Suppress("ObjectPropertyNaming")
     private var LOGGING_STATE = LoggingState.PDP
 
-    fun update(subsystems: SubsystemsManager, pdp: PowerDistributionPanel, controlBoard: ControlBoard) {
+    private val logValues = LinkedBlockingDeque<Pair<String, Any>>(200)
+    private val loggingThread: Thread
+
+    init {
+        loggingThread = Thread(LoggingThread())
+        loggingThread.start()
+    }
+
+    fun update(
+        subsystems: SubsystemsManager,
+        pdp: PowerDistributionPanel,
+        controlBoard: ControlBoard,
+        leftMaster: LazyTalonSRX,
+        leftSlave1: LazyVictorSPX,
+        leftSlave2: LazyVictorSPX,
+        rightMaster: LazyTalonSRX,
+        rightSlave1: LazyVictorSPX,
+        rightSlave2: LazyVictorSPX
+    ) {
         when (LOGGING_TYPE) {
-            LoggingType.ITERATIVE -> iterate(subsystems, pdp, controlBoard)
-            LoggingType.DUMP -> dump(subsystems, pdp, controlBoard)
+            LoggingType.ITERATIVE -> iterate(subsystems, pdp, controlBoard, leftMaster, leftSlave1, leftSlave2, rightMaster, rightSlave1, rightSlave2)
+            LoggingType.DUMP -> dump(subsystems, pdp, controlBoard, leftMaster, leftSlave1, leftSlave2, rightMaster, rightSlave1, rightSlave2)
         }
         alwaysLog(subsystems, pdp, controlBoard)
     }
@@ -42,10 +65,21 @@ object Logging {
     fun alwaysLog(subsystems: SubsystemsManager, pdp: PowerDistributionPanel, controlBoard: ControlBoard) {
     }
 
-    private fun iterate(subsystems: SubsystemsManager, pdp: PowerDistributionPanel, controlBoard: ControlBoard) {
+    private fun iterate(
+        subsystems: SubsystemsManager,
+        pdp: PowerDistributionPanel,
+        controlBoard: ControlBoard,
+        leftMaster: LazyTalonSRX,
+        leftSlave1: LazyVictorSPX,
+        leftSlave2: LazyVictorSPX,
+        rightMaster: LazyTalonSRX,
+        rightSlave1: LazyVictorSPX,
+        rightSlave2: LazyVictorSPX
+    ) {
+        println(LOGGING_STATE)
         LOGGING_STATE = when (LOGGING_STATE) {
             LoggingState.PDP -> { logPDP(pdp); LoggingState.PDP_CHANNELS }
-            LoggingState.PDP_CHANNELS -> { logPDPChannels(pdp); LoggingState.ROBOT_CONTROLLER }
+            LoggingState.PDP_CHANNELS -> { logVoltages(leftMaster, leftSlave1, leftSlave2, rightMaster, rightSlave1, rightSlave2); LoggingState.ROBOT_CONTROLLER }
             LoggingState.ROBOT_CONTROLLER -> { logRobotController(); LoggingState.DRIVER_STATION }
             LoggingState.DRIVER_STATION -> { logDriverStation(); LoggingState.DRIVETRAIN }
             LoggingState.DRIVETRAIN -> { logDrivetrain(subsystems); LoggingState.DRIVER }
@@ -54,9 +88,19 @@ object Logging {
         }
     }
 
-    private fun dump(subsystems: SubsystemsManager, pdp: PowerDistributionPanel, controlBoard: ControlBoard) {
+    private fun dump(
+        subsystems: SubsystemsManager,
+        pdp: PowerDistributionPanel,
+        controlBoard: ControlBoard,
+        leftMaster: LazyTalonSRX,
+        leftSlave1: LazyVictorSPX,
+        leftSlave2: LazyVictorSPX,
+        rightMaster: LazyTalonSRX,
+        rightSlave1: LazyVictorSPX,
+        rightSlave2: LazyVictorSPX
+    ) {
         logPDP(pdp)
-        logPDPChannels(pdp)
+        logVoltages(leftMaster, leftSlave1, leftSlave2, rightMaster, rightSlave1, rightSlave2)
         logRobotController()
         logDriverStation()
         logDrivetrain(subsystems)
@@ -65,62 +109,86 @@ object Logging {
     }
 
     private fun logPDP(pdp: PowerDistributionPanel) {
-        Logger.tag("TOTAL_CURRENT").trace(pdp.totalCurrent)
-        Logger.tag("TOTAL_VOLTAGE").trace(pdp.voltage)
-        Logger.tag("TOTAL_POWER").trace(pdp.totalPower)
+        log("TOTAL_CURRENT", pdp.totalCurrent)
+        log("TOTAL_VOLTAGE", pdp.voltage)
     }
 
-    private fun logPDPChannels(pdp: PowerDistributionPanel) {
-        Logger.tag("PDP0").trace(pdp.getCurrent(0))
-        Logger.tag("PDP1").trace(pdp.getCurrent(1))
-        Logger.tag("PDP2").trace(pdp.getCurrent(2))
-        Logger.tag("PDP3").trace(pdp.getCurrent(3))
-        Logger.tag("PDP4").trace(pdp.getCurrent(4))
-        Logger.tag("PDP5").trace(pdp.getCurrent(5))
-        Logger.tag("PDP6").trace(pdp.getCurrent(6))
-        Logger.tag("PDP7").trace(pdp.getCurrent(7))
-        Logger.tag("PDP8").trace(pdp.getCurrent(8))
-        Logger.tag("PDP9").trace(pdp.getCurrent(9))
-        Logger.tag("PDP10").trace(pdp.getCurrent(10))
-        Logger.tag("PDP11").trace(pdp.getCurrent(11))
-        Logger.tag("PDP12").trace(pdp.getCurrent(12))
-        Logger.tag("PDP13").trace(pdp.getCurrent(13))
-        Logger.tag("PDP14").trace(pdp.getCurrent(14))
-        Logger.tag("PDP15").trace(pdp.getCurrent(15))
+    private fun logVoltages(
+        leftMaster: LazyTalonSRX,
+        leftSlave1: LazyVictorSPX,
+        leftSlave2: LazyVictorSPX,
+        rightMaster: LazyTalonSRX,
+        rightSlave1: LazyVictorSPX,
+        rightSlave2: LazyVictorSPX
+    ) {
+        log("LEFT_MASTER_VOLTAGE", leftMaster.motorOutputVoltage)
+        log("LEFT_SLAVE1_VOLTAGE", leftSlave1.motorOutputVoltage)
+        log("LEFT_SLAVE2_VOLTAGE", leftSlave2.motorOutputVoltage)
+        // log("LEFT_MASTER_CURRENT", leftMaster.getOutputCurrent())
+        // log("LEFT_SLAVE1_CURRENT", leftSlave1.getOutputCurrent())
+        // log("LEFT_SLAVE2_CURRENT", leftSlave2.getOutputCurrent())
+
+        log("RIGHT_MASTER_VOLTAGE", rightMaster.motorOutputVoltage)
+        log("RIGHT_SLAVE1_VOLTAGE", rightSlave1.motorOutputVoltage)
+        log("RIGHT_SLAVE2_VOLTAGE", rightSlave2.motorOutputVoltage)
+        // log("RIGHT_MASTER_CURRENT", rightMaster.getOutputCurrent())
+        // log("RIGHT_SLAVE1_CURRENT", rightSlave1.getOutputCurrent())
+        // log("RIGHT_SLAVE2_CURRENT", rightSlave2.getOutputCurrent())
     }
 
     private fun logRobotController() {
-        Logger.tag("BROWNED_OUT").trace(RobotController.isBrownedOut())
-        Logger.tag("CAN_USAGE").trace(RobotController.getCANStatus().percentBusUtilization)
-        Logger.tag("SYS_ACTIVE").trace(RobotController.isSysActive())
+        log("BROWNED_OUT", RobotController.isBrownedOut())
+        log("CAN_USAGE", RobotController.getCANStatus().percentBusUtilization)
+        log("SYS_ACTIVE", RobotController.isSysActive())
     }
 
     private fun logDriverStation() {
-        Logger.tag("ALLIANCE").trace(DriverStation.getInstance().alliance)
-        Logger.tag("DS_ATTACHED").trace(DriverStation.getInstance().isDSAttached())
-        Logger.tag("ENABLED").trace(DriverStation.getInstance().isEnabled())
-        Logger.tag("EVENT_NAME").trace(DriverStation.getInstance().eventName as Any)
-        Logger.tag("FMS_ATTACHED").trace(DriverStation.getInstance().isFMSAttached())
-        Logger.tag("GAME_MESSAGE").trace(DriverStation.getInstance().gameSpecificMessage as Any)
-        Logger.tag("DRIVER_LOCATION").trace(DriverStation.getInstance().location)
-        Logger.tag("MATCH_NUMBER").trace(DriverStation.getInstance().matchNumber)
-        Logger.tag("MATCH_TIME").trace(DriverStation.getInstance().matchTime)
-        Logger.tag("MATCH_TYPE").trace(DriverStation.getInstance().matchType)
+        log("ALLIANCE", DriverStation.getInstance().alliance)
+        log("DS_ATTACHED", DriverStation.getInstance().isDSAttached())
+        log("ENABLED", DriverStation.getInstance().isEnabled())
+        log("EVENT_NAME", DriverStation.getInstance().eventName)
+        log("FMS_ATTACHED", DriverStation.getInstance().isFMSAttached())
+        log("GAME_MESSAGE", DriverStation.getInstance().gameSpecificMessage)
+        log("DRIVER_LOCATION", DriverStation.getInstance().location)
+        log("MATCH_NUMBER", DriverStation.getInstance().matchNumber)
+        log("MATCH_TIME", DriverStation.getInstance().matchTime)
+        log("MATCH_TYPE", DriverStation.getInstance().matchType)
     }
 
     private fun logDrivetrain(subsystems: SubsystemsManager) {
-        Logger.tag("POSITION").trace(subsystems.drivetrain.pose.toString() as Any)
-        Logger.tag("LVEL").trace(subsystems.drivetrain.leftVelocity.toString() as Any)
-        Logger.tag("RVEL").trace(subsystems.drivetrain.rightVelocity.toString() as Any)
-        Logger.tag("LVEL_ERR").trace(subsystems.drivetrain.leftVelocityError.toString() as Any)
-        Logger.tag("RVEL_ERR").trace(subsystems.drivetrain.leftVelocityError.toString() as Any)
+        log("POSITION", subsystems.drivetrain.pose.toString())
+        log("LVEL", subsystems.drivetrain.leftVelocity.toString())
+        log("RVEL", subsystems.drivetrain.rightVelocity.toString())
+        log("LVEL_ERR", subsystems.drivetrain.leftVelocityError.toString())
+        log("RVEL_ERR", subsystems.drivetrain.leftVelocityError.toString())
     }
 
     private fun logDriver(controlBoard: ControlBoard) {
-        Logger.tag("DRIVER_STATE").trace(controlBoard.driverControls.getState() as Any)
+        log("DRIVER_STATE", controlBoard.driverControls.getState())
     }
 
     private fun logCodriver(controlBoard: ControlBoard) {
-        Logger.tag("CODRIVER_STATE").trace(controlBoard.codriverControls.getState() as Any)
+        log("CODRIVER_STATE", controlBoard.codriverControls.getState())
+    }
+
+    private fun log(tag: String, value: Any): Boolean {
+        return logValues.offer(Pair(tag, value))
+    }
+
+    class LoggingThread : Runnable {
+        override fun run() {
+            Thread.currentThread().priority = 1
+            while (true) {
+                try {
+                    println(logValues.size)
+                    val log = logValues.take()
+                    Logger.tag(log.first).trace(log.second)
+                } catch (ie: InterruptedException) {
+                    println("Logger thread stopped!")
+                    Thread.currentThread().interrupt()
+                    return
+                }
+            }
+        }
     }
 }
