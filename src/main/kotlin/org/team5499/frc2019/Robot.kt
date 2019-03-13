@@ -174,7 +174,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     override fun robotInit() {
         Logger.warn("Robot initializing" as Any)
-        mVision.ledState = Vision.LEDState.PIPELINE
+        mVision.ledState = Vision.LEDState.OFF
         mVision.visionMode = Vision.VisionMode.DRIVER
     }
 
@@ -186,6 +186,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     override fun disabledInit() {
         Logger.warn("Robot disabling" as Any)
         mLift.zeroed = false
+        mVision.ledState = Vision.LEDState.OFF
         mVision.visionMode = Vision.VisionMode.DRIVER
         mSubsystemsManager.resetAll()
     }
@@ -198,6 +199,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mSubsystemsManager.resetAll()
         mSandstormController.reset()
         mSandstormController.start()
+        mVision.ledState = Vision.LEDState.ON
         mVision.visionMode = Vision.VisionMode.VISION
     }
 
@@ -210,6 +212,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         Logger.warn("Robot going teleoperated" as Any)
         mTeleopController.reset()
         mTeleopController.start()
+        mVision.ledState = Vision.LEDState.OFF
         mVision.visionMode = Vision.VisionMode.DRIVER
     }
 
@@ -217,4 +220,5 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mTeleopController.update()
         mSubsystemsManager.updateAll()
     }
+    
 }

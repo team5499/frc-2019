@@ -10,7 +10,7 @@ public class Vision : Subsystem() {
 
     public enum class VisionMode(val value: Int) { DRIVER(9), VISION(0) } // pipeline
 
-    public var ledState: LEDState = LEDState.PIPELINE
+    public var ledState: LEDState = LEDState.OFF
         set(value) {
             if (value == field) return
             NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(value.value)
@@ -41,6 +41,11 @@ public class Vision : Subsystem() {
         targetYOffset = 0.0
         targetSkew = 0.0
         targetArea = 0.0
+
+        val instance = NetworkTableInstance.getDefault().getTable("limelight")
+        instance.getEntry("camMode").setNumber(0)
+        instance.getEntry("stream").setNumber(0)
+        instance.getEntry("ledMode").setNumber(0)
     }
 
     public override fun update() {
@@ -52,6 +57,7 @@ public class Vision : Subsystem() {
         targetSkew = instance.getEntry("ts").getDouble(0.0)
         targetArea = instance.getEntry("ta").getDouble(0.0)
         hasValidTarget = if (instance.getEntry("tv").getDouble(0.0) == 1.0) true else false
+
     }
 
     public override fun stop() {}

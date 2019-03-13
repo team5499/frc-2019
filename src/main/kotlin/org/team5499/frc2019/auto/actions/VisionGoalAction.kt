@@ -15,7 +15,7 @@ public class VisionGoalAction(timeout: Double, val vision: Vision, val drivetrai
         if (!vision.hasValidTarget) {
             drivetrain.setPercent(0.0, 0.0)
         } else {
-            var steer = (vision.targetXOffset) * 0.015
+            var steer = (vision.targetXOffset) * 0.011
             var drive = (15.0 - vision.targetArea) * 0.1
 
             if (drive > 0.5) drive = 0.2

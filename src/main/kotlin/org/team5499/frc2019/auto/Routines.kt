@@ -143,7 +143,11 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private fun createTest() = Routine(
         "test",
         Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0)),
-        VisionGoalAction(20.0, mSubsystems.vision, mSubsystems.drivetrain)
+        WaitForElevatorZeroAction(mSubsystems.lift),
+        LiftAction(ElevatorHeight.HATCH_LOW, mSubsystems.lift),
+        HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
+        VisionGoalAction(20.0, mSubsystems.vision, mSubsystems.drivetrain),
+        HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech)
     )
 
     public fun resetAll() {
