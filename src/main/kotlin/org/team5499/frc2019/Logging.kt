@@ -36,7 +36,8 @@ object Logging {
     @Suppress("ObjectPropertyNaming")
     private var LOGGING_STATE = LoggingState.PDP
 
-    private val logValues = LinkedBlockingDeque<Pair<String, Any>>(200)
+    private val logQueue = LinkedBlockingDeque<Pair<String, Any>>(200)
+    private val logValues = HashMap<String, Any>()
     private val loggingThread: Thread
 
     init {
@@ -172,7 +173,12 @@ object Logging {
     }
 
     private fun log(tag: String, value: Any): Boolean {
-        return logValues.offer(Pair(tag, value))
+        if (logValues.get(tag) != value) {
+            logValues.put(tag, value)
+            return logQueue.offer(Pair(tag, value))
+        } else {
+            return true
+        }
     }
 
     class LoggingThread : Runnable {
@@ -180,8 +186,8 @@ object Logging {
             Thread.currentThread().priority = 1
             while (true) {
                 try {
-                    println(logValues.size)
-                    val log = logValues.take()
+                    println(logQueue.size)
+                    val log = logQueue.take()
                     Logger.tag(log.first).trace(log.second)
                 } catch (ie: InterruptedException) {
                     println("Logger thread stopped!")
