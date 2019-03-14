@@ -14,7 +14,7 @@ import org.team5499.frc2019.subsystems.SubsystemsManager
 
 import java.util.concurrent.LinkedBlockingDeque
 
-@SuppressWarnings("MagicNumber", "TooManyFunctions", "MaxLineLength")
+@SuppressWarnings("MagicNumber", "TooManyFunctions", "LongParameterList")
 object Logging {
     enum class LoggingType {
         ITERATIVE, // iterate through each different set of data(faster)
@@ -28,15 +28,16 @@ object Logging {
         DRIVER_STATION,
         DRIVETRAIN,
         DRIVER,
-        CODRIVER
+        CODRIVER,
+        OTHER_SUBSYSTEMS
     }
 
     @Suppress("ObjectPropertyNaming")
-    private val LOGGING_TYPE = LoggingType.DUMP
+    private val LOGGING_TYPE = LoggingType.ITERATIVE
     @Suppress("ObjectPropertyNaming")
     private var LOGGING_STATE = LoggingState.PDP
 
-    private val logQueue = LinkedBlockingDeque<Pair<String, Any>>(200)
+    private val logQueue = LinkedBlockingDeque<Pair<String, Any>>(2000)
     private val logValues = HashMap<String, Any>()
     private val loggingThread: Thread
 
@@ -54,11 +55,52 @@ object Logging {
         leftSlave2: LazyVictorSPX,
         rightMaster: LazyTalonSRX,
         rightSlave1: LazyVictorSPX,
-        rightSlave2: LazyVictorSPX
+        rightSlave2: LazyVictorSPX,
+        elevatorMaster: LazyTalonSRX,
+        elevatorSlave: LazyTalonSRX,
+        intake: LazyTalonSRX,
+        hatch: LazyTalonSRX
     ) {
         when (LOGGING_TYPE) {
-            LoggingType.ITERATIVE -> iterate(subsystems, pdp, controlBoard, leftMaster, leftSlave1, leftSlave2, rightMaster, rightSlave1, rightSlave2)
-            LoggingType.DUMP -> dump(subsystems, pdp, controlBoard, leftMaster, leftSlave1, leftSlave2, rightMaster, rightSlave1, rightSlave2)
+            LoggingType.ITERATIVE -> { iterate(subsystems,
+                pdp,
+                controlBoard,
+                leftMaster,
+                leftSlave1,
+                leftSlave2,
+                rightMaster,
+                rightSlave1,
+                rightSlave2,
+                elevatorMaster,
+                elevatorSlave,
+                intake,
+                hatch)
+                iterate(subsystems,
+                pdp,
+                controlBoard,
+                leftMaster,
+                leftSlave1,
+                leftSlave2,
+                rightMaster,
+                rightSlave1,
+                rightSlave2,
+                elevatorMaster,
+                elevatorSlave,
+                intake,
+                hatch) }
+            LoggingType.DUMP -> dump(subsystems,
+                pdp,
+                controlBoard,
+                leftMaster,
+                leftSlave1,
+                leftSlave2,
+                rightMaster,
+                rightSlave1,
+                rightSlave2,
+                elevatorMaster,
+                elevatorSlave,
+                intake,
+                hatch)
         }
         alwaysLog(subsystems, pdp, controlBoard)
     }
@@ -75,17 +117,31 @@ object Logging {
         leftSlave2: LazyVictorSPX,
         rightMaster: LazyTalonSRX,
         rightSlave1: LazyVictorSPX,
-        rightSlave2: LazyVictorSPX
+        rightSlave2: LazyVictorSPX,
+        elevatorMaster: LazyTalonSRX,
+        elevatorSlave: LazyTalonSRX,
+        intake: LazyTalonSRX,
+        hatch: LazyTalonSRX
     ) {
-        println(LOGGING_STATE)
         LOGGING_STATE = when (LOGGING_STATE) {
             LoggingState.PDP -> { logPDP(pdp); LoggingState.PDP_CHANNELS }
-            LoggingState.PDP_CHANNELS -> { logVoltages(leftMaster, leftSlave1, leftSlave2, rightMaster, rightSlave1, rightSlave2); LoggingState.ROBOT_CONTROLLER }
+            LoggingState.PDP_CHANNELS -> { logVoltages(pdp,
+                                                        leftMaster,
+                                                        leftSlave1,
+                                                        leftSlave2,
+                                                        rightMaster,
+                                                        rightSlave1,
+                                                        rightSlave2,
+                                                        elevatorMaster,
+                                                        elevatorSlave,
+                                                        intake,
+                                                        hatch); LoggingState.ROBOT_CONTROLLER }
             LoggingState.ROBOT_CONTROLLER -> { logRobotController(); LoggingState.DRIVER_STATION }
             LoggingState.DRIVER_STATION -> { logDriverStation(); LoggingState.DRIVETRAIN }
             LoggingState.DRIVETRAIN -> { logDrivetrain(subsystems); LoggingState.DRIVER }
             LoggingState.DRIVER -> { logDriver(controlBoard); LoggingState.CODRIVER }
-            LoggingState.CODRIVER -> { logCodriver(controlBoard); LoggingState.PDP }
+            LoggingState.CODRIVER -> { logCodriver(controlBoard); LoggingState.OTHER_SUBSYSTEMS }
+            LoggingState.OTHER_SUBSYSTEMS -> { logOtherSubsystems(subsystems); LoggingState.PDP }
         }
     }
 
@@ -98,15 +154,30 @@ object Logging {
         leftSlave2: LazyVictorSPX,
         rightMaster: LazyTalonSRX,
         rightSlave1: LazyVictorSPX,
-        rightSlave2: LazyVictorSPX
+        rightSlave2: LazyVictorSPX,
+        elevatorMaster: LazyTalonSRX,
+        elevatorSlave: LazyTalonSRX,
+        intake: LazyTalonSRX,
+        hatch: LazyTalonSRX
     ) {
         logPDP(pdp)
-        logVoltages(leftMaster, leftSlave1, leftSlave2, rightMaster, rightSlave1, rightSlave2)
+        logVoltages(pdp,
+                    leftMaster,
+                    leftSlave1,
+                    leftSlave2,
+                    rightMaster,
+                    rightSlave1,
+                    rightSlave2,
+                    elevatorMaster,
+                    elevatorSlave,
+                    intake,
+                    hatch)
         logRobotController()
         logDriverStation()
         logDrivetrain(subsystems)
         logDriver(controlBoard)
         logCodriver(controlBoard)
+        logOtherSubsystems(subsystems)
     }
 
     private fun logPDP(pdp: PowerDistributionPanel) {
@@ -115,26 +186,51 @@ object Logging {
     }
 
     private fun logVoltages(
+        pdp: PowerDistributionPanel,
         leftMaster: LazyTalonSRX,
         leftSlave1: LazyVictorSPX,
         leftSlave2: LazyVictorSPX,
         rightMaster: LazyTalonSRX,
         rightSlave1: LazyVictorSPX,
-        rightSlave2: LazyVictorSPX
+        rightSlave2: LazyVictorSPX,
+        elevatorMaster: LazyTalonSRX,
+        elevatorSlave: LazyTalonSRX,
+        intake: LazyTalonSRX,
+        hatch: LazyTalonSRX
     ) {
-        log("LEFT_MASTER_VOLTAGE", leftMaster.motorOutputVoltage)
-        log("LEFT_SLAVE1_VOLTAGE", leftSlave1.motorOutputVoltage)
-        log("LEFT_SLAVE2_VOLTAGE", leftSlave2.motorOutputVoltage)
-        // log("LEFT_MASTER_CURRENT", leftMaster.getOutputCurrent())
-        // log("LEFT_SLAVE1_CURRENT", leftSlave1.getOutputCurrent())
-        // log("LEFT_SLAVE2_CURRENT", leftSlave2.getOutputCurrent())
+        val volts = StringBuilder()
+        val voltsString = volts.append("LEFT_MASTER_VOLTAGE: ${leftMaster.motorOutputVoltage} "
+        ).append("LEFT_SLAVE1_VOLTAGE: ${leftSlave1.motorOutputVoltage} "
+        ).append("LEFT_SLAVE2_VOLTAGE: ${leftSlave2.motorOutputVoltage} "
+        ).append("RIGHT_MASTER_VOLTAGE: ${rightMaster.motorOutputVoltage} "
+        ).append("RIGHT_SLAVE1_VOLTAGE: ${rightSlave1.motorOutputVoltage} "
+        ).append("RIGHT_SLAVE2_VOLTAGE: ${rightSlave2.motorOutputVoltage} "
+        ).append("ELEVATOR_MASTER_VOLTAGE: ${elevatorMaster.motorOutputVoltage} "
+        ).append("ELEVATOR_SLAVE_VOLTAGE: ${elevatorSlave.motorOutputVoltage} "
+        ).append("INTAKE_VOLTAGE: ${intake.motorOutputVoltage} "
+        ).append("HATCH_VOLTAGE: ${hatch.motorOutputVoltage}"
+        ).toString()
+        log("VOLTAGE", voltsString)
 
-        log("RIGHT_MASTER_VOLTAGE", rightMaster.motorOutputVoltage)
-        log("RIGHT_SLAVE1_VOLTAGE", rightSlave1.motorOutputVoltage)
-        log("RIGHT_SLAVE2_VOLTAGE", rightSlave2.motorOutputVoltage)
-        // log("RIGHT_MASTER_CURRENT", rightMaster.getOutputCurrent())
-        // log("RIGHT_SLAVE1_CURRENT", rightSlave1.getOutputCurrent())
-        // log("RIGHT_SLAVE2_CURRENT", rightSlave2.getOutputCurrent())
+        val amps = StringBuilder()
+        val ampsString = amps.append("PDP0: ${pdp.getCurrent(0)} "
+        ).append("PDP1: ${pdp.getCurrent(1)} "
+        ).append("PDP2: ${pdp.getCurrent(2)} "
+        ).append("PDP3: ${pdp.getCurrent(3)} "
+        ).append("PDP4: ${pdp.getCurrent(4)} "
+        ).append("PDP5: ${pdp.getCurrent(5)} "
+        ).append("PDP6: ${pdp.getCurrent(6)} "
+        ).append("PDP7: ${pdp.getCurrent(7)} "
+        ).append("PDP8: ${pdp.getCurrent(8)} "
+        ).append("PDP9: ${pdp.getCurrent(9)} "
+        ).append("PDP10: ${pdp.getCurrent(10)} "
+        ).append("PDP11: ${pdp.getCurrent(11)} "
+        ).append("PDP12: ${pdp.getCurrent(12)} "
+        ).append("PDP13: ${pdp.getCurrent(13)} "
+        ).append("PDP14: ${pdp.getCurrent(14)} "
+        ).append("PDP15: ${pdp.getCurrent(15)} "
+        ).toString()
+        log("AMPERAGE", ampsString)
     }
 
     private fun logRobotController() {
@@ -164,6 +260,13 @@ object Logging {
         log("RVEL_ERR", subsystems.drivetrain.leftVelocityError.toString())
     }
 
+    private fun logOtherSubsystems(subsystems: SubsystemsManager) {
+        log("ELEVATOR_HEIGHT", subsystems.lift.secondStagePositionInches)
+        log("ELEVATOR_VELOCITY", subsystems.lift.secondStageVelocityInchesPerSecond)
+        log("HATCH_POSITION", subsystems.hatchMech.selectedPosition)
+        log("HATCH_VALUE", subsystems.hatchMech.positionRaw)
+    }
+
     private fun logDriver(controlBoard: ControlBoard) {
         log("DRIVER_STATE", controlBoard.driverControls.getState())
     }
@@ -186,7 +289,6 @@ object Logging {
             Thread.currentThread().priority = 1
             while (true) {
                 try {
-                    println(logQueue.size)
                     val log = logQueue.take()
                     Logger.tag(log.first).trace(log.second)
                 } catch (ie: InterruptedException) {

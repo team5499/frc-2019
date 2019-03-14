@@ -26,6 +26,9 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
     public val positionRaw: Int
         get() = mTalon.getSelectedSensorPosition(0)
 
+    public var selectedPosition: HatchMechPosition = HatchMechPosition.BOTTOM_STOW
+        private set
+
     init {
         mTalon = talon.apply {
             setNeutralMode(NeutralMode.Brake)
@@ -68,6 +71,7 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
     }
 
     public fun setPosition(position: HatchMechPosition) {
+        selectedPosition = position
         setPositionRaw(position.ticks())
     }
 

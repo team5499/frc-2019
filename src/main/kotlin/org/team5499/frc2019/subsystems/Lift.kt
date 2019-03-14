@@ -11,6 +11,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.InvertType
 
+import org.tinylog.Logger
+
 import org.team5499.dashboard.Dashboard
 
 @SuppressWarnings("MagicNumber", "TooManyFunctions")
@@ -292,6 +294,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     }
 
     public fun setIntakeHeight(height: LiftHeight) {
+        Logger.tag("LIFT_HEIGHT").trace(height)
         setCarriagePosition(height.carriageHeightInches())
     }
 
