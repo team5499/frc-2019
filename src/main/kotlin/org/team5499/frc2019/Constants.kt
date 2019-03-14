@@ -162,10 +162,6 @@ public object Constants {
     object Hatch {
         public const val TALON_PORT = 10
 
-        // public const val HATCH_KP = 2.0
-        // public const val HATCH_KI = 0.0
-        // public const val HATCH_KD = 1.0
-
         public var KP by DashboardVar(3.5)
         public var KI by DashboardVar(0.0)
         public var KD by DashboardVar(0.5)
