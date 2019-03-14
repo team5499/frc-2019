@@ -21,7 +21,7 @@ public class LiftAction(
     public constructor(height: LiftHeight, lift: Lift): this(height.carriageHeightInches(), lift)
 
     public override fun start() {
-        Logger.tag("ACTIONS").info("Starting lift action!")
+        Logger.tag("ACTIONS").info("Starting lift action!" as Any)
         lift.setCarriagePosition(inches)
     }
 
