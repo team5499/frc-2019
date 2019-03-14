@@ -54,6 +54,9 @@ public class VisionGoalAction(
         mDistancePID.kD = Constants.Vision.DISTANCE_KD
         mDistancePID.kF = Constants.Vision.DISTANCE_KF
 
+        mAnglePID.setpoint = -Constants.Vision.CAMERA_HORIZONTAL_ANGLE
+        mDistancePID.setpoint = Constants.Vision.TARGET_DISTANCE
+
         // turn on leds
         vision.ledState = Vision.LEDState.ON
     }
@@ -63,19 +66,19 @@ public class VisionGoalAction(
         if (!vision.hasValidTarget) {
             drivetrain.setVelocity(0.0, 0.0)
         } else {
-            mAnglePID.setpoint = 0.0
-            mAnglePID.processVariable = vision.targetXOffset
+            mAnglePID.processVariable = -vision.targetXOffset
             var steer = mAnglePID.calculate()
 
-            mDistancePID.setpoint = Constants.Vision.TARGET_DISTANCE
             mDistancePID.processVariable = when (goal) {
                 VisionGoal.BALL_TARGET -> vision.distanceToBallTarget
                 VisionGoal.HATCH_TARGET -> vision.distanceToHatchTarget
             }
             val drive = mDistancePID.calculate()
 
-            val left = drive + steer
-            val right = drive - steer
+            val left = /*drive + */steer
+            val right = /*drive */ - steer
+
+            println(mAnglePID.error)
 
             drivetrain.setVelocity(left, right)
         }
