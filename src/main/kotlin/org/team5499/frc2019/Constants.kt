@@ -183,6 +183,7 @@ public object Constants {
         fun initProps() {
             println("init Auto")
         }
+        public var AUTO_DELAY by DashboardVar(0.0) // seconds, set this from dashboard
         public var LOOKAHEAD_DISTANCE by DashboardVar(18.0)
     }
 }

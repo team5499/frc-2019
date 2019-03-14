@@ -7,18 +7,10 @@ import org.team5499.monkeyLib.math.geometry.Rotation2d
 import org.team5499.monkeyLib.math.geometry.Vector2
 import org.team5499.monkeyLib.path.PathSet
 
-@SuppressWarnings("MagicNumber")
+@SuppressWarnings("MagicNumber", "TooManyFunctions")
 public class Paths(generator: PathGenerator) {
 
     private val mGenerator: PathGenerator
-
-    public val fromHabToLeftRocket: Path
-
-    public val fromHabToRightRocket: Path
-    public val rightRocketBackup: Path
-    public val rightBackupToStation: Path
-    public val rightRocketBackup2: Path
-    public val rightRocketTinyBoi: Path
 
     // path sets
     public val rightRocketSet: PathSet
@@ -29,9 +21,7 @@ public class Paths(generator: PathGenerator) {
 
     public val leftCargoToRocketSet: PathSet
 
-    public val rightHabToFrontCargo: Path
-    // public val rightCargoBackup: Path
-
+    // paths
     public val tuning: Path
 
     init {
@@ -42,17 +32,22 @@ public class Paths(generator: PathGenerator) {
         rightCargoToRocketSet = PathSet()
         leftCargoToRocketSet = PathSet()
 
-        fromHabToLeftRocket = generatePathToLeftRocket()
+        rightRocketSet.add(generatePathToRightRocket()) // 0
+        rightRocketSet.add(generateRightRocketBackup1()) // 1
+        rightRocketSet.add(generateRightBackupToStation()) // 2
+        rightRocketSet.add(generateRightBackup2()) // 3
+        rightRocketSet.add(generateRightRocketTinyBoi()) // 4
 
-        fromHabToRightRocket = generatePathToRightRocket()
-        rightRocketBackup = generateRightRocketBackup()
-        rightBackupToStation = generateRightBackupToStation()
-        rightRocketBackup2 = generateRightBackup2()
+        leftRocketSet.add(generatePathToLeftRocket()) // 0
+        leftRocketSet.add(generateLeftRocketBackup1()) // 1
+        leftRocketSet.add(generateLeftBackupToStation()) // 2
+        leftRocketSet.add(generateLeftBackup2()) // 3
+        leftRocketSet.add(generateLeftRocketTinyBoi()) // 4
 
-        rightRocketTinyBoi = generateRightTinyBoi()
+        rightCargoToRocketSet.add(generateRightHabToFrontCargo()) // 0
+        // rightCargoToRocketSet.add(generateRightCargoBackup()) // 1
 
-        rightHabToFrontCargo = generateRightHabToFrontCargo()
-        // rightCargobackup = generateRightCargoBackup()
+        leftCargoToRocketSet.add(generateLeftHabToFrontCargo()) // 0
 
         tuning = generateTuning()
     }
@@ -63,27 +58,25 @@ public class Paths(generator: PathGenerator) {
         public val leftStartingPosition = Pose2d(Vector2(65, 40), Rotation2d.fromDegrees(90.0))
         public val leftRocketMidpoint = Pose2d(Vector2(100, 120), Rotation2d.fromDegrees(25.0))
         public val leftRocketPosition = Pose2d(Vector2(200, 135), Rotation2d.fromDegrees(30.0))
-
         public val leftRocketBackupPosition = Pose2d(Vector2(140, 80), Rotation2d.fromDegrees(-90))
-
-        public val lefStationPosition = Pose2d(Vector2(31.0, 134.0), Rotation2d.fromDegrees(180))
+        public val leftStationPosition = Pose2d(Vector2(31.0, 134.0), Rotation2d.fromDegrees(180))
+        public val leftRocketMidpoint2 = Pose2d(Vector2(200, 103), Rotation2d.fromDegrees(180))
+        public val leftRocketMidpoint3 = Pose2d(Vector2(299, 111), Rotation2d.fromDegrees(190))
+        public val leftRocketBackPosition = Pose2d(Vector2(253, 134), Rotation2d.fromDegrees(210))
 
         // right rocket auto
         public val rightStartingPosition = Pose2d(Vector2(65, -40), Rotation2d.fromDegrees(-90.0))
         public val rightRocketMidpoint = Pose2d(Vector2(100, -125), Rotation2d.fromDegrees(-20.0)) // 100, -120
         public val rightRocketPosition = Pose2d(Vector2(205, -135), Rotation2d.fromDegrees(-30.0)) // 203, -133 worked
-
         public val rightRocketBackupPosition = Pose2d(Vector2(140, -80), Rotation2d.fromDegrees(-90))
-
         public val rightStationPosition = Pose2d(Vector2(31.0, -134.0), Rotation2d.fromDegrees(180)) // wored at -133
-
         public val rightRocketMidpoint2 = Pose2d(Vector2(200, -103), Rotation2d.fromDegrees(180))
         public val rightRocketMidpoint3 = Pose2d(Vector2(299, -111), Rotation2d.fromDegrees(190))
-
         public val rightRocketBackPosition = Pose2d(Vector2(253, -134), Rotation2d.fromDegrees(210))
 
         // cargoship to rocket left
         public val leftCargoShipToRocketStartingPosition = Pose2d(Vector2(66, 45), Rotation2d.fromDegrees(0.0))
+        public val leftCargoShipFront = Pose2d(Vector2(203, 10), Rotation2d.fromDegrees(0.0))
 
         // cargosip to rocket right
         public val rightCargoShipToRocketStartingPosition = Pose2d(Vector2(66, -45), Rotation2d.fromDegrees(0.0))
@@ -104,6 +97,39 @@ public class Paths(generator: PathGenerator) {
         return mGenerator.generatePath(false, points)
     }
 
+    private fun generateLeftRocketBackup1(): Path {
+        val points: Array<Pose2d> = arrayOf(
+            Poses.leftRocketPosition,
+            Poses.leftRocketBackupPosition
+        )
+        return mGenerator.generatePath(true, points, 60.0, 50.0, 20.0, 0.0) // change back to 50,50,20,0 maybe
+    }
+
+    private fun generateLeftBackupToStation(): Path {
+        val points: Array<Pose2d> = arrayOf(
+            Poses.leftRocketBackupPosition,
+            Poses.leftStationPosition
+        )
+        return mGenerator.generatePath(false, points, 60.0, 50.0, 20.0, 0.0) // change back to 50,50,20,0 maybe
+    }
+
+    private fun generateLeftBackup2(): Path {
+        val points: Array<Pose2d> = arrayOf(
+            Poses.leftStationPosition,
+            Poses.leftRocketMidpoint2,
+            Poses.leftRocketMidpoint3
+        )
+        return mGenerator.generatePath(true, points, 100.0, 100.0, 25.0, 0.0)
+    }
+
+    private fun generateLeftRocketTinyBoi(): Path {
+        val points: Array<Pose2d> = arrayOf(
+            Poses.leftRocketMidpoint3,
+            Poses.leftRocketBackPosition
+        )
+        return mGenerator.generatePath(false, points, 50.0, 50.0, 25.0, 0.0)
+    }
+
     private fun generatePathToRightRocket(): Path {
         val points: Array<Pose2d> = arrayOf(
             Poses.rightStartingPosition,
@@ -113,12 +139,12 @@ public class Paths(generator: PathGenerator) {
         return mGenerator.generatePath(false, points, 50.0, 50.0, 5.0, 0.0)
     }
 
-    private fun generateRightRocketBackup(): Path {
+    private fun generateRightRocketBackup1(): Path {
         val points: Array<Pose2d> = arrayOf(
             Poses.rightRocketPosition,
             Poses.rightRocketBackupPosition
         )
-        return mGenerator.generatePath(true, points, 50.0, 50.0, 20.0, 0.0)
+        return mGenerator.generatePath(true, points, 60.0, 50.0, 20.0, 0.0) // change back to 50,50,20,0 maybe
     }
 
     private fun generateRightBackupToStation(): Path {
@@ -126,7 +152,7 @@ public class Paths(generator: PathGenerator) {
             Poses.rightRocketBackupPosition,
             Poses.rightStationPosition
         )
-        return mGenerator.generatePath(false, points, 50.0, 50.0, 20.0, 0.0)
+        return mGenerator.generatePath(false, points, 60.0, 50.0, 20.0, 0.0) // change back to 50,50,20,0 maybe
     }
 
     private fun generateRightBackup2(): Path {
@@ -138,7 +164,7 @@ public class Paths(generator: PathGenerator) {
         return mGenerator.generatePath(true, points, 100.0, 100.0, 25.0, 0.0)
     }
 
-    private fun generateRightTinyBoi(): Path {
+    private fun generateRightRocketTinyBoi(): Path {
         val points: Array<Pose2d> = arrayOf(
             Poses.rightRocketMidpoint3,
             Poses.rightRocketBackPosition
@@ -150,6 +176,14 @@ public class Paths(generator: PathGenerator) {
         val points: Array<Pose2d> = arrayOf(
             Poses.rightCargoShipToRocketStartingPosition,
             Poses.rightCargoShipFront
+        )
+        return mGenerator.generatePath(false, points, 50.0, 50.0, 10.0, 0.0)
+    }
+
+    private fun generateLeftHabToFrontCargo(): Path {
+        val points: Array<Pose2d> = arrayOf(
+            Poses.leftCargoShipToRocketStartingPosition,
+            Poses.leftCargoShipFront
         )
         return mGenerator.generatePath(false, points, 50.0, 50.0, 10.0, 0.0)
     }
