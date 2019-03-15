@@ -84,9 +84,6 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mTeleopController: TeleopController
     private val mAutoController: AutoController
 
-    private var totalLogs: Double = 0.0
-    private var totalLogTime: Double = 0.0
-
     init {
         // init dashboard
         Dashboard.start(this, "dashConfig.json")
