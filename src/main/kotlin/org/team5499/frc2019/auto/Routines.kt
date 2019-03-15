@@ -17,7 +17,6 @@ import org.team5499.frc2019.auto.actions.LiftAction
 import org.team5499.frc2019.auto.actions.HatchMechAction
 import org.team5499.frc2019.auto.actions.WaitForLiftZeroAction
 import org.team5499.frc2019.auto.actions.CrossedXBoundaryAction
-import org.team5499.frc2019.auto.actions.AutoDelayAction
 
 import java.util.HashMap
 
@@ -73,7 +72,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private fun createRocketLeft() = Routine(
         "Left Rocket",
         Paths.Poses.leftStartingPosition,
-        AutoDelayAction(),
+        // AutoDelayAction(),
         ParallelAction(
             PathAction(15.0, mPaths.leftRocketSet.get(0), mSubsystems.drivetrain),
             SerialAction(
@@ -108,7 +107,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private fun createRocketRight() = Routine(
         "Right Rocket",
         Paths.Poses.rightStartingPosition,
-        AutoDelayAction(),
+        // AutoDelayAction(),
         ParallelAction(
             PathAction(15.0, mPaths.rightRocketSet.get(0), mSubsystems.drivetrain),
             SerialAction(
@@ -143,7 +142,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private fun createCargoShipThenRocketRight() = Routine(
         "Cargoship Then Rocket Right",
         Paths.Poses.rightCargoShipToRocketStartingPosition,
-        AutoDelayAction(),
+        // AutoDelayAction(),
         ParallelAction(
             PathAction(15.0, mPaths.rightCargoToRocketSet.get(0), mSubsystems.drivetrain),
             SerialAction(
@@ -159,7 +158,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private fun createCargoShipThenRocketLeft() = Routine(
         "Cargoship Then Rocket Left",
         Paths.Poses.leftCargoShipToRocketStartingPosition,
-        AutoDelayAction(),
+        // AutoDelayAction(),
         ParallelAction(
             PathAction(15.0, mPaths.leftCargoToRocketSet.get(0), mSubsystems.drivetrain),
             SerialAction(
@@ -175,7 +174,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private fun createBaseline() = Routine(
         "Baseline",
         Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0.0)),
-        AutoDelayAction(),
+        // AutoDelayAction(),
         DriveStraightAction(15.0, 90.0, mSubsystems.drivetrain)
     )
 
