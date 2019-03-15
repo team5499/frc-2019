@@ -179,7 +179,19 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun robotPeriodic() {
-        Logging.update(mSubsystemsManager, mPdp)
+        Logging.update(mSubsystemsManager,
+                        mPdp,
+                        mControlBoard,
+                        mLeftMaster,
+                        mLeftSlave1,
+                        mLeftSlave2,
+                        mRightMaster,
+                        mRightSlave1,
+                        mRightSlave2,
+                        mLiftMaster,
+                        mLiftSlave,
+                        mIntakeTalon,
+                        mHatchMechTalon)
         Dashboard.update()
     }
 

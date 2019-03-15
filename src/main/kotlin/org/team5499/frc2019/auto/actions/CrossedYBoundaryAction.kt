@@ -3,6 +3,7 @@ package org.team5499.frc2019.auto.actions
 import org.team5499.frc2019.subsystems.Drivetrain
 
 import org.team5499.monkeyLib.auto.Action
+import org.tinylog.Logger
 
 /**
  * An action that finishes when the robot crosses a y boundry line
@@ -24,6 +25,10 @@ public class CrossedYBoundaryAction(
     init {
         mLineCoord = yLine
         mLessThan = lessThan
+    }
+
+    public override fun start() {
+        Logger.tag("ACTIONS").info("Starting y boundary action!" as Any)
     }
 
     public override fun next(): Boolean {
