@@ -6,6 +6,7 @@ import org.team5499.frc2019.Constants
 import org.team5499.monkeyLib.auto.Action
 
 import kotlin.math.abs
+import org.tinylog.Logger
 
 /**
  * An action that will make the robot drive a certian amout of inches
@@ -25,6 +26,7 @@ public class DriveStraightAction(
 
     // Called when the action starts
     public override fun start() {
+        Logger.tag("ACTIONS").info("Starting drive straight action!" as Any)
         super.start()
 
         drivetrain.setPosition(distance)

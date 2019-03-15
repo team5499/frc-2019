@@ -3,6 +3,7 @@ package org.team5499.frc2019.auto.actions
 import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.frc2019.Constants
 
+import org.tinylog.Logger
 import org.team5499.monkeyLib.auto.Action
 import org.team5499.monkeyLib.math.geometry.Pose2d
 
@@ -34,6 +35,7 @@ public class TurnAction(
 
     // Called when the action starts
     public override fun start() {
+        Logger.tag("ACTIONS").info("Starting turn action!" as Any)
         super.start()
 
         drivetrain.setTurn(mDegrees)
@@ -53,6 +55,7 @@ public class TurnAction(
 
     public override fun finish() {
         // abort the turn if the action is aborted
+        Logger.tag("ACTIONS").info("Finishing turn action!" as Any)
         if (mIsTurning) {
             drivetrain.setPercent(0.0, 0.0)
         }
