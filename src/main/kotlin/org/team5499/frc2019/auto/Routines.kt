@@ -136,7 +136,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private fun createTuning() = Routine(
         "tuning",
         Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0)),
-        PathAction(15.0, mPaths.tuning, mSubsystems.drivetrain)
+        PathAction(120.0, mPaths.tuning, mSubsystems.drivetrain)
     )
 
     private fun createTest() = Routine(

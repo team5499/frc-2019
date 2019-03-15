@@ -178,16 +178,16 @@ public object Constants {
     object Vision {
         public var CAMERA_HEIGHT by DashboardVar(33.0)
         public var CAMERA_VERTICAL_ANGLE by DashboardVar(0.0)
-        public var CAMERA_HORIZONTAL_ANGLE by DashboardVar(10.0)
+        public var CAMERA_HORIZONTAL_ANGLE by DashboardVar(8.0)
         public var HATCH_TARGET_HEIGHT by DashboardVar(29.0)
         public var BALL_TARGET_HEIGHT by DashboardVar(36.0)
 
-        public var TARGET_DISTANCE by DashboardVar(3.0) // inches
+        public var TARGET_DISTANCE by DashboardVar(0.0) // inches
 
         public var ACCEPTABLE_ANGLE_ERROR by DashboardVar(3.0) // degrees(?)
         public var ACCEPTABLE_DISTANCE_ERROR by DashboardVar(2.0) // inches (?)
 
-        public var ANGLE_KP by DashboardVar(1.95)
+        public var ANGLE_KP by DashboardVar(0.5)
         public var ANGLE_KI by DashboardVar(0.0)
         public var ANGLE_KD by DashboardVar(0.0)
         public var ANGLE_KF by DashboardVar(0.0)

@@ -58,7 +58,7 @@ public class VisionGoalAction(
         mDistancePID.setpoint = Constants.Vision.TARGET_DISTANCE
 
         // turn on leds
-        vision.ledState = Vision.LEDState.ON
+        // vision.ledState = Vision.LEDState.ON
     }
 
     public override fun update() {
@@ -69,16 +69,18 @@ public class VisionGoalAction(
             mAnglePID.processVariable = -vision.targetXOffset
             var steer = mAnglePID.calculate()
 
-            mDistancePID.processVariable = when (goal) {
-                VisionGoal.BALL_TARGET -> vision.distanceToBallTarget
-                VisionGoal.HATCH_TARGET -> vision.distanceToHatchTarget
-            }
-            val drive = mDistancePID.calculate()
+            // mDistancePID.processVariable = when (goal) {
+            //     VisionGoal.BALL_TARGET -> vision.distanceToBallTarget
+            //     VisionGoal.HATCH_TARGET -> vision.distanceToHatchTarget
+            // }
+            mDistancePID.processVariable = vision.distanceToHatchTarget
+            val drive = mDistancePID.calculate() * 2.0
 
-            val left = /*drive + */steer
-            val right = /*drive */ - steer
+            val left =  drive + steer
+            val right = drive - steer
 
-            println(mAnglePID.error)
+            // println(mAnglePID.error)
+            println(mDistancePID.error)
 
             drivetrain.setVelocity(left, right)
         }
@@ -92,6 +94,6 @@ public class VisionGoalAction(
     }
 
     public override fun finish() {
-        vision.ledState = Vision.LEDState.OFF
+        // vision.ledState = Vision.LEDState.OFF
     }
 }
