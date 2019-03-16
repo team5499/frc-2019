@@ -167,12 +167,12 @@ public object Constants {
         public var KD by DashboardVar(0.5)
 
         // positions, all in pot ticks
-        public var POSITION_OFFSET by DashboardVar(190)
+        public var POSITION_OFFSET by DashboardVar(145)
 
         public var TOP_STOW_POSITION by DashboardVar(0)
         public var BOTTOM_STOW_POSITION by DashboardVar(770)
         public var DEPLOY_POSITION by DashboardVar(360)
-        public var HOLD_POSITION by DashboardVar(150)
+        public var HOLD_POSITION by DashboardVar(170)
     }
 
     object Auto {

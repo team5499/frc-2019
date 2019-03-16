@@ -39,7 +39,7 @@ public class TeleopController(
         mSubsystems.drivetrain.brakeMode = false
         mLockHatchMech = false
         mLockElevator = false
-        mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.HOLD)
+        // mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.HOLD)
     }
 
     @Suppress("ComplexMethod")

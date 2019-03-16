@@ -78,7 +78,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
                 WaitForLiftZeroAction(mSubsystems.lift),
                 LiftAction(LiftHeight.HATCH_LOW, mSubsystems.lift),
                 HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
-                CrossedXBoundaryAction(90.0, false, mSubsystems.drivetrain),
+                CrossedXBoundaryAction(115.0, false, mSubsystems.drivetrain),
                 LiftAction(LiftHeight.BALL_MID, mSubsystems.lift)
             )
         ),
@@ -113,7 +113,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
                 WaitForLiftZeroAction(mSubsystems.lift),
                 LiftAction(LiftHeight.HATCH_LOW, mSubsystems.lift),
                 HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
-                CrossedXBoundaryAction(90.0, false, mSubsystems.drivetrain),
+                CrossedXBoundaryAction(115.0, false, mSubsystems.drivetrain),
                 LiftAction(LiftHeight.BALL_MID, mSubsystems.lift)
             )
         ),
@@ -173,8 +173,10 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private fun createBaseline() = Routine(
         "Baseline",
         Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0.0)),
-        // AutoDelayAction(),
-        DriveStraightAction(15.0, 90.0, mSubsystems.drivetrain)
+        ParallelAction(
+            PathAction(15.0, mPaths.rightRocketSet.get(0), mSubsystems.drivetrain),
+            HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech)
+        )
     )
 
     private fun createTuning() = Routine(
@@ -192,6 +194,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private fun createNothing() = Routine(
         "Nothing",
         Pose2d(Vector2(0.0, 0.0), Rotation2d.fromDegrees(0.0)),
+        HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
         NothingAction(15.0)
     )
 
