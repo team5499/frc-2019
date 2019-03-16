@@ -72,7 +72,6 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private fun createRocketLeft() = Routine(
         "Left Rocket",
         Paths.Poses.leftStartingPosition,
-        // AutoDelayAction(),
         ParallelAction(
             PathAction(15.0, mPaths.leftRocketSet.get(0), mSubsystems.drivetrain),
             SerialAction(
