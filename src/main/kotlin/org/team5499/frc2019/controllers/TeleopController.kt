@@ -130,5 +130,6 @@ public class TeleopController(
 
     public override fun reset() {
         mLockHatchMech = false
+        mLockElevator = false
     }
 }

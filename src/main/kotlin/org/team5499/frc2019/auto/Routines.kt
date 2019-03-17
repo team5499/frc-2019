@@ -83,7 +83,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
             )
         ),
         HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech),
-        NothingAction(0.3),
+        NothingAction(0.4),
         ParallelAction(
             PathAction(15.0, mPaths.leftRocketSet.get(1), mSubsystems.drivetrain),
             SerialAction(
@@ -118,7 +118,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
             )
         ),
         HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech),
-        NothingAction(0.3),
+        NothingAction(0.4),
         ParallelAction(
             PathAction(15.0, mPaths.rightRocketSet.get(1), mSubsystems.drivetrain),
             SerialAction(

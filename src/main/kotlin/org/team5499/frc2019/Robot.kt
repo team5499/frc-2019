@@ -205,6 +205,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     override fun autonomousInit() {
         Logger.warn("Robot going autonomous" as Any)
         mSubsystemsManager.resetAll()
+        mTeleopController.reset()
         mSandstormController.reset()
         mSandstormController.start()
     }
@@ -216,10 +217,7 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     override fun teleopInit() {
         Logger.warn("Robot going teleoperated" as Any)
-        // mSubsystemsManager.resetAll()
-        mTeleopController.reset()
         mTeleopController.start()
-        // mLift.setZero()
     }
 
     override fun teleopPeriodic() {

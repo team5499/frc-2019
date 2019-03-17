@@ -126,7 +126,7 @@ public object Constants {
         public val HATCH_HIGH_HEIGHT by DashboardVar(59.5)
 
         public var BALL_LOW_HEIGHT by DashboardVar(3.5) // 4.5
-        public val BALL_MID_HEIGHT by DashboardVar(31.0) // 32
+        public val BALL_MID_HEIGHT by DashboardVar(30.0) // 32
         public val BALL_HIGH_HEIGHT by DashboardVar(57.0) // 58
         public var BALL_HUMAN_PLAYER_HEIGHT by DashboardVar(20.0)
 
