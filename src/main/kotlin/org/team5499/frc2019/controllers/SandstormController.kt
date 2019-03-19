@@ -38,6 +38,7 @@ public class SandstormController(
         if (mInAuto && mControlBoard.driverControls.getExitAuto()) {
             mInAuto = false
             mCurrentController = mTeleopController
+            mCurrentController.start()
         }
         // update seleceted controller
         mCurrentController.update()

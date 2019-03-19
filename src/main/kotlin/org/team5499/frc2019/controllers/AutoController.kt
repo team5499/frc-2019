@@ -31,7 +31,7 @@ public class AutoController(subsystems: SubsystemsManager, routines: Routines) :
         currentAction = null
         val tempArray = Array<String>(mRoutines.routineMap.size, { "" })
         var i = 0
-        for ((key, value) in mRoutines.routineMap) {
+        for ((key, _) in mRoutines.routineMap) {
             tempArray.set(i, key)
             i++
         }
@@ -46,6 +46,7 @@ public class AutoController(subsystems: SubsystemsManager, routines: Routines) :
         reset()
         val routine = mRoutines.getRoutineWithName(mAutoSelector.selected)
         currentRoutine = if (routine == null) mRoutines.baseline else routine
+        // currentRoutine = mRoutines.rocketRight
         mSubsystems.drivetrain.brakeMode = true
         mSubsystems.drivetrain.heading = Rotation2d(currentRoutine.startPose.rotation)
         mSubsystems.drivetrain.setPosition(currentRoutine.startPose.translation)

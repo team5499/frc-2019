@@ -26,6 +26,8 @@ public class TeleopController(
     private var mLockElevator: Boolean
     private var mLastLoopManualUsed: Boolean
 
+    private var started = false
+
     init {
         mSubsystems = subsystems
         mControlBoard = controlBoard
@@ -36,9 +38,12 @@ public class TeleopController(
     }
 
     public override fun start() {
-        mSubsystems.drivetrain.brakeMode = false
-        mLockHatchMech = false
-        mLockElevator = false
+        if (!started) {
+            mSubsystems.drivetrain.brakeMode = false
+            mLockHatchMech = false
+            mLockElevator = false
+            started = true
+        }
     }
 
     @Suppress("ComplexMethod")
@@ -129,5 +134,7 @@ public class TeleopController(
 
     public override fun reset() {
         mLockHatchMech = false
+        mLockElevator = false
+        started = false
     }
 }

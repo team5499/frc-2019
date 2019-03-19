@@ -147,17 +147,6 @@
       "title": "Drive",
       "widgets": [
         {
-          "height": "auto",
-          "id": "dropdownSelector",
-          "kwargs": {},
-          "title": "Auto Mode",
-          "type": "StringChooser",
-          "variables": {
-            "target": "AUTO_MODE"
-          },
-          "width": "12rem"
-        },
-        {
           "height": "600px",
           "id": "cameraFeed",
           "kwargs": {
@@ -174,6 +163,28 @@
           "title": "Live Video Feed",
           "type": "CameraWidget",
           "width": "800px"
+        },
+        {
+          "height": "auto",
+          "id": "dropdownSelector",
+          "kwargs": {},
+          "title": "Auto Mode",
+          "type": "StringChooser",
+          "variables": {
+            "target": "AUTO_MODE"
+          },
+          "width": "12rem"
+        },
+        {
+          "height": "auto",
+          "id": "autoDelay",
+          "kwargs": {},
+          "title": "Auto Delay",
+          "type": "DoubleEditor",
+          "variables": {
+            "target": "Constants.Auto.AUTO_DELAY"
+          },
+          "width": "12rem"
         }
       ]
     },

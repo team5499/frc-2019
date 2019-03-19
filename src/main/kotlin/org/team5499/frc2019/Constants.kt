@@ -126,7 +126,7 @@ public object Constants {
         public val HATCH_HIGH_HEIGHT by DashboardVar(59.5)
 
         public var BALL_LOW_HEIGHT by DashboardVar(3.5) // 4.5
-        public val BALL_MID_HEIGHT by DashboardVar(31.0) // 32
+        public val BALL_MID_HEIGHT by DashboardVar(30.0) // 32
         public val BALL_HIGH_HEIGHT by DashboardVar(57.0) // 58
         public var BALL_HUMAN_PLAYER_HEIGHT by DashboardVar(20.0)
 
@@ -162,27 +162,24 @@ public object Constants {
     object Hatch {
         public const val TALON_PORT = 10
 
-        // public const val HATCH_KP = 2.0
-        // public const val HATCH_KI = 0.0
-        // public const val HATCH_KD = 1.0
-
         public var KP by DashboardVar(3.5)
         public var KI by DashboardVar(0.0)
         public var KD by DashboardVar(0.5)
 
         // positions, all in pot ticks
-        public var POSITION_OFFSET by DashboardVar(20)
+        public var POSITION_OFFSET by DashboardVar(145)
 
         public var TOP_STOW_POSITION by DashboardVar(0)
         public var BOTTOM_STOW_POSITION by DashboardVar(770)
         public var DEPLOY_POSITION by DashboardVar(360)
-        public var HOLD_POSITION by DashboardVar(190)
+        public var HOLD_POSITION by DashboardVar(170)
     }
 
     object Auto {
         fun initProps() {
             println("init Auto")
         }
+        public var AUTO_DELAY by DashboardVar(0.0) // seconds, set this from dashboard
         public var LOOKAHEAD_DISTANCE by DashboardVar(18.0)
     }
 }
