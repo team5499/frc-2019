@@ -292,6 +292,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     }
 
     public fun setIntakeHeight(height: LiftHeight) {
+        // Logger.tag("LIFT_HEIGHT").trace(height)
         setCarriagePosition(height.carriageHeightInches())
     }
 
