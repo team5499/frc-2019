@@ -76,7 +76,7 @@ public class VisionGoalAction(
             mDistancePID.processVariable = vision.distanceToHatchTarget
             val drive = mDistancePID.calculate() * 2.0
 
-            val left =  drive + steer
+            val left = drive + steer
             val right = drive - steer
 
             // println(mAnglePID.error)
