@@ -4,8 +4,6 @@ import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.input.ControlBoard
 import org.team5499.frc2019.subsystems.Lift.LiftHeight
 import org.team5499.frc2019.subsystems.HatchMech
-import org.team5499.frc2019.subsystems.Vision.VisionMode
-import org.team5499.frc2019.subsystems.Vision.LEDState
 import org.team5499.frc2019.Constants
 
 import org.team5499.monkeyLib.Controller
@@ -28,6 +26,8 @@ public class TeleopController(
     private var mLockElevator: Boolean
     private var mLastLoopManualUsed: Boolean
 
+    private var started = false
+
     init {
         mSubsystems = subsystems
         mControlBoard = controlBoard
@@ -38,11 +38,12 @@ public class TeleopController(
     }
 
     public override fun start() {
-        mSubsystems.drivetrain.brakeMode = false
-        mSubsystems.vision.ledState = LEDState.OFF
-        mSubsystems.vision.visionMode = VisionMode.VISION
-        mLockHatchMech = false
-        mLockElevator = false
+        if (!started) {
+            mSubsystems.drivetrain.brakeMode = false
+            mLockHatchMech = false
+            mLockElevator = false
+            started = true
+        }
     }
 
     @Suppress("ComplexMethod")
@@ -133,5 +134,7 @@ public class TeleopController(
 
     public override fun reset() {
         mLockHatchMech = false
+        mLockElevator = false
+        started = false
     }
 }

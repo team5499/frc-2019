@@ -57,7 +57,6 @@ public class PathAction(
 
     public override fun finish() {
         Logger.tag("ACTIONS").info("Finishing path action!" as Any)
-        // drivetrain.setVelocity(0.0, 0.0)
         drivetrain.setVelocity(path.endVelocity, path.endVelocity)
     }
 }
