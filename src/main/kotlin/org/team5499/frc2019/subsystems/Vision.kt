@@ -5,8 +5,10 @@ import org.team5499.frc2019.Constants
 import org.team5499.monkeyLib.Subsystem
 
 import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.networktables.NetworkTable
 
 import kotlin.math.tan
+import kotlin.math.hypot
 
 public class Vision : Subsystem() {
 
@@ -16,7 +18,10 @@ public class Vision : Subsystem() {
     @Suppress("MagicNumber")
     public enum class VisionMode(val value: Int) { DRIVER(9), VISION(0) } // pipeline
 
-    private val mTable = NetworkTableInstance.getDefault().getTable("limelight")
+    private val mTable: NetworkTable
+
+    private var mBlinking: Boolean
+    private var mBlinkDuration: Double
 
     public var ledState: LEDState = LEDState.OFF
         set(value) {
@@ -61,7 +66,7 @@ public class Vision : Subsystem() {
             val x = array[0]
             val z = array[2]
             println("vision coords: $x, $z")
-            return Math.hypot(x, z)
+            return hypot(x, z)
         }
     public val distanceToBallTarget: Double
         get() {
@@ -70,14 +75,44 @@ public class Vision : Subsystem() {
         }
 
     init {
+        mTable = NetworkTableInstance.getDefault().getTable("limelight")
+        mBlinking = false
+        mBlinkDuration = 0.0
+        initialize()
+    }
+
+    // need to wait for limelight to boot
+    public fun initialize() {
         mTable.getEntry("camMode").setNumber(0)
         mTable.getEntry("stream").setNumber(0)
         mTable.getEntry("ledMode").setNumber(0)
+        ledState = LEDState.OFF
+        visionMode = VisionMode.VISION
     }
 
-    public override fun update() {}
+    public fun flashForSeconds(seconds: Double) {
+        mBlinking = true
+        mBlinkDuration = seconds
+        timer.stop()
+        timer.reset()
+        timer.start()
+    }
 
-    public override fun stop() {}
+    public override fun update() {
+        if (timer.get() >= mBlinkDuration) {
+            mBlinking = false
+            mBlinkDuration = 0.0
+        } else if (mBlinking) {
+            ledState = LEDState.BLINK
+        }
+    }
 
-    public override fun reset() {}
+    public override fun stop() {
+        mBlinking = false
+        mBlinkDuration = 0.0
+    }
+
+    public override fun reset() {
+        stop()
+    }
 }
