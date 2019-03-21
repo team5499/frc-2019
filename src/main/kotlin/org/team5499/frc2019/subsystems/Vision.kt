@@ -16,38 +16,40 @@ public class Vision : Subsystem() {
     @Suppress("MagicNumber")
     public enum class VisionMode(val value: Int) { DRIVER(9), VISION(0) } // pipeline
 
+    private val mTable = NetworkTableInstance.getDefault.getTable("limelight")
+
     public var ledState: LEDState = LEDState.OFF
         set(value) {
-            NetworkTableInstance.getDefault().getTable("limelight") .getEntry("ledMode").setNumber(value.value)
+            table.getEntry("ledMode").setNumber(value.value)
             field = value
         }
     public var visionMode: VisionMode = VisionMode.VISION
         set(value) {
-            NetworkTableInstance.getDefault().getTable("limelight") .getEntry("pipeline").setNumber(value.value)
+            table.getEntry("pipeline").setNumber(value.value)
             field = value
         }
     public val hasValidTarget: Boolean
         get() {
             return if (
-                NetworkTableInstance.getDefault().getTable("limelight") .getEntry("tv").getDouble(0.0) == 1.0
+                table.getEntry("tv").getDouble(0.0) == 1.0
             ) true
             else false
         }
     public val targetXOffset: Double
         get() {
-            return NetworkTableInstance.getDefault().getTable("limelight") .getEntry("tx").getDouble(0.0)
+            return table.getEntry("tx").getDouble(0.0)
         }
     public val targetYOffset: Double
         get() {
-            return NetworkTableInstance.getDefault().getTable("limelight") .getEntry("ty").getDouble(0.0)
+            return table.getEntry("ty").getDouble(0.0)
         }
     public val targetSkew: Double
         get() {
-            return NetworkTableInstance.getDefault().getTable("limelight") .getEntry("ts").getDouble(0.0)
+            return table.getEntry("ts").getDouble(0.0)
         }
     public val targetArea: Double
         get() {
-            return NetworkTableInstance.getDefault().getTable("limelight") .getEntry("ta").getDouble(0.0)
+            return table.getEntry("ta").getDouble(0.0)
         }
 
     // http://docs.limelightvision.io/en/latest/cs_estimating_distance.html
@@ -69,9 +71,9 @@ public class Vision : Subsystem() {
         }
 
     init {
-        NetworkTableInstance.getDefault().getTable("limelight") .getEntry("camMode").setNumber(0)
-        NetworkTableInstance.getDefault().getTable("limelight") .getEntry("stream").setNumber(0)
-        NetworkTableInstance.getDefault().getTable("limelight") .getEntry("ledMode").setNumber(0)
+        table.getEntry("camMode").setNumber(0)
+        table.getEntry("stream").setNumber(0)
+        table.getEntry("ledMode").setNumber(0)
     }
 
     public override fun update() {}
