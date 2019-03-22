@@ -18,8 +18,8 @@ public class VisionGoalAction(
 
     public enum class VisionGoal { HATCH_TARGET, BALL_TARGET }
 
-    private var mAnglePID: PIDF
-    private var mDistancePID: PIDF
+    private val mAnglePID: PIDF
+    private val mDistancePID: PIDF
 
     init {
         mAnglePID = PIDF(
