@@ -57,16 +57,20 @@ public class Vision : Subsystem() {
             return mTable.getEntry("ta").getDouble(0.0)
         }
 
-    // http://docs.limelightvision.io/en/latest/cs_estimating_distance.html
-    public val distanceToHatchTarget: Double
+    public val distanceToTarget: Double
         get() {
-            // return (Constants.Vision.HATCH_TARGET_HEIGHT - Constants.Vision.CAMERA_HEIGHT) /
-            //     tan(Constants.Vision.CAMERA_VERTICAL_ANGLE + targetYOffset)
             val array = mTable.getEntry("camtran").getDoubleArray(arrayOf<Double>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
             val x = array[0]
             val z = array[2]
             println("vision coords: $x, $z")
             return hypot(x, z)
+        }
+
+    // http://docs.limelightvision.io/en/latest/cs_estimating_distance.html
+    public val distanceToHatchTarget: Double
+        get() {
+            return (Constants.Vision.HATCH_TARGET_HEIGHT - Constants.Vision.CAMERA_HEIGHT) /
+                tan(Constants.Vision.CAMERA_VERTICAL_ANGLE + targetYOffset)
         }
     public val distanceToBallTarget: Double
         get() {
