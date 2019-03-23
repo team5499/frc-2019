@@ -2,6 +2,7 @@ package org.team5499.frc2019.auto.actions
 
 import org.team5499.frc2019.subsystems.Drivetrain
 
+import org.tinylog.Logger
 import org.team5499.monkeyLib.auto.Action
 
 /**
@@ -24,6 +25,10 @@ public class CrossedXBoundaryAction(
     init {
         mLineCoord = xLine
         mLessThan = lessThan
+    }
+
+    public override fun start() {
+        Logger.tag("ACTIONS").info("Starting x boundary action!" as Any)
     }
 
     public override fun next(): Boolean {

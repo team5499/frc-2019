@@ -18,4 +18,11 @@ public interface IDriverControls {
     public fun getCreep(): Boolean
 
     public fun getExitAuto(): Boolean
+
+    public fun getStow(): Boolean
+
+    public fun getState(): String {
+        @Suppress("MaxLineLength")
+        return "${getThrottle()} : ${getTurn()} : ${getLeft()} : ${getRight()} : ${getQuickTurn()} : ${getCreep()} : ${getExitAuto()} : ${getStow()}"
+    }
 }

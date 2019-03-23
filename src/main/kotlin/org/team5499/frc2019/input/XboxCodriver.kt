@@ -3,6 +3,8 @@ package org.team5499.frc2019.input
 import edu.wpi.first.wpilibj.XboxController
 import edu.wpi.first.wpilibj.GenericHID.Hand
 
+import org.team5499.monkeyLib.input.ButtonState
+
 @Suppress("TooManyFunctions")
 public class XboxCodriver(xbox: XboxController) : ICodriverControls {
 
@@ -59,9 +61,17 @@ public class XboxCodriver(xbox: XboxController) : ICodriverControls {
 
     public override fun getExaust() = mXbox.getBumperPressed(Hand.kRight)
 
-    public override fun getPickup() = mXbox.getTriggerAxis(Hand.kLeft) > kTriggerThreshold
+    public override fun getPickup() = ButtonState(
+        mXbox.getTriggerAxis(Hand.kLeft) > kTriggerThreshold,
+        false, false
+    )
 
-    public override fun getPlace() = mXbox.getTriggerAxis(Hand.kRight) > kTriggerThreshold
+    public override fun getPlace() = ButtonState(
+        mXbox.getTriggerAxis(Hand.kRight) > kTriggerThreshold,
+        false, false
+    )
 
-    public override fun getDropRamp() = mXbox.getBackButtonPressed()
+    public override fun getManualEnable() = mXbox.getBackButtonPressed()
+
+    public override fun getManualZero() = false
 }

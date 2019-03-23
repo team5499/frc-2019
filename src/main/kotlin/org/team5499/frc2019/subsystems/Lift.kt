@@ -11,6 +11,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.InvertType
 
+import org.team5499.dashboard.Dashboard
+
 @SuppressWarnings("MagicNumber", "TooManyFunctions")
 public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsystem() {
 
@@ -25,24 +27,47 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         ZERO
     }
 
-    public enum class ElevatorHeight(val carriageHeightInches: Double = 0.45) {
-        BOTTOM(Constants.Lift.STOW_HEIGHT),
-        HATCH_LOW(Constants.Lift.HATCH_LOW_HEIGHT),
-        HATCH_MID(Constants.Lift.HATCH_MID_HEIGHT),
-        HATCH_HIGH(Constants.Lift.HATCH_HIGH_HEIGHT),
-        BALL_LOW(Constants.Lift.BALL_LOW_HEIGHT),
-        BALL_MID(Constants.Lift.BALL_MID_HEIGHT),
-        BALL_HIGH(Constants.Lift.BALL_HIGH_HEIGHT),
-        BALL_HUMAN_PLAYER(Constants.Lift.BALL_HUMAN_PLAYER_HEIGHT)
+    public enum class LiftHeight(val carriageHeightInches: () -> Double = { 0.45 }) {
+        BOTTOM({ Constants.Lift.STOW_HEIGHT }),
+        HATCH_LOW({ Constants.Lift.HATCH_LOW_HEIGHT }),
+        HATCH_MID({ Constants.Lift.HATCH_MID_HEIGHT }),
+        HATCH_HIGH({ Constants.Lift.HATCH_HIGH_HEIGHT }),
+        BALL_LOW({ Constants.Lift.BALL_LOW_HEIGHT }),
+        BALL_MID({ Constants.Lift.BALL_MID_HEIGHT }),
+        BALL_HIGH({ Constants.Lift.BALL_HIGH_HEIGHT }),
+        BALL_HUMAN_PLAYER({ Constants.Lift.BALL_HUMAN_PLAYER_HEIGHT })
     }
 
     private val mMaster: LazyTalonSRX
     private val mSlave: LazyTalonSRX
 
     private var mElevatorMode: ElevatorMode
+    private var mFirstLoop: Boolean
+    public var zeroed: Boolean = false
+        set(value) {
+            when (value) {
+                true -> {
+                    println("Elevator Zeroed!")
+                }
+                false -> {
+                    mFirstLoop = true
+                }
+            }
+            field = value
+        }
 
-    private var mZeroed: Boolean
     private var mSetpoint: Double
+    private var mSoftLimitsEnabled: Boolean = false
+        set(value) {
+            if (value == field) return
+            if (value) {
+                mMaster.configForwardSoftLimitEnable(true, 0)
+                mMaster.configReverseSoftLimitEnable(true, 0)
+            } else {
+                mMaster.configForwardSoftLimitEnable(false, 0)
+                mMaster.configReverseSoftLimitEnable(false, 0)
+            }
+        }
 
     // first stage numbers
     public val firstStagePositionRaw: Int
@@ -52,7 +77,8 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         get() = Utils.encoderTicksToInches(
             Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
-            firstStagePositionRaw
+            firstStagePositionRaw,
+            Constants.Lift.ENCODER_REDUCTION
         )
 
     public val firstStagePositionErrorRaw: Int
@@ -62,7 +88,8 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         get() = Utils.encoderTicksToInches(
             Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
-            firstStagePositionErrorRaw
+            firstStagePositionErrorRaw,
+            Constants.Lift.ENCODER_REDUCTION
         )
 
     public val firstStageVelocityRaw: Int
@@ -72,7 +99,8 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         get() = Utils.encoderTicksPer100MsToInchesPerSecond(
             Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
-            firstStageVelocityRaw
+            firstStageVelocityRaw,
+            Constants.Lift.ENCODER_REDUCTION
         )
 
     public val firstStageVelocityErrorRaw: Int
@@ -82,7 +110,8 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         get() = Utils.encoderTicksPer100MsToInchesPerSecond(
             Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
-            firstStageVelocityErrorRaw
+            firstStageVelocityErrorRaw,
+            Constants.Lift.ENCODER_REDUCTION
         )
 
     // carriage numbers
@@ -113,18 +142,21 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     private var mBrakeMode: Boolean = false
         set(value) {
             if (value == field) return
-            if (value)
+            if (value) {
                 mMaster.setNeutralMode(NeutralMode.Brake)
-            else
+                mSlave.setNeutralMode(NeutralMode.Brake)
+            } else {
                 mMaster.setNeutralMode(NeutralMode.Coast)
+                mSlave.setNeutralMode(NeutralMode.Coast)
+            }
             field = value
         }
 
     init {
         this.mMaster = masterTalon.apply {
-            configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
             setSensorPhase(true) // check
-            setInverted(true) // check this
+            setInverted(false) // check this
 
             configClosedLoopPeakOutput(kElevatorSlot, 1.0)
 
@@ -135,8 +167,9 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
             configMotionCruiseVelocity(Constants.Lift.MOTION_MAGIC_VELOCITY, 0)
             configMotionAcceleration(Constants.Lift.MOTION_MAGIC_ACCELERATION, 0)
             selectProfileSlot(kElevatorSlot, 0)
+            configAllowableClosedloopError(0, 0, 0)
 
-            enableCurrentLimit(true)
+            enableCurrentLimit(false)
             configPeakCurrentDuration(0, 0)
             configPeakCurrentLimit(0, 0)
             configContinuousCurrentLimit(25, 0) // amps
@@ -153,18 +186,74 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         }
 
         mElevatorMode = ElevatorMode.ZERO
-        mZeroed = false // CHANGE THIS TO FALSE
+        zeroed = false // CHANGE THIS TO FALSE
+        mSoftLimitsEnabled = false
         // mEncoderPresent = false
         mSetpoint = 0.0
+        mFirstLoop = true
 
         // set brake
         mBrakeMode = true
 
         // set speed
         mMaster.set(ControlMode.PercentOutput, 0.0)
+
+        setCallbacks()
     }
 
-    public fun setZero() {
+    private fun setCallbacks() {
+        Dashboard.addInlineListener("Constants.Lift.KP") {
+            _: String, value: Double? ->
+            if (value != null) {
+                mMaster.config_kP(0, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Lift.KI") {
+            _: String, value: Double? ->
+            if (value != null) {
+                mMaster.config_kI(0, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Lift.KD") {
+            _: String, value: Double? ->
+            if (value != null) {
+                mMaster.config_kD(0, value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Lift.KF") {
+            _: String, value: Double? ->
+            if (value != null) {
+                mMaster.config_kF(0, value, 0)
+            }
+        }
+
+        Dashboard.addInlineListener("Constants.Lift.MOTION_MAGIC_VELOCITY") {
+            _: String, value: Int? ->
+            if (value != null) {
+                mMaster.configMotionCruiseVelocity(value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Lift.MOTION_MAGIC_ACCELERATION") {
+            _: String, value: Int? ->
+            if (value != null) {
+                mMaster.configMotionAcceleration(value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Lift.MAX_ENCODER_TICKS") {
+            _: String, value: Int? ->
+            if (value != null) {
+                mMaster.configForwardSoftLimitThreshold(value, 0)
+            }
+        }
+        Dashboard.addInlineListener("Constants.Lift.MIN_ENCODER_TICKS") {
+            _: String, value: Int? ->
+            if (value != null) {
+                mMaster.configReverseSoftLimitThreshold(value, 0)
+            }
+        }
+    }
+
+    private fun setZero() {
         mMaster.setSelectedSensorPosition(0, 0, 0)
     }
 
@@ -176,7 +265,7 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     }
 
     public fun setPositionRaw(ticks: Int) {
-        if (!mZeroed) return
+        if (!zeroed) return
         mBrakeMode = true
         val positionTicks = Utils.limit(
             ticks.toDouble(),
@@ -192,7 +281,8 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         val positionTicks = Utils.inchesToEncoderTicks(
             Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
-            positionInches
+            positionInches,
+            Constants.Lift.ENCODER_REDUCTION
         )
         setPositionRaw(positionTicks.toInt())
     }
@@ -201,24 +291,26 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
         setPosition(0.5 * positionInches)
     }
 
-    public fun setIntakeHeight(height: ElevatorHeight) {
-        setCarriagePosition(height.carriageHeightInches)
+    public fun setIntakeHeight(height: LiftHeight) {
+        // Logger.tag("LIFT_HEIGHT").trace(height)
+        setCarriagePosition(height.carriageHeightInches())
     }
 
     public fun setVelocityRaw(ticksPer100ms: Int) {
-        if (!mZeroed) return
+        if (!zeroed) return
         mBrakeMode = false
         val speed = Utils.limit(ticksPer100ms.toDouble(), Constants.Lift.MAX_VELOCITY_SETPOINT.toDouble())
         mElevatorMode = ElevatorMode.VELOCITY
         mSetpoint = speed
-        mMaster.set(ControlMode.Velocity, speed)
+        mMaster.set(ControlMode.Velocity, mSetpoint)
     }
 
     public fun setVelocity(inchesPerSecond: Double) {
         val speed = Utils.inchesPerSecondToEncoderTicksPer100Ms(
             Constants.Lift.ENCODER_TICKS_PER_ROTATION,
             Constants.Lift.SPROCKET_CIR,
-            inchesPerSecond
+            inchesPerSecond,
+            Constants.Lift.ENCODER_REDUCTION
         )
         setVelocityRaw(speed.toInt())
     }
@@ -228,36 +320,42 @@ public class Lift(masterTalon: LazyTalonSRX, slaveTalon: LazyTalonSRX) : Subsyst
     }
 
     public override fun update() {
-        // mEncoderPresent = mMaster.getSensorCollection().getPulseWidthRiseToRiseUs() != 0
-        // println("elevator speed: ${mMaster.getSelectedSensorVelocity(0)}")
-        // println("elevator position: $firstStagePositionRaw")
-        // println("elevator setpoint: ${mMaster.getClosedLoopTarget(0)}")
-        if (!mZeroed) {
+        if (!zeroed) {
             mElevatorMode = ElevatorMode.ZERO
-            mMaster.configReverseSoftLimitEnable(false)
+            mSoftLimitsEnabled = false
+            if (mFirstLoop) {
+                super.timer.stop()
+                super.timer.reset()
+                super.timer.start()
+                mFirstLoop = false
+            }
         }
         when (mElevatorMode) {
             ElevatorMode.ZERO -> {
                 // drive downwards until hall effect detects carriage
-                if (Math.abs(mMaster.getSelectedSensorVelocity(0)) < Constants.Lift.ZEROING_THRESHOLD) {
-                    mZeroed = true
+                if (
+                    super.timer.get() > Constants.Lift.ZEROING_TIMEOUT &&
+                    Math.abs(firstStageVelocityRaw) < Constants.Lift.ZEROING_THRESHOLD
+                ) {
+                    zeroed = true
                     mMaster.set(ControlMode.PercentOutput, 0.0)
                     mSetpoint = 0.0
                     setZero()
                     mElevatorMode = ElevatorMode.OPEN_LOOP
-                    mMaster.configReverseSoftLimitEnable(true)
-                    println("Elevator zeroed!")
+                    mSoftLimitsEnabled = true
                 }
-                // println("going down!")
                 mMaster.set(ControlMode.PercentOutput, Constants.Lift.ZEROING_SPEED)
             }
             ElevatorMode.VELOCITY -> {
+                mSoftLimitsEnabled = true
                 mMaster.set(ControlMode.Velocity, mSetpoint)
             }
             ElevatorMode.OPEN_LOOP -> {
+                mSoftLimitsEnabled = false
                 mMaster.set(ControlMode.PercentOutput, mSetpoint)
             }
             ElevatorMode.MOTION_MAGIC -> {
+                mSoftLimitsEnabled = true
                 mMaster.set(ControlMode.MotionMagic, mSetpoint)
             }
         }

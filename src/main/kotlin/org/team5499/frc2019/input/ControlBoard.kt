@@ -31,9 +31,9 @@ public class ControlBoard(
             codriverControls.getBallHigh() ||
             codriverControls.getIntake() ||
             codriverControls.getExaust() ||
-            codriverControls.getPickup() ||
-            codriverControls.getPlace() ||
-            codriverControls.getDropRamp()
+            codriverControls.getPickup().down ||
+            codriverControls.getPlace().down ||
+            codriverControls.getManualEnable()
         )
     }
 

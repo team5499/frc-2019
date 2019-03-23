@@ -1,5 +1,7 @@
 package org.team5499.frc2019.input
 
+import org.team5499.monkeyLib.input.ButtonState
+
 @Suppress("TooManyFunctions")
 public interface ICodriverControls {
 
@@ -31,10 +33,18 @@ public interface ICodriverControls {
     public fun getExaust(): Boolean
 
     // hatch mech
-    public fun getPickup(): Boolean
+    public fun getPickup(): ButtonState
 
-    public fun getPlace(): Boolean
+    public fun getPlace(): ButtonState
 
     // ramp (?) maybe this should be on the drivers controller
-    public fun getDropRamp(): Boolean
+    public fun getManualEnable(): Boolean
+
+    public fun getManualZero(): Boolean
+
+    // get the current codriver state
+    public fun getState(): String {
+        @Suppress("MaxLineLength")
+        return "${getManualInput()} : ${getStowElevator()} : ${getHatchLow()} : ${getHatchMid()} : ${getHatchHigh()} : ${getBallLow()} : ${getBallMid()} : ${getBallHigh()} : ${getBallHumanPlayer()} : ${getIntake()} : ${getExaust()} : ${getPickup()} : ${getPlace()}"
+    }
 }

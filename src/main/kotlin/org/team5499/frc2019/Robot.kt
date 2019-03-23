@@ -3,6 +3,7 @@ package org.team5499.frc2019
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj.XboxController
 import edu.wpi.first.wpilibj.Joystick
+import edu.wpi.first.wpilibj.PowerDistributionPanel
 
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
 import org.team5499.monkeyLib.hardware.LazyVictorSPX
@@ -14,6 +15,7 @@ import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.frc2019.subsystems.Lift
 import org.team5499.frc2019.subsystems.Intake
 import org.team5499.frc2019.subsystems.Vision
+import org.team5499.frc2019.subsystems.HatchMech
 import org.team5499.frc2019.controllers.SandstormController
 import org.team5499.frc2019.controllers.TeleopController
 import org.team5499.frc2019.controllers.AutoController
@@ -25,7 +27,11 @@ import org.team5499.frc2019.input.ButtonBoardCodriver
 import org.team5499.frc2019.auto.Paths
 import org.team5499.frc2019.auto.Routines
 
+import org.team5499.dashboard.Dashboard
+
 import com.ctre.phoenix.sensors.PigeonIMU
+
+import org.tinylog.Logger
 
 class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     // inputs
@@ -56,10 +62,15 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     private val mIntakeTalon: LazyTalonSRX
 
+    private val mHatchMechTalon: LazyTalonSRX
+
+    private val mPdp: PowerDistributionPanel
+
     // subsystems
     private val mDrivetrain: Drivetrain
     private val mLift: Lift
     private val mIntake: Intake
+    private val mHatchMech: HatchMech
     private val mVision: Vision
     private val mSubsystemsManager: SubsystemsManager
 
@@ -74,6 +85,10 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     private val mAutoController: AutoController
 
     init {
+        // init dashboard
+        Dashboard.start(this, "dashConfig.json")
+        Constants.initConstants()
+
         // inputs init
         mDriver = XboxController(Constants.Input.DRIVER_PORT)
         mCodriverButtonBoard = Joystick(Constants.Input.CODRIVER_BUTTON_BOARD_PORT)
@@ -83,7 +98,11 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mCodriverControls = ButtonBoardCodriver(mCodriverButtonBoard, mCodriverJoystick)
         mControlBoard = ControlBoard(mDriverControls, mCodriverControls)
 
-        mSpaceDriveHelper = SpaceDriveHelper(Constants.Input.JOYSTICK_DEADBAND, Constants.Input.TURN_MULT)
+        mSpaceDriveHelper = SpaceDriveHelper(
+            { Constants.Input.JOYSTICK_DEADBAND },
+            { Constants.Input.TURN_MULT },
+            { Constants.Input.SLOW_MULT }
+        )
 
         // hardware init
         mLeftMaster = LazyTalonSRX(Constants.Drivetrain.LEFT_MASTER_TALON_PORT)
@@ -100,6 +119,10 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         mLiftSlave = LazyTalonSRX(Constants.Lift.SLAVE_TALON_PORT)
 
         mIntakeTalon = LazyTalonSRX(Constants.Intake.TALON_PORT)
+
+        mHatchMechTalon = LazyTalonSRX(Constants.Hatch.TALON_PORT)
+
+        mPdp = PowerDistributionPanel()
 
         // reset hardware
         mLeftMaster.configFactoryDefault()
@@ -118,6 +141,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
         mIntakeTalon.configFactoryDefault()
 
+        mHatchMechTalon.configFactoryDefault()
+
         // subsystem init
         mDrivetrain = Drivetrain(
             mLeftMaster, mLeftSlave1, mLeftSlave2,
@@ -126,15 +151,17 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
         )
         mLift = Lift(mLiftMaster, mLiftSlave)
         mIntake = Intake(mIntakeTalon)
+        mHatchMech = HatchMech(mHatchMechTalon)
         mVision = Vision()
-        mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mVision)
+        mSubsystemsManager = SubsystemsManager(mDrivetrain, mLift, mIntake, mHatchMech, mVision)
 
         // path init
+        @Suppress("MagicNumber")
         mPathGenerator = PathGenerator(
-            Constants.Drivetrain.MAX_VELOCITY,
-            Constants.Drivetrain.MAX_ACCELERATION,
-            0.0,
-            0.0
+            { Constants.Drivetrain.MAX_VELOCITY },
+            { Constants.Drivetrain.MAX_ACCELERATION },
+            { 20.0 },
+            { 0.0 }
         )
         mPaths = Paths(mPathGenerator)
         mRoutines = Routines(mPaths, mSubsystemsManager)
@@ -146,12 +173,29 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun robotInit() {
+        Logger.warn("Robot initializing" as Any)
     }
 
     override fun robotPeriodic() {
+        Logging.update(mSubsystemsManager,
+                        mPdp,
+                        mControlBoard,
+                        mLeftMaster,
+                        mLeftSlave1,
+                        mLeftSlave2,
+                        mRightMaster,
+                        mRightSlave1,
+                        mRightSlave2,
+                        mLiftMaster,
+                        mLiftSlave,
+                        mIntakeTalon,
+                        mHatchMechTalon)
+        Dashboard.update()
     }
 
     override fun disabledInit() {
+        Logger.warn("Robot disabling" as Any)
+        mLift.zeroed = false
         mSubsystemsManager.resetAll()
     }
 
@@ -159,7 +203,9 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun autonomousInit() {
+        Logger.warn("Robot going autonomous" as Any)
         mSubsystemsManager.resetAll()
+        mTeleopController.reset()
         mSandstormController.reset()
         mSandstormController.start()
     }
@@ -170,10 +216,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun teleopInit() {
-        // mSubsystemsManager.resetAll()
-        mTeleopController.reset()
+        Logger.warn("Robot going teleoperated" as Any)
         mTeleopController.start()
-        // mLift.setZero()
     }
 
     override fun teleopPeriodic() {
