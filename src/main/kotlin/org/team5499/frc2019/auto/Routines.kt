@@ -193,7 +193,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         WaitForLiftZeroAction(mSubsystems.lift),
         LiftAction(LiftHeight.HATCH_LOW, mSubsystems.lift),
         HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
-        VisionGoalAction(20.0, VisionGoal.HATCH_TARGET, mSubsystems.vision, mSubsystems.drivetrain),
+        VisionGoalAction(120.0, VisionGoal.HATCH_TARGET, mSubsystems.vision, mSubsystems.drivetrain),
         HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech)
     )
 

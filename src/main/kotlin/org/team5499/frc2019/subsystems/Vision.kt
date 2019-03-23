@@ -62,8 +62,10 @@ public class Vision : Subsystem() {
             val array = mTable.getEntry("camtran").getDoubleArray(arrayOf<Double>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
             val x = array[0]
             val z = array[2]
-            println("vision coords: $x, $z")
-            return hypot(x, z)
+            // println("vision coords: $x, $z")
+            val distance = hypot(x, z)
+            // println("coord distance: $distance")
+            return distance
         }
 
     // http://docs.limelightvision.io/en/latest/cs_estimating_distance.html

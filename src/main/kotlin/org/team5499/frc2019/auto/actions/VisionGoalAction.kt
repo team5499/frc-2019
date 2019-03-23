@@ -73,14 +73,14 @@ public class VisionGoalAction(
             //     VisionGoal.BALL_TARGET -> vision.distanceToBallTarget
             //     VisionGoal.HATCH_TARGET -> vision.distanceToHatchTarget
             // }
-            mDistancePID.processVariable = vision.distanceToTarget
+            mDistancePID.processVariable = -vision.distanceToTarget
             val drive = mDistancePID.calculate()
 
             val left = drive + steer
             val right = drive - steer
 
             // println(mAnglePID.error)
-            // println(mDistancePID.error)
+            println("distance error: ${mDistancePID.error}")
 
             drivetrain.setVelocity(left, right)
         }

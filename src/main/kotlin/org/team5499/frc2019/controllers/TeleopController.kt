@@ -4,6 +4,9 @@ import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.input.ControlBoard
 import org.team5499.frc2019.subsystems.Lift.LiftHeight
 import org.team5499.frc2019.subsystems.HatchMech
+import org.team5499.frc2019.subsystems.Vision.VisionMode
+import org.team5499.frc2019.subsystems.Vision.LEDState
+
 import org.team5499.frc2019.Constants
 
 import org.team5499.monkeyLib.Controller
@@ -43,6 +46,8 @@ public class TeleopController(
             mLockHatchMech = false
             mLockElevator = false
             started = true
+            mSubsystems.vision.ledState = LEDState.OFF
+            mSubsystems.vision.visionMode = VisionMode.DRIVER
         }
     }
 
