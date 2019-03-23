@@ -237,5 +237,6 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     }
 
     override fun testPeriodic() {
+        println("distance to target ${mVision.distanceToTarget}")
     }
 }

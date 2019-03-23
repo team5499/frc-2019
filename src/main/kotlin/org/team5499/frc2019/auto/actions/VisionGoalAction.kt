@@ -7,8 +7,6 @@ import org.team5499.frc2019.subsystems.Vision
 import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.frc2019.Constants
 
-import kotlin.math.abs
-
 public class VisionGoalAction(
     timeout: Double,
     val goal: VisionGoal,
@@ -79,8 +77,8 @@ public class VisionGoalAction(
             val left = drive + steer
             val right = drive - steer
 
-            // println(mAnglePID.error)
-            println("distance error: ${mDistancePID.error}")
+            println(mAnglePID.error)
+            // println("distance error: ${mDistancePID.error}")
 
             drivetrain.setVelocity(left, right)
         }
@@ -88,12 +86,14 @@ public class VisionGoalAction(
 
     public override fun next(): Boolean {
         return super.timedOut() || (
-            abs(mAnglePID.error) < Constants.Vision.ACCEPTABLE_ANGLE_ERROR &&
-            abs(mDistancePID.error) < Constants.Vision.ACCEPTABLE_DISTANCE_ERROR
+            vision.distanceToTarget < Constants.Vision.TARGET_DISTANCE // &&
+            // abs(mAnglePID.error) < Constants.Vision.ACCEPTABLE_ANGLE_ERROR &&
+            // abs(mDistancePID.error) < Constants.Vision.ACCEPTABLE_DISTANCE_ERROR
         )
     }
 
     public override fun finish() {
         // vision.ledState = Vision.LEDState.OFF
+        drivetrain.setVelocity(0.0, 0.0)
     }
 }
