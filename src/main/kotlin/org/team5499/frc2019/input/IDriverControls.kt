@@ -1,7 +1,5 @@
 package org.team5499.frc2019.input
 
-import org.team5499.monkeyLib.input.ButtonState
-
 public interface IDriverControls {
 
     // normal speeds
@@ -23,7 +21,7 @@ public interface IDriverControls {
 
     public fun getStow(): Boolean
 
-    public fun getAutoAlign(): ButtonState
+    public fun getAutoAlign(): Boolean
 
     public fun getState(): String {
         @Suppress("MaxLineLength")

@@ -77,9 +77,6 @@ public class VisionGoalAction(
             val left = drive + steer
             val right = drive - steer
 
-            println(mAnglePID.error)
-            // println("distance error: ${mDistancePID.error}")
-
             drivetrain.setVelocity(left, right)
         }
     }
@@ -93,7 +90,6 @@ public class VisionGoalAction(
     }
 
     public override fun finish() {
-        // vision.ledState = Vision.LEDState.OFF
         drivetrain.setVelocity(0.0, 0.0)
     }
 }

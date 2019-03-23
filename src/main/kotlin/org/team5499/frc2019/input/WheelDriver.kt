@@ -2,7 +2,6 @@ package org.team5499.frc2019.input
 
 import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.DriverStation
-import org.team5499.monkeyLib.input.ButtonState
 
 public class WheelDriver(wheel: Joystick, throttle: Joystick) : IDriverControls {
 
@@ -36,5 +35,5 @@ public class WheelDriver(wheel: Joystick, throttle: Joystick) : IDriverControls 
 
     public override fun getStow() = false // change this later
 
-    public override fun getAutoAlign() = ButtonState(false, false, false)
+    public override fun getAutoAlign() = false
 }

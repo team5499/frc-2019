@@ -2,7 +2,6 @@ package org.team5499.frc2019.input
 
 import edu.wpi.first.wpilibj.XboxController
 import edu.wpi.first.wpilibj.GenericHID.Hand
-import org.team5499.monkeyLib.input.ButtonState
 
 public class XboxDriver(xbox: XboxController) : IDriverControls {
 
@@ -29,11 +28,6 @@ public class XboxDriver(xbox: XboxController) : IDriverControls {
 
     public override fun getStow() = mXbox.getBButtonPressed()
 
-    public override fun getAutoAlign(): ButtonState {
-        return ButtonState(
-            mXbox.getBumper(Hand.kLeft),
-            mXbox.getBumperPressed(Hand.kLeft),
-            mXbox.getBumperReleased(Hand.kLeft)
-        )
-    }
+    @Suppress("MagicNumber")
+    public override fun getAutoAlign() = (mXbox.getTriggerAxis(Hand.kLeft) > 0.15)
 }

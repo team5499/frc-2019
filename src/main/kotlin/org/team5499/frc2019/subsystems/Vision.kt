@@ -57,14 +57,13 @@ public class Vision : Subsystem() {
             return mTable.getEntry("ta").getDouble(0.0)
         }
 
+    // use this distance method
     public val distanceToTarget: Double
         get() {
             val array = mTable.getEntry("camtran").getDoubleArray(arrayOf<Double>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
             val x = array[0]
             val z = array[2]
-            // println("vision coords: $x, $z")
             val distance = hypot(x, z)
-            // println("coord distance: $distance")
             return distance
         }
 
