@@ -4,20 +4,18 @@ import org.team5499.monkeyLib.Subsystem
 import org.team5499.monkeyLib.hardware.LazyTalonSRX
 import org.team5499.monkeyLib.math.physics.DCMotorTransmission
 import org.team5499.monkeyLib.util.CircularDoubleBuffer
-import org.team5499.monkeyLib.util.time.ITimer
-import org.team5499.monkeyLib.util.time.WPITimer
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
 
 import org.team5499.frc2019.Constants
 
-public class Intake(talon: LazyTalonSRX, timer: ITimer = WPITimer()) : Subsystem() {
+public class Intake(talon: LazyTalonSRX) : Subsystem() {
 
     companion object {
         public const val kBufferSize = 10
         public const val kSpeedDifferenceThreshold = 20.0 // rads / second
-        public const val kCurrenSpeedThreshold = 20.0 // rads /second
+        public const val kCurrentSpeedThreshold = 20.0 // rads /second
         public const val kAccelerationThreshold = 10.0 // rads / s^2
     }
 
@@ -31,7 +29,6 @@ public class Intake(talon: LazyTalonSRX, timer: ITimer = WPITimer()) : Subsystem
 
     private var mMode: IntakeMode
     private val mTransmission: DCMotorTransmission
-    private val mTimer: ITimer
 
     private val mVelocityBuffer: CircularDoubleBuffer
     private val mTimeBuffer: CircularDoubleBuffer
@@ -45,14 +42,13 @@ public class Intake(talon: LazyTalonSRX, timer: ITimer = WPITimer()) : Subsystem
 
         mMode = IntakeMode.HOLD
 
-        mTimer = timer
-        mTimer.start()
+        super.timer.start()
 
         mVelocityBuffer = CircularDoubleBuffer(kBufferSize)
         mTimeBuffer = CircularDoubleBuffer(kBufferSize)
 
         mVelocityBuffer.add(0.0)
-        mTimeBuffer.add(mTimer.get())
+        mTimeBuffer.add(super.timer.get())
     }
 
     public fun intake() {
@@ -74,14 +70,14 @@ public class Intake(talon: LazyTalonSRX, timer: ITimer = WPITimer()) : Subsystem
         val actualSpeed = mTransmission.getSpeedForVoltageAndAmperage(voltage, current)
         val speedDifference = theorheticalSpeed - actualSpeed
 
-        mTimeBuffer.add(mTimer.get())
+        mTimeBuffer.add(super.timer.get())
         mVelocityBuffer.add(actualSpeed)
 
         val acceleration = (mVelocityBuffer.average) /
             (mTimeBuffer.elements[mTimeBuffer.elements.size - 1] - mTimeBuffer.elements[0])
         return speedDifference > kSpeedDifferenceThreshold &&
             acceleration < kAccelerationThreshold &&
-            actualSpeed < kCurrenSpeedThreshold
+            actualSpeed < kCurrentSpeedThreshold
     }
 
     public override fun update() {
@@ -107,6 +103,6 @@ public class Intake(talon: LazyTalonSRX, timer: ITimer = WPITimer()) : Subsystem
         stop()
         mVelocityBuffer.clear()
         mVelocityBuffer.add(0.0)
-        mTimeBuffer.add(mTimer.get())
+        mTimeBuffer.add(super.timer.get())
     }
 }
