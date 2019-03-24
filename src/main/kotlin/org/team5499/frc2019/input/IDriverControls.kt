@@ -25,6 +25,6 @@ public interface IDriverControls {
 
     public fun getState(): String {
         @Suppress("MaxLineLength")
-        return "${getThrottle()} : ${getTurn()} : ${getLeft()} : ${getRight()} : ${getQuickTurn()} : ${getCreep()} : ${getExitAuto()} : ${getStow()}"
+        return "${getThrottle()} : ${getTurn()} : ${getLeft()} : ${getRight()} : ${getQuickTurn()} : ${getCreep()} : ${getExitAuto()} : ${getStow()} : ${getAutoAlign()}"
     }
 }
