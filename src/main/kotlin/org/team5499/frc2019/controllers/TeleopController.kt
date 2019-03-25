@@ -97,9 +97,11 @@ public class TeleopController(
             mDistancePID.setpoint = Constants.Vision.TARGET_DISTANCE
             mAnglePID.setpoint = -Constants.Vision.CAMERA_HORIZONTAL_ANGLE
             mSubsystems.vision.ledState = LEDState.ON
+            mSubsystems.vision.visionMode = VisionMode.VISION
         } else if (mAutoAlign && !isAutoAlign) {
             mAutoAlign = false
             mSubsystems.vision.ledState = LEDState.OFF
+            mSubsystems.vision.visionMode = VisionMode.DRIVER
         }
 
         if (!mAutoAlign) {

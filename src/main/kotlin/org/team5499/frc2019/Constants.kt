@@ -178,7 +178,7 @@ public object Constants {
     object Vision {
         public var CAMERA_HEIGHT by DashboardVar(33.0)
         public var CAMERA_VERTICAL_ANGLE by DashboardVar(0.0)
-        public var CAMERA_HORIZONTAL_ANGLE by DashboardVar(8.0)
+        public var CAMERA_HORIZONTAL_ANGLE by DashboardVar(7.0)
         public var HATCH_TARGET_HEIGHT by DashboardVar(29.0)
         public var BALL_TARGET_HEIGHT by DashboardVar(36.0)
 
