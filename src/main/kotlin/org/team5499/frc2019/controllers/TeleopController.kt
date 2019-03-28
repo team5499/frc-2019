@@ -116,7 +116,7 @@ public class TeleopController(
         } else {
             // vision system can control
             if (mSubsystems.vision.hasValidTarget) {
-                mSubsystems.vision.ledState = LEDState.ON
+                // mSubsystems.vision.ledState = LEDState.ON
 
                 mAnglePID.processVariable = -mSubsystems.vision.targetXOffset
                 mDistancePID.processVariable = -mSubsystems.vision.distanceToTarget
@@ -129,7 +129,7 @@ public class TeleopController(
             } else {
                 // if not target, stop and blink
                 mSubsystems.drivetrain.setVelocity(0.0, 0.0)
-                mSubsystems.vision.ledState = LEDState.BLINK
+                // mSubsystems.vision.ledState = LEDState.BLINK
             }
         }
 
