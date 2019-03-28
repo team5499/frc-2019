@@ -60,7 +60,7 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
         Dashboard.addInlineListener("Constants.Hatch.POSITION_OFFSET") {
             _: String, value: Int? ->
             if (value != null) {
-                mPositionOffset = value!!
+                mPositionOffset = value
             }
         }
     }
@@ -76,7 +76,7 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
     }
 
     public override fun update() {
-        println("hatchmech pos: ${mTalon.getSelectedSensorPosition(0)}")
+        // println("hatchmech pos: ${mTalon.getSelectedSensorPosition(0)}")
     }
 
     public override fun stop() {

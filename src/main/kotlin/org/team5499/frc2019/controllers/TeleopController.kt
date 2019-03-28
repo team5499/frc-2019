@@ -4,11 +4,16 @@ import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.input.ControlBoard
 import org.team5499.frc2019.subsystems.Lift.LiftHeight
 import org.team5499.frc2019.subsystems.HatchMech
+import org.team5499.frc2019.subsystems.Vision.VisionMode
+import org.team5499.frc2019.subsystems.Vision.LEDState
+
 import org.team5499.frc2019.Constants
 
 import org.team5499.monkeyLib.Controller
 import org.team5499.monkeyLib.input.DriveHelper
+import org.team5499.monkeyLib.math.pid.PIDF
 
+@Suppress("LargeClass")
 public class TeleopController(
     subsystems: SubsystemsManager,
     controlBoard: ControlBoard,
@@ -22,11 +27,15 @@ public class TeleopController(
 
     private val mDriveHelper: DriveHelper
 
+    private val mDistancePID: PIDF
+    private val mAnglePID: PIDF
+
     private var mLockHatchMech: Boolean
     private var mLockElevator: Boolean
     private var mLastLoopManualUsed: Boolean
+    private var mAutoAlign: Boolean
 
-    private var started = false
+    private var mStarted: Boolean
 
     init {
         mSubsystems = subsystems
@@ -35,26 +44,94 @@ public class TeleopController(
         mLockHatchMech = false
         mLockElevator = false
         mLastLoopManualUsed = false
+        mStarted = false
+        mAutoAlign = false
+
+        mAnglePID = PIDF(
+            Constants.Vision.ANGLE_KP,
+            Constants.Vision.ANGLE_KI,
+            Constants.Vision.ANGLE_KI,
+            Constants.Vision.ANGLE_KD,
+            false
+        )
+        mDistancePID = PIDF(
+            Constants.Vision.DISTANCE_KP,
+            Constants.Vision.DISTANCE_KI,
+            Constants.Vision.DISTANCE_KD,
+            Constants.Vision.DISTANCE_KF,
+            false
+        )
     }
 
     public override fun start() {
-        if (!started) {
+        if (!mStarted) {
             mSubsystems.drivetrain.brakeMode = false
             mLockHatchMech = false
             mLockElevator = false
-            started = true
+            mStarted = true
+            mSubsystems.vision.ledState = LEDState.OFF
+            mSubsystems.vision.visionMode = VisionMode.DRIVER
+
+            mAnglePID.reset()
+            mDistancePID.reset()
+
+            mAnglePID.kP = Constants.Vision.ANGLE_KP
+            mAnglePID.kI = Constants.Vision.ANGLE_KI
+            mAnglePID.kD = Constants.Vision.ANGLE_KD
+            mAnglePID.kF = Constants.Vision.ANGLE_KF
+
+            mDistancePID.kP = Constants.Vision.DISTANCE_KP
+            mDistancePID.kI = Constants.Vision.DISTANCE_KI
+            mDistancePID.kD = Constants.Vision.DISTANCE_KD
+            mDistancePID.kF = Constants.Vision.DISTANCE_KF
         }
     }
 
     @Suppress("ComplexMethod")
     public override fun update() {
-        val driveSignal = mDriveHelper.calculateOutput(
-            -mControlBoard.driverControls.getThrottle(),
-            mControlBoard.driverControls.getTurn(),
-            mControlBoard.driverControls.getQuickTurn(),
-            mControlBoard.driverControls.getCreep()
-        )
-        mSubsystems.drivetrain.setPercent(driveSignal.left, driveSignal.right)
+        val isAutoAlign = mControlBoard.driverControls.getAutoAlign()
+        if (!mAutoAlign && isAutoAlign) {
+            mAutoAlign = true
+            mDistancePID.reset()
+            mAnglePID.reset()
+            mDistancePID.setpoint = Constants.Vision.TARGET_DISTANCE
+            mAnglePID.setpoint = -Constants.Vision.CAMERA_HORIZONTAL_ANGLE
+            mSubsystems.vision.ledState = LEDState.ON
+            mSubsystems.vision.visionMode = VisionMode.VISION
+        } else if (mAutoAlign && !isAutoAlign) {
+            mAutoAlign = false
+            mSubsystems.vision.ledState = LEDState.OFF
+            mSubsystems.vision.visionMode = VisionMode.DRIVER
+        }
+
+        if (!mAutoAlign) {
+            // driver can control
+            val driveSignal = mDriveHelper.calculateOutput(
+                -mControlBoard.driverControls.getThrottle(),
+                mControlBoard.driverControls.getTurn(),
+                mControlBoard.driverControls.getQuickTurn(),
+                mControlBoard.driverControls.getCreep()
+            )
+            mSubsystems.drivetrain.setPercent(driveSignal.left, driveSignal.right)
+        } else {
+            // vision system can control
+            if (mSubsystems.vision.hasValidTarget) {
+                // mSubsystems.vision.ledState = LEDState.ON
+
+                mAnglePID.processVariable = -mSubsystems.vision.targetXOffset
+                mDistancePID.processVariable = -mSubsystems.vision.distanceToTarget
+
+                val drive = mDistancePID.calculate()
+                val steer = mAnglePID.calculate()
+                val left = drive + steer
+                val right = drive - steer
+                mSubsystems.drivetrain.setVelocity(left, right)
+            } else {
+                // if not target, stop and blink
+                mSubsystems.drivetrain.setVelocity(0.0, 0.0)
+                // mSubsystems.vision.ledState = LEDState.BLINK
+            }
+        }
 
         if (mControlBoard.codriverControls.getExaust()) {
             mSubsystems.intake.outtake()
@@ -135,6 +212,7 @@ public class TeleopController(
     public override fun reset() {
         mLockHatchMech = false
         mLockElevator = false
-        started = false
+        mStarted = false
+        mAutoAlign = false
     }
 }

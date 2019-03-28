@@ -15,6 +15,8 @@ import org.team5499.frc2019.subsystems.Drivetrain
 import org.team5499.frc2019.subsystems.Lift
 import org.team5499.frc2019.subsystems.Intake
 import org.team5499.frc2019.subsystems.Vision
+import org.team5499.frc2019.subsystems.Vision.LEDState
+import org.team5499.frc2019.subsystems.Vision.VisionMode
 import org.team5499.frc2019.subsystems.HatchMech
 import org.team5499.frc2019.controllers.SandstormController
 import org.team5499.frc2019.controllers.TeleopController
@@ -174,6 +176,8 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
 
     override fun robotInit() {
         Logger.warn("Robot initializing" as Any)
+        mVision.ledState = Vision.LEDState.OFF
+        mVision.visionMode = Vision.VisionMode.VISION
     }
 
     override fun robotPeriodic() {
@@ -196,11 +200,13 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     override fun disabledInit() {
         Logger.warn("Robot disabling" as Any)
         mLift.zeroed = false
+        mVision.initialize()
+        mVision.ledState = Vision.LEDState.OFF
+        mVision.visionMode = Vision.VisionMode.VISION
         mSubsystemsManager.resetAll()
     }
 
-    override fun disabledPeriodic() {
-    }
+    override fun disabledPeriodic() {}
 
     override fun autonomousInit() {
         Logger.warn("Robot going autonomous" as Any)
@@ -223,5 +229,14 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     override fun teleopPeriodic() {
         mTeleopController.update()
         mSubsystemsManager.updateAll()
+    }
+
+    override fun testInit() {
+        mVision.ledState = LEDState.ON
+        mVision.visionMode = VisionMode.VISION
+    }
+
+    override fun testPeriodic() {
+        println("distance to target ${mVision.distanceToTarget}")
     }
 }

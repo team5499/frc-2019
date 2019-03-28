@@ -17,6 +17,8 @@ import org.team5499.frc2019.auto.actions.LiftAction
 import org.team5499.frc2019.auto.actions.HatchMechAction
 import org.team5499.frc2019.auto.actions.WaitForLiftZeroAction
 import org.team5499.frc2019.auto.actions.CrossedXBoundaryAction
+import org.team5499.frc2019.auto.actions.VisionGoalAction
+import org.team5499.frc2019.auto.actions.VisionGoalAction.VisionGoal
 
 import java.util.HashMap
 
@@ -182,13 +184,17 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private fun createTuning() = Routine(
         "Tuning",
         Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0)),
-        PathAction(15.0, mPaths.tuning, mSubsystems.drivetrain)
+        PathAction(120.0, mPaths.tuning, mSubsystems.drivetrain)
     )
 
     private fun createTest() = Routine(
-        "Test",
-        Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0.0)),
-        DriveStraightAction(10.0, 12.0, mSubsystems.drivetrain)
+        "test",
+        Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0)),
+        WaitForLiftZeroAction(mSubsystems.lift),
+        LiftAction(LiftHeight.HATCH_LOW, mSubsystems.lift),
+        HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
+        VisionGoalAction(120.0, VisionGoal.HATCH_TARGET, mSubsystems.vision, mSubsystems.drivetrain),
+        HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech)
     )
 
     private fun createNothing() = Routine(
