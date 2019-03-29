@@ -42,6 +42,8 @@ public interface ICodriverControls {
 
     public fun getManualZero(): Boolean
 
+    public fun getDisableHatch(): Boolean
+
     // get the current codriver state
     public fun getState(): String {
         @Suppress("MaxLineLength")

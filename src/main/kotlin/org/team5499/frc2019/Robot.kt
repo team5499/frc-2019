@@ -200,13 +200,15 @@ class Robot : TimedRobot(Constants.ROBOT_UPDATE_PERIOD) {
     override fun disabledInit() {
         Logger.warn("Robot disabling" as Any)
         mLift.zeroed = false
-        mVision.initialize()
+        // mVision.initialize()
         mVision.ledState = Vision.LEDState.OFF
         mVision.visionMode = Vision.VisionMode.VISION
         mSubsystemsManager.resetAll()
     }
 
-    override fun disabledPeriodic() {}
+    override fun disabledPeriodic() {
+        mVision.initialize()
+    }
 
     override fun autonomousInit() {
         Logger.warn("Robot going autonomous" as Any)

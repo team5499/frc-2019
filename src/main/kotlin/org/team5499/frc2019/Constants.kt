@@ -122,8 +122,8 @@ public object Constants {
         public var STOW_HEIGHT by DashboardVar(3.5)
 
         public var HATCH_LOW_HEIGHT by DashboardVar(7.0)
-        public val HATCH_MID_HEIGHT by DashboardVar(33.0)
-        public val HATCH_HIGH_HEIGHT by DashboardVar(59.5)
+        public val HATCH_MID_HEIGHT by DashboardVar(34.5)
+        public val HATCH_HIGH_HEIGHT by DashboardVar(60.5)
 
         public var BALL_LOW_HEIGHT by DashboardVar(3.5) // 4.5
         public val BALL_MID_HEIGHT by DashboardVar(30.0) // 32
@@ -167,7 +167,7 @@ public object Constants {
         public var KD by DashboardVar(0.5)
 
         // positions, all in pot ticks
-        public var POSITION_OFFSET by DashboardVar(145)
+        public var POSITION_OFFSET by DashboardVar(110)
 
         public var TOP_STOW_POSITION by DashboardVar(0)
         public var BOTTOM_STOW_POSITION by DashboardVar(770)

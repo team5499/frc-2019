@@ -70,7 +70,8 @@ public class TeleopController(
             mLockElevator = false
             mStarted = true
             mSubsystems.vision.ledState = LEDState.OFF
-            mSubsystems.vision.visionMode = VisionMode.DRIVER
+            mSubsystems.vision.visionMode = VisionMode.VISION
+            mSubsystems.lift.setPositionRaw(mSubsystems.lift.setpoint.toInt())
 
             mAnglePID.reset()
             mDistancePID.reset()

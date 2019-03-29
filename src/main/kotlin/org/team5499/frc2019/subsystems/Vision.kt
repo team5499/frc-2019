@@ -90,7 +90,7 @@ public class Vision : Subsystem() {
     public fun initialize() {
         mTable.getEntry("camMode").setNumber(0)
         mTable.getEntry("stream").setNumber(0)
-        mTable.getEntry("ledMode").setNumber(0)
+        // mTable.getEntry("ledMode").setNumber(0)
         ledState = LEDState.OFF
         visionMode = VisionMode.VISION
     }

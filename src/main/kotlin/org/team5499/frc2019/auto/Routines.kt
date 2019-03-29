@@ -97,6 +97,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
         NothingAction(0.3),
         PathAction(15.0, mPaths.leftRocketSet.get(3), mSubsystems.drivetrain),
+        NothingAction(0.33),
         ParallelAction(
             PathAction(15.0, mPaths.leftRocketSet.get(4), mSubsystems.drivetrain),
             LiftAction(LiftHeight.HATCH_MID, mSubsystems.lift)
@@ -132,6 +133,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
         NothingAction(0.3),
         PathAction(15.0, mPaths.rightRocketSet.get(3), mSubsystems.drivetrain),
+        NothingAction(0.33),
         ParallelAction(
             PathAction(15.0, mPaths.rightRocketSet.get(4), mSubsystems.drivetrain),
             LiftAction(LiftHeight.HATCH_MID, mSubsystems.lift)
