@@ -19,7 +19,7 @@ import org.team5499.frc2019.auto.actions.CrossedXBoundaryAction
 import org.team5499.frc2019.auto.actions.VisionGoalAction
 import org.team5499.frc2019.auto.actions.VisionGoalAction.VisionGoal
 
-import java.util.HashMap
+import java.util.LinkedHashMap
 
 @SuppressWarnings("MagicNumber")
 public class Routines(paths: Paths, subsystems: SubsystemsManager) {
@@ -27,7 +27,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     private val mPaths: Paths
     private val mSubsystems: SubsystemsManager
 
-    public val routineMap: HashMap<String, Routine>
+    public val routineMap: LinkedHashMap<String, Routine>
 
     public val baseline: Routine
     public val tuning: Routine
@@ -41,7 +41,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
     init {
         mPaths = paths
         mSubsystems = subsystems
-        routineMap = HashMap<String, Routine>()
+        routineMap = LinkedHashMap<String, Routine>()
 
         this.baseline = createBaseline()
         this.tuning = createTuning()
@@ -53,12 +53,12 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         this.nothing = createNothing()
 
         routineMap.put(baseline.name, baseline)
-        routineMap.put(tuning.name, tuning)
-        routineMap.put(test.name, test)
         routineMap.put(rocketLeft.name, rocketLeft)
         routineMap.put(rocketRight.name, rocketRight)
         routineMap.put(cargoShipThenRocketLeft.name, cargoShipThenRocketLeft)
         routineMap.put(cargoShipThenRocketRight.name, cargoShipThenRocketRight)
+        routineMap.put(tuning.name, tuning)
+        routineMap.put(test.name, test)
         routineMap.put(nothing.name, nothing)
     }
 
