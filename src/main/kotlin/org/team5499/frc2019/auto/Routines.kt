@@ -11,7 +11,6 @@ import org.team5499.monkeyLib.math.geometry.Pose2d
 import org.team5499.frc2019.subsystems.SubsystemsManager
 import org.team5499.frc2019.subsystems.Lift.LiftHeight
 import org.team5499.frc2019.subsystems.HatchMech.HatchMechPosition
-import org.team5499.frc2019.auto.actions.DriveStraightAction
 import org.team5499.frc2019.auto.actions.PathAction
 import org.team5499.frc2019.auto.actions.LiftAction
 import org.team5499.frc2019.auto.actions.HatchMechAction
@@ -95,15 +94,15 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         ),
         PathAction(15.0, mPaths.leftRocketSet.get(2), mSubsystems.drivetrain),
         HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
-        NothingAction(0.3),
-        PathAction(15.0, mPaths.leftRocketSet.get(3), mSubsystems.drivetrain),
-        NothingAction(0.33),
-        ParallelAction(
-            PathAction(15.0, mPaths.leftRocketSet.get(4), mSubsystems.drivetrain),
-            LiftAction(LiftHeight.HATCH_MID, mSubsystems.lift)
-        ),
-        HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech),
-        DriveStraightAction(5.0, -6.0, mSubsystems.drivetrain)
+        NothingAction(0.45),
+        PathAction(15.0, mPaths.leftRocketSet.get(3), mSubsystems.drivetrain)
+        // NothingAction(0.33)
+        // ParallelAction(
+        //     PathAction(15.0, mPaths.leftRocketSet.get(4), mSubsystems.drivetrain),
+        //     LiftAction(LiftHeight.HATCH_MID, mSubsystems.lift)
+        // ),
+        // HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech)
+        // DriveStraightAction(5.0, -6.0, mSubsystems.drivetrain)
     )
 
     private fun createRocketRight() = Routine(
@@ -131,15 +130,15 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         ),
         PathAction(15.0, mPaths.rightRocketSet.get(2), mSubsystems.drivetrain),
         HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
-        NothingAction(0.3),
-        PathAction(15.0, mPaths.rightRocketSet.get(3), mSubsystems.drivetrain),
-        NothingAction(0.33),
-        ParallelAction(
-            PathAction(15.0, mPaths.rightRocketSet.get(4), mSubsystems.drivetrain),
-            LiftAction(LiftHeight.HATCH_MID, mSubsystems.lift)
-        ),
-        HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech),
-        DriveStraightAction(5.0, -6.0, mSubsystems.drivetrain)
+        NothingAction(0.45),
+        PathAction(15.0, mPaths.rightRocketSet.get(3), mSubsystems.drivetrain)
+        // NothingAction(0.33)
+        // ParallelAction(
+        //     PathAction(15.0, mPaths.rightRocketSet.get(4), mSubsystems.drivetrain),
+        //     LiftAction(LiftHeight.HATCH_MID, mSubsystems.lift)
+        // ),
+        // HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech)
+        // DriveStraightAction(5.0, -6.0, mSubsystems.drivetrain)
     )
 
     private fun createCargoShipThenRocketRight() = Routine(
