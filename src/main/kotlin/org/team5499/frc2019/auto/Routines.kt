@@ -70,8 +70,9 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         }
     }
 
-    private fun createRocketLeft() = Routine(
-        "Left Rocket",
+    // DONT CHANGE THIS
+    private fun createRocketLeftBlue() = Routine(
+        "Left Rocket Blue",
         Paths.Poses.leftStartingPosition,
         ParallelAction(
             PathAction(15.0, mPaths.leftRocketSet.get(0), mSubsystems.drivetrain),
@@ -104,9 +105,9 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         // HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech)
         // DriveStraightAction(5.0, -6.0, mSubsystems.drivetrain)
     )
-
-    private fun createRocketRight() = Routine(
-        "Right Rocket",
+    // DONT CHANGE THIS
+    private fun createRocketRightBlue() = Routine(
+        "Right Rocket Blue",
         Paths.Poses.rightStartingPosition,
         // AutoDelayAction(),
         ParallelAction(
@@ -140,6 +141,8 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
         // HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech)
         // DriveStraightAction(5.0, -6.0, mSubsystems.drivetrain)
     )
+
+    // public fun createRocketLeftRed() = Routine(
 
     private fun createCargoShipThenRocketRight() = Routine(
         "Cargoship Then Rocket Right",

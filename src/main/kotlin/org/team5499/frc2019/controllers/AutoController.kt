@@ -18,6 +18,7 @@ public class AutoController(subsystems: SubsystemsManager, routines: Routines) :
     private val mRoutines: Routines
 
     private val mAutoSelector: StringChooser
+    private val mSideChooser: StringChooser
 
     private var currentRoutine: Routine
     private var currentAction: Action?
