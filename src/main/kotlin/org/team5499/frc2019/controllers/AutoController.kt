@@ -18,7 +18,7 @@ public class AutoController(subsystems: SubsystemsManager, routines: Routines) :
     private val mRoutines: Routines
 
     private val mAutoSelector: StringChooser
-    private val mSideChooser: StringChooser
+    private val mAllianceSelector: StringChooser
 
     private var currentRoutine: Routine
     private var currentAction: Action?
@@ -41,6 +41,7 @@ public class AutoController(subsystems: SubsystemsManager, routines: Routines) :
 
         @Suppress("SpreadOperator")
         mAutoSelector = StringChooser("AUTO_MODE", "baseline", *tempArray)
+        mAllianceSelector = StringChooser("ALLIANCE_COLOR", "Blue", "Blue", "Red", "None")
     }
 
     public override fun start() {
