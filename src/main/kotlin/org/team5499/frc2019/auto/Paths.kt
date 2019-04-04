@@ -58,7 +58,7 @@ public class Paths(generator: PathGenerator) {
         public val leftStartingPosition = Pose2d(Vector2(65, 45), Rotation2d.fromDegrees(0))
         public val leftRocketPosition = Pose2d(Vector2(200.0, 130.0), Rotation2d.fromDegrees(30.0))
         public val leftRocketBackupPosition = Pose2d(Vector2(140, 80), Rotation2d.fromDegrees(90))
-        public val leftStationPosition = Pose2d(Vector2(22.0, 136.5), Rotation2d.fromDegrees(180)) // worked at 136
+        public val leftStationPosition = Pose2d(Vector2(22.0, 137.1), Rotation2d.fromDegrees(180))
         public val leftRocketMidpoint2 = Pose2d(Vector2(200, 103), Rotation2d.fromDegrees(180))
         public val leftRocketMidpoint3 = Pose2d(Vector2(299, 111), Rotation2d.fromDegrees(190))
         public val leftRocketBackPosition = Pose2d(Vector2(253, 134), Rotation2d.fromDegrees(210))
