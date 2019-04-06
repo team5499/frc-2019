@@ -74,4 +74,6 @@ public class XboxCodriver(xbox: XboxController) : ICodriverControls {
     public override fun getManualEnable() = mXbox.getBackButtonPressed()
 
     public override fun getManualZero() = false
+
+    public override fun getDisableHatch() = false
 }

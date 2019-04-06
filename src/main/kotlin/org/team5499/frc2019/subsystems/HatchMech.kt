@@ -26,6 +26,8 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
     public val positionRaw: Int
         get() = mTalon.getSelectedSensorPosition(0)
 
+    // private var mDisabled: Boolean
+
     public var selectedPosition: HatchMechPosition = HatchMechPosition.BOTTOM_STOW
         private set
 
@@ -40,6 +42,7 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
         }
         mTalon.neutralOutput()
         mPositionOffset = Constants.Hatch.POSITION_OFFSET
+        // mDisabled = false
 
         Dashboard.addInlineListener("Constants.Hatch.KP") {
             _: String, value: Double? ->
@@ -60,7 +63,7 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
         Dashboard.addInlineListener("Constants.Hatch.POSITION_OFFSET") {
             _: String, value: Int? ->
             if (value != null) {
-                mPositionOffset = value!!
+                mPositionOffset = value
             }
         }
     }
@@ -75,8 +78,22 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
         setPositionRaw(position.ticks())
     }
 
+    // call to turn off hatchmech
+    public fun disable() {
+        // mDisabled = true
+        timer.stop()
+        timer.reset()
+        timer.start()
+    }
+
     public override fun update() {
-        println("hatchmech pos: ${mTalon.getSelectedSensorPosition(0)}")
+        // println("hatchmech pos: ${mTalon.getSelectedSensorPosition(0)}")
+        // @Suppress("MagicNumber")
+        // if (mDisabled && timer.get() < 2.0) {
+        //     mTalon.set(ControlMode.PercentOutput, 0.5)
+        // } else if (mDisabled) {
+        //     mTalon.set(ControlMode.PercentOutput, 0.0)
+        // }
     }
 
     public override fun stop() {
@@ -85,5 +102,6 @@ public class HatchMech(talon: LazyTalonSRX) : Subsystem() {
 
     public override fun reset() {
         stop()
+        // mDisabled = false
     }
 }

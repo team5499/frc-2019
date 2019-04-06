@@ -56,20 +56,18 @@ public class Paths(generator: PathGenerator) {
     public object Poses {
         // left rocket auto
         public val leftStartingPosition = Pose2d(Vector2(65, 45), Rotation2d.fromDegrees(0))
-        // public val leftRocketMidpoint = Pose2d(Vector2(102, 120), Rotation2d.fromDegrees(15.0))
-        public val leftRocketPosition = Pose2d(Vector2(200.0, 132.5), Rotation2d.fromDegrees(30.0)) // try 30 degrees
+        public val leftRocketPosition = Pose2d(Vector2(200.0, 130.0), Rotation2d.fromDegrees(30.0))
         public val leftRocketBackupPosition = Pose2d(Vector2(140, 80), Rotation2d.fromDegrees(90))
-        public val leftStationPosition = Pose2d(Vector2(22.0, 134.0), Rotation2d.fromDegrees(180))
+        public val leftStationPosition = Pose2d(Vector2(22.0, 137.1), Rotation2d.fromDegrees(180))
         public val leftRocketMidpoint2 = Pose2d(Vector2(200, 103), Rotation2d.fromDegrees(180))
         public val leftRocketMidpoint3 = Pose2d(Vector2(299, 111), Rotation2d.fromDegrees(190))
         public val leftRocketBackPosition = Pose2d(Vector2(253, 134), Rotation2d.fromDegrees(210))
 
         // right rocket auto
         public val rightStartingPosition = Pose2d(Vector2(65, -45), Rotation2d.fromDegrees(0))
-        // public val rightRocketMidpoint = Pose2d(Vector2(102, -120), Rotation2d.fromDegrees(-15.0)) // 100, -120
         public val rightRocketPosition = Pose2d(Vector2(200.0, -132.5), Rotation2d.fromDegrees(-30.0))
         public val rightRocketBackupPosition = Pose2d(Vector2(140, -80), Rotation2d.fromDegrees(-90))
-        public val rightStationPosition = Pose2d(Vector2(22.0, -134.0), Rotation2d.fromDegrees(180)) // wored at -133
+        public val rightStationPosition = Pose2d(Vector2(22.0, -136.5), Rotation2d.fromDegrees(180)) // wored at -133
         public val rightRocketMidpoint2 = Pose2d(Vector2(200, -103), Rotation2d.fromDegrees(180))
         public val rightRocketMidpoint3 = Pose2d(Vector2(299, -111), Rotation2d.fromDegrees(190))
         public val rightRocketBackPosition = Pose2d(Vector2(253, -134), Rotation2d.fromDegrees(210))

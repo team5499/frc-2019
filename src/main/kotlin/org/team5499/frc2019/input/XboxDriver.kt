@@ -27,4 +27,7 @@ public class XboxDriver(xbox: XboxController) : IDriverControls {
     public override fun getExitAuto() = mXbox.getAButtonPressed()
 
     public override fun getStow() = mXbox.getBButtonPressed()
+
+    @Suppress("MagicNumber")
+    public override fun getAutoAlign() = (mXbox.getTriggerAxis(Hand.kLeft) > 0.15)
 }

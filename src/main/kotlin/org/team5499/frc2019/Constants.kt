@@ -122,8 +122,8 @@ public object Constants {
         public var STOW_HEIGHT by DashboardVar(3.5)
 
         public var HATCH_LOW_HEIGHT by DashboardVar(7.0)
-        public val HATCH_MID_HEIGHT by DashboardVar(33.0)
-        public val HATCH_HIGH_HEIGHT by DashboardVar(59.5)
+        public val HATCH_MID_HEIGHT by DashboardVar(34.5)
+        public val HATCH_HIGH_HEIGHT by DashboardVar(60.5)
 
         public var BALL_LOW_HEIGHT by DashboardVar(3.5) // 4.5
         public val BALL_MID_HEIGHT by DashboardVar(30.0) // 32
@@ -167,12 +167,35 @@ public object Constants {
         public var KD by DashboardVar(0.5)
 
         // positions, all in pot ticks
-        public var POSITION_OFFSET by DashboardVar(145)
+        public var POSITION_OFFSET by DashboardVar(110)
 
         public var TOP_STOW_POSITION by DashboardVar(0)
         public var BOTTOM_STOW_POSITION by DashboardVar(770)
         public var DEPLOY_POSITION by DashboardVar(360)
         public var HOLD_POSITION by DashboardVar(170)
+    }
+
+    object Vision {
+        public var CAMERA_HEIGHT by DashboardVar(33.0)
+        public var CAMERA_VERTICAL_ANGLE by DashboardVar(0.0)
+        public var CAMERA_HORIZONTAL_ANGLE by DashboardVar(7.0)
+        public var HATCH_TARGET_HEIGHT by DashboardVar(29.0)
+        public var BALL_TARGET_HEIGHT by DashboardVar(36.0)
+
+        public var TARGET_DISTANCE by DashboardVar(24.0) // inches
+
+        public var ACCEPTABLE_ANGLE_ERROR by DashboardVar(3.0) // degrees(?)
+        public var ACCEPTABLE_DISTANCE_ERROR by DashboardVar(2.0) // inches (?)
+
+        public var ANGLE_KP by DashboardVar(1.0)
+        public var ANGLE_KI by DashboardVar(0.0)
+        public var ANGLE_KD by DashboardVar(0.1)
+        public var ANGLE_KF by DashboardVar(0.0)
+
+        public var DISTANCE_KP by DashboardVar(0.35)
+        public var DISTANCE_KI by DashboardVar(0.0)
+        public var DISTANCE_KD by DashboardVar(0.0)
+        public var DISTANCE_KF by DashboardVar(0.0)
     }
 
     object Auto {

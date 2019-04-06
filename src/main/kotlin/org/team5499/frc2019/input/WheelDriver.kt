@@ -34,4 +34,6 @@ public class WheelDriver(wheel: Joystick, throttle: Joystick) : IDriverControls 
     public override fun getExitAuto() = mWheel.getRawButton(1) // paddle
 
     public override fun getStow() = false // change this later
+
+    public override fun getAutoAlign() = false
 }
