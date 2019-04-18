@@ -155,8 +155,11 @@ public class TeleopController(
         }
 
         if (Constants.Hatch.DISABLE_POT) {
+            println("Disable Hatch Mech")
+            mSubsystems.hatchMech.disable()
             return
         }
+        println(Constants.Hatch.DISABLE_POT)
 
         if (!mLockHatchMech) {
             val hatchPickup = mControlBoard.codriverControls.getPickup()
