@@ -37,6 +37,8 @@ public class TeleopController(
 
     private var mStarted: Boolean
 
+    private var disableHatchMech: Boolean = false
+
     init {
         mSubsystems = subsystems
         mControlBoard = controlBoard
@@ -154,14 +156,12 @@ public class TeleopController(
             mLockHatchMech = true
         }
 
-        if (Constants.Hatch.DISABLE_POT) {
-            println("Disable Hatch Mech")
-            mSubsystems.hatchMech.disable()
-            return
+        if (mControlBoard.codriverControls.getDisableHatch()) {
+            disableHatchMech = true
+            mSubsystems.hatchMech.stop()
         }
-        println(Constants.Hatch.DISABLE_POT)
 
-        if (!mLockHatchMech) {
+        if (!mLockHatchMech && !disableHatchMech) {
             val hatchPickup = mControlBoard.codriverControls.getPickup()
             if (hatchPickup.down) {
                 mSubsystems.hatchMech.setPosition(HatchMech.HatchMechPosition.DEPLOYED)
@@ -218,6 +218,7 @@ public class TeleopController(
     }
 
     public override fun reset() {
+        disableHatchMech = false
         mLockHatchMech = false
         mLockElevator = false
         mStarted = false

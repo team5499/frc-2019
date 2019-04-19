@@ -173,6 +173,7 @@ public object Constants {
         public var BOTTOM_STOW_POSITION by DashboardVar(770)
         public var DEPLOY_POSITION by DashboardVar(360)
         public var HOLD_POSITION by DashboardVar(170)
+        public var DISABLE_POT = false
     }
 
     object Vision {
