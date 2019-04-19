@@ -48,6 +48,7 @@ public class Paths(generator: PathGenerator) {
         rightCargoToRocketSet.add(generateRightCargoBackup()) // 1
         rightCargoToRocketSet.add(generateCargoBackupToStationRight())
         rightCargoToRocketSet.add(generateRightStationToFirstCargo())
+        rightCargoToRocketSet.add(generateFirstCargoPlace())
 
         leftCargoToRocketSet.add(generateLeftHabToFrontCargo()) // 0
 
@@ -83,8 +84,8 @@ public class Paths(generator: PathGenerator) {
         // cargosip to rocket right
         public val rightCargoShipToRocketStartingPosition = Pose2d(Vector2(66, -45), Rotation2d.fromDegrees(0.0))
         public val rightCargoShipFront = Pose2d(Vector2(203, -11), Rotation2d.fromDegrees(0.0))
-        public val rightCargoMidpoint1 = Pose2d(Vector2(117, -60), Rotation2d.fromDegrees(80.0))
-        public val rightCargoBackup = Pose2d(Vector2(161, -120), Rotation2d.fromDegrees(180))
+        public val rightCargoMidpoint1 = Pose2d(Vector2(150, -25), Rotation2d.fromDegrees(30.0))
+        public val rightCargoBackup = Pose2d(Vector2(140, -120), Rotation2d.fromDegrees(180))
 
         public val zero = Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0))
         public val tuning = Pose2d(Vector2(25, 15), Rotation2d.fromDegrees(45))
@@ -187,7 +188,7 @@ public class Paths(generator: PathGenerator) {
             Poses.leftCargoShipToRocketStartingPosition,
             Poses.leftCargoShipFront
         )
-        return mGenerator.generatePath(false, points, 55.0, 50.0, 10.0, 0.0) // worked at 50 velo
+        return mGenerator.generatePath(false, points, 58.0, 50.0, 10.0, 0.0) // worked at 55 velo
     }
 
     private fun generateRightCargoBackup(): Path {
@@ -202,26 +203,26 @@ public class Paths(generator: PathGenerator) {
     private fun generateCargoBackupToStationRight(): Path {
         val points: Array<Pose2d> = arrayOf(
             Poses.rightCargoBackup,
-            Poses.rightStationPosition.transformBy(Vector2(-3.0, 6.0))
+            Poses.rightStationPosition.transformBy(Vector2(-6.5, 4.25))
         )
-        return mGenerator.generatePath(false, points, 70.0, 50.0, 15.0, 0.0) // worked at 60 velo
+        return mGenerator.generatePath(false, points, 80.0, 50.0, 15.0, 0.0) // worked at 60 velo
     }
 
     private fun generateRightStationToFirstCargo(): Path {
         val points: Array<Pose2d> = arrayOf(
-            Poses.rightStationPosition.transformBy(Vector2(-3.0, 6.0)),
-            Pose2d(Vector2(130.0, -90.0), Rotation2d.fromDegrees(210)),
+            Poses.rightStationPosition.transformBy(Vector2(-6.0, 6.0)),
+            // Pose2d(Vector2(130.0, -90.0), Rotation2d.fromDegrees(210)),
             Pose2d(Vector2(259.0, -105.0), Rotation2d.fromDegrees(90.0))
         )
-        return mGenerator.generatePath(true, points, 90.0, 60.0, 20.0, 0.0)
+        return mGenerator.generatePath(true, points, 70.0, 55.0, 20.0, 0.0)
     }
 
     private fun generateFirstCargoPlace(): Path {
         val points: Array<Pose2d> = arrayOf(
             Pose2d(Vector2(259.0, -105.0), Rotation2d.fromDegrees(90.0)),
-            Pose2d(Vector2(259.0, -52.0), Rotation2d.fromDegrees(90.0))
+            Pose2d(Vector2(250.0, -50.0), Rotation2d.fromDegrees(90.0))
         )
-        return mGenerator.generatePath(false, points, 40.0, 40.0, 10.0, 0.0)
+        return mGenerator.generatePath(false, points, 100.0, 60.0, 20.0, 0.0)
     }
 
     private fun generateTuning(): Path {

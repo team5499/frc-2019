@@ -151,7 +151,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
 
     private fun createRocketLeftRed() = Routine(
         "Left Rocket Red",
-        Paths.Poses.leftStartingPosition.transformBy(Vector2(-1.5, -2.75)), // 0.0, -2.0
+        Paths.Poses.leftStartingPosition.transformBy(Vector2(-1.5, -4.5)), // 0.0, -2.0
         ParallelAction(
             PathAction(15.0, mPaths.leftRocketSet.get(0), mSubsystems.drivetrain),
             SerialAction(
@@ -218,14 +218,15 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
             )
         ),
         HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech),
-        NothingAction(0.25),
+        NothingAction(0.1),
         PathAction(10.0, mPaths.rightCargoToRocketSet.get(1), mSubsystems.drivetrain),
         // NothingAction(0.2),
         PathAction(10.0, mPaths.rightCargoToRocketSet.get(2), mSubsystems.drivetrain),
         HatchMechAction(HatchMechPosition.HOLD, mSubsystems.hatchMech),
         NothingAction(0.33),
         PathAction(10.0, mPaths.rightCargoToRocketSet.get(3), mSubsystems.drivetrain),
-        NothingAction(0.3)
+        // NothingAction(0.),
+        PathAction(10.0, mPaths.rightCargoToRocketSet.get(4), mSubsystems.drivetrain)
     )
 
     private fun createDoubleCargoHatchLeft() = Routine(
