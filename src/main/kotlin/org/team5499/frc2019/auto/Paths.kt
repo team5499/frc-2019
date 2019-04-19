@@ -45,7 +45,9 @@ public class Paths(generator: PathGenerator) {
         leftRocketSet.add(generateLeftRocketTinyBoi()) // 4
 
         rightCargoToRocketSet.add(generateRightHabToFrontCargo()) // 0
-        // rightCargoToRocketSet.add(generateRightCargoBackup()) // 1
+        rightCargoToRocketSet.add(generateRightCargoBackup()) // 1
+        rightCargoToRocketSet.add(generateCargoBackupToStationRight())
+        rightCargoToRocketSet.add(generateRightStationToFirstCargo())
 
         leftCargoToRocketSet.add(generateLeftHabToFrontCargo()) // 0
 
@@ -75,13 +77,14 @@ public class Paths(generator: PathGenerator) {
         // cargoship to rocket left
         public val leftCargoShipToRocketStartingPosition = Pose2d(Vector2(66, 45), Rotation2d.fromDegrees(0.0))
         public val leftCargoShipFront = Pose2d(Vector2(203, 10), Rotation2d.fromDegrees(0.0))
-        public val leftCargoMidpoint1 = Pose2d(Vector2(117, -60), Rotation2d.fromDegrees(-80))
-        public val leftCargoBackup = Pose2d(Vector2(161, -120), Rotation2d.fromDegrees(180.0))
+        public val leftCargoMidpoint1 = Pose2d(Vector2(117, 60), Rotation2d.fromDegrees(-80))
+        public val leftCargoBackup = Pose2d(Vector2(161, 120), Rotation2d.fromDegrees(180.0))
 
         // cargosip to rocket right
         public val rightCargoShipToRocketStartingPosition = Pose2d(Vector2(66, -45), Rotation2d.fromDegrees(0.0))
-        public val rightCargoShipFront = Pose2d(Vector2(203, -10), Rotation2d.fromDegrees(0.0))
-        public val rightCargoMidpoint1 = Pose2d(Vector2(125, -45), Rotation2d.fromDegrees(0.0))
+        public val rightCargoShipFront = Pose2d(Vector2(203, -11), Rotation2d.fromDegrees(0.0))
+        public val rightCargoMidpoint1 = Pose2d(Vector2(117, -60), Rotation2d.fromDegrees(80.0))
+        public val rightCargoBackup = Pose2d(Vector2(161, -120), Rotation2d.fromDegrees(180))
 
         public val zero = Pose2d(Vector2(0, 0), Rotation2d.fromDegrees(0))
         public val tuning = Pose2d(Vector2(25, 15), Rotation2d.fromDegrees(45))
@@ -184,15 +187,41 @@ public class Paths(generator: PathGenerator) {
             Poses.leftCargoShipToRocketStartingPosition,
             Poses.leftCargoShipFront
         )
-        return mGenerator.generatePath(false, points, 50.0, 50.0, 10.0, 0.0)
+        return mGenerator.generatePath(false, points, 55.0, 50.0, 10.0, 0.0) // worked at 50 velo
     }
 
     private fun generateRightCargoBackup(): Path {
         val points: Array<Pose2d> = arrayOf(
-            Poses.rightCargoShipToRocketStartingPosition,
-            Poses.rightCargoShipFront
+            Poses.rightCargoShipFront,
+            Poses.rightCargoMidpoint1,
+            Poses.rightCargoBackup
         )
         return mGenerator.generatePath(true, points, 80.0, 50.0, 20.0, 0.0)
+    }
+
+    private fun generateCargoBackupToStationRight(): Path {
+        val points: Array<Pose2d> = arrayOf(
+            Poses.rightCargoBackup,
+            Poses.rightStationPosition.transformBy(Vector2(-3.0, 6.0))
+        )
+        return mGenerator.generatePath(false, points, 70.0, 50.0, 15.0, 0.0) // worked at 60 velo
+    }
+
+    private fun generateRightStationToFirstCargo(): Path {
+        val points: Array<Pose2d> = arrayOf(
+            Poses.rightStationPosition.transformBy(Vector2(-3.0, 6.0)),
+            Pose2d(Vector2(130.0, -90.0), Rotation2d.fromDegrees(210)),
+            Pose2d(Vector2(259.0, -105.0), Rotation2d.fromDegrees(90.0))
+        )
+        return mGenerator.generatePath(true, points, 90.0, 60.0, 20.0, 0.0)
+    }
+
+    private fun generateFirstCargoPlace(): Path {
+        val points: Array<Pose2d> = arrayOf(
+            Pose2d(Vector2(259.0, -105.0), Rotation2d.fromDegrees(90.0)),
+            Pose2d(Vector2(259.0, -52.0), Rotation2d.fromDegrees(90.0))
+        )
+        return mGenerator.generatePath(false, points, 40.0, 40.0, 10.0, 0.0)
     }
 
     private fun generateTuning(): Path {

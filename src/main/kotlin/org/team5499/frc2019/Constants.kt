@@ -84,7 +84,7 @@ public object Constants {
         public var ANGLE_IZONE by DashboardVar(10)
         public var ANGLE_MAX_OUTPUT by DashboardVar(1.0)
 
-        public var TURN_KP by DashboardVar(1.5)
+        public var TURN_KP by DashboardVar(0.1)
         public var TURN_KI by DashboardVar(0.0)
         public var TURN_KD by DashboardVar(0.0)
         public var TURN_KF by DashboardVar(0.0)

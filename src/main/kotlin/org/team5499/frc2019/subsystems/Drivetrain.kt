@@ -400,9 +400,9 @@ public class Drivetrain(
             Constants.Drivetrain.WHEEL_CIR,
             (leftDistance + rightDistance) / 2.0
         )
-        val angleTarget = mRightMaster.getSelectedSensorPosition(1) +
-            Utils.degreesToTalonAngle(Constants.Drivetrain.TURN_UNITS_PER_ROTATION, angle - mGyroOffset.degrees)
-        mRightMaster.set(ControlMode.MotionMagic, angleTarget.toDouble(), DemandType.AuxPID, fixedDistance.toDouble())
+        val angleTarget = 0.0 // mRightMaster.getSelectedSensorPosition(1) +
+            // Utils.degreesToTalonAngle(Constants.Drivetrain.TURN_UNITS_PER_ROTATION, angle - mGyroOffset.degrees)
+        mRightMaster.set(ControlMode.Position, angleTarget.toDouble(), DemandType.AuxPID, fixedDistance.toDouble())
     }
 
     public fun setVelocity(leftSpeed: Double, rightSpeed: Double) {
@@ -650,7 +650,9 @@ public class Drivetrain(
 
     public override fun update() {
         mPosition.update(leftDistance, rightDistance, heading.degrees)
-        // println("position: ${mPosition.positionVector}")
+        println("turn error: $turnError")
+        println("fused: ${mGyro.getFusedHeading()}")
+        println("selected position ${mRightMaster.getSelectedSensorPosition(1)}")
     }
 
     public override fun stop() {
