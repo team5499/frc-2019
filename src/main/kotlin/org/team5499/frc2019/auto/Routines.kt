@@ -218,7 +218,7 @@ public class Routines(paths: Paths, subsystems: SubsystemsManager) {
             )
         ),
         HatchMechAction(HatchMechPosition.DEPLOYED, mSubsystems.hatchMech),
-        NothingAction(0.1),
+        NothingAction(0.35),
         PathAction(10.0, mPaths.rightCargoToRocketSet.get(1), mSubsystems.drivetrain),
         // NothingAction(0.2),
         PathAction(10.0, mPaths.rightCargoToRocketSet.get(2), mSubsystems.drivetrain),

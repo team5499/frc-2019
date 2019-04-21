@@ -194,6 +194,7 @@ public class Paths(generator: PathGenerator) {
     private fun generateRightCargoBackup(): Path {
         val points: Array<Pose2d> = arrayOf(
             Poses.rightCargoShipFront,
+            // Poses.rightCargoShipFront.transformBy(Vector2(-12.0, 0.0))
             Poses.rightCargoMidpoint1,
             Poses.rightCargoBackup
         )
