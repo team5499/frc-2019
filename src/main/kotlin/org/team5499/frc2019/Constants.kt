@@ -84,7 +84,7 @@ public object Constants {
         public var ANGLE_IZONE by DashboardVar(10)
         public var ANGLE_MAX_OUTPUT by DashboardVar(1.0)
 
-        public var TURN_KP by DashboardVar(1.5)
+        public var TURN_KP by DashboardVar(0.1)
         public var TURN_KI by DashboardVar(0.0)
         public var TURN_KD by DashboardVar(0.0)
         public var TURN_KF by DashboardVar(0.0)
@@ -167,7 +167,7 @@ public object Constants {
         public var KD by DashboardVar(0.5)
 
         // positions, all in pot ticks
-        public var POSITION_OFFSET by DashboardVar(110)
+        public var POSITION_OFFSET by DashboardVar(140)
 
         public var TOP_STOW_POSITION by DashboardVar(0)
         public var BOTTOM_STOW_POSITION by DashboardVar(770)
