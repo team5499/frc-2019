@@ -63,7 +63,7 @@ dependencies {
     compile 'org.team5499:monkey-lib:2.10.4'
     compile 'org.team5499:forest:0.12.3'
 
-    compile 'org.tinylog:tinylog-api:2.0.0-M3'
+    compile 'org.tinylog:tinylog-api-kotlin:2.0.0-M3'
     compile 'org.tinylog:tinylog-impl:2.0.0-M3'
 
     // wpilib specific
